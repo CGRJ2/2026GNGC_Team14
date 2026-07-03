@@ -19,6 +19,7 @@ namespace GuildGame.Gameplay.Flow
         public IJudgementService Judgement { get; }
         public GameBalanceSO Balance { get; }
         public ReputationModel Reputation { get; }
+        public DayModel Day { get; }
         public UIAnimationSettingsSO UIAnimationSettings { get; }
         public bool LoopAfterResolution { get; }
         public bool IsTutorial { get; }
@@ -33,6 +34,7 @@ namespace GuildGame.Gameplay.Flow
             IJudgementService judgement,
             GameBalanceSO balance,
             ReputationModel reputation,
+            DayModel day,
             UIAnimationSettingsSO uiAnimationSettings,
             bool loopAfterResolution = true,
             bool isTutorial = false)
@@ -42,6 +44,7 @@ namespace GuildGame.Gameplay.Flow
             Judgement = judgement;
             Balance = balance;
             Reputation = reputation;
+            Day = day;
             UIAnimationSettings = uiAnimationSettings;
             LoopAfterResolution = loopAfterResolution;
             IsTutorial = isTutorial;
@@ -52,14 +55,24 @@ namespace GuildGame.Gameplay.Flow
         public event Action<string> QuestionAsked;
         public event Action<string, string> AnswerGiven;          // (질문, 답변)
         public event Action<CaseOutcome, string> OutcomeResolved; // (결과, 이벤트 대사)
+        public event Action<CutsceneSpeaker, string> CutsceneDialogueRequested;
+        public event Action CutsceneEnded;
 
         public event Action StudentExitRequested;
+        public event Action<int> DayStarted;
+        public event Action<int> DayEnded;
+        public event Action<CutsceneSO> CutscenePlayRequested;
 
         public void RaiseCaseStarted(StudentCase c) => CaseStarted?.Invoke(c);
         public void RaiseQuestion(string question) => QuestionAsked?.Invoke(question);
         public void RaiseAnswer(string question, string answer) => AnswerGiven?.Invoke(question, answer);
         public void RaiseOutcome(CaseOutcome outcome, string eventText) => OutcomeResolved?.Invoke(outcome, eventText);
+        public void RaiseCutsceneDialogue(CutsceneSpeaker speaker, string text) => CutsceneDialogueRequested?.Invoke(speaker, text);
+        public void RaiseCutsceneEnded() => CutsceneEnded?.Invoke();
         public void RequestStudentExit() => StudentExitRequested?.Invoke();
+        public void RaiseDayStarted(int day) => DayStarted?.Invoke(day);
+        public void RaiseDayEnded(int day) => DayEnded?.Invoke(day);
+        public void RequestCutscene(CutsceneSO cutscene) => CutscenePlayRequested?.Invoke(cutscene);
 
         // ---- 입력 이벤트 (뷰가 요청, 상태가 구독) ----
         public event Action<StudentIdFieldType> QuestionRequested;

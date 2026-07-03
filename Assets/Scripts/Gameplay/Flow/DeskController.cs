@@ -21,6 +21,7 @@ namespace GuildGame.Gameplay.Flow
         [SerializeField] private GameBalanceSO _balance;
         [SerializeField] private StudentDatabaseSO _studentDatabase;
         [SerializeField] private UIAnimationSettingsSO _uiAnimationSettings;
+        [SerializeField] private DayScheduleSO _daySchedule;
 
         [Header("Tutorial")]
         [SerializeField] private bool _runTutorialOnStart;
@@ -35,9 +36,9 @@ namespace GuildGame.Gameplay.Flow
 
         private void Start()
         {
-            if (_balance == null || _studentDatabase == null)
+            if (_balance == null || _studentDatabase == null || _daySchedule == null)
             {
-                Debug.LogError("[GuildDesk] GameBalanceSO or StudentDatabaseSO is missing.");
+                Debug.LogError("[GuildDesk] GameBalanceSO, StudentDatabaseSO or DayScheduleSO is missing.");
                 enabled = false;
                 return;
             }
@@ -46,6 +47,7 @@ namespace GuildGame.Gameplay.Flow
             IStudentCaseGenerator generator = CreateCaseGenerator();
             IJudgementService judgement = new JudgementService();
             var reputation = new ReputationModel(_balance.startingReputation);
+            var day = new DayModel(_daySchedule);
 
             _context = new GameContext(
                 localization,
@@ -53,6 +55,7 @@ namespace GuildGame.Gameplay.Flow
                 judgement,
                 _balance,
                 reputation,
+                day,
                 _uiAnimationSettings,
                 loopAfterResolution: !_runTutorialOnStart,
                 isTutorial: _runTutorialOnStart);
