@@ -15,6 +15,8 @@ namespace GuildGame.UI
 
         protected override void OnBind()
         {
+            Context.CutscenePlayRequested += Play;
+
             if (_autoPlayOnBind && _playOnBind != null)
                 Play(_playOnBind);
         }
@@ -30,12 +32,11 @@ namespace GuildGame.UI
 
         public void Stop()
         {
-            if (_playRoutine != null)
-            {
-                StopCoroutine(_playRoutine);
-                _playRoutine = null;
-            }
+            if (_playRoutine == null)
+                return;
 
+            StopCoroutine(_playRoutine);
+            _playRoutine = null;
             Context?.RaiseCutsceneEnded();
         }
 
@@ -69,6 +70,9 @@ namespace GuildGame.UI
 
         private void OnDestroy()
         {
+            if (Context != null)
+                Context.CutscenePlayRequested -= Play;
+
             if (_playRoutine != null)
                 StopCoroutine(_playRoutine);
 
