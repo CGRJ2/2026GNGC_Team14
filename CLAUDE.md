@@ -1,11 +1,11 @@
-# Project Context & Agent Rules
+﻿# Project Context & Agent Rules
 
 This file is the primary context for AI agents (Claude Code) working on this project.
 
 ## Project Overview
 - **Name**: 2026GNGC_Team14
 - **Goal**: Develop a Unity-based 2D game (competition/jam-scale).
-- **Status**: Early-stage — most gameplay code does not exist yet. Establish clean conventions as you build.
+- **Status**: Early-stage ??most gameplay code does not exist yet. Establish clean conventions as you build.
 
 ## Technology Stack
 - Engine: Unity **6000.3.18f1** (Unity 6)
@@ -16,20 +16,20 @@ This file is the primary context for AI agents (Claude Code) working on this pro
 - Version Control: Git
 
 ## Sub-Agent Architecture
-We follow a **Plan → Execute → Review** loop.
-1. **Orchestrator**: the main Claude Code session — analyzes requirements and assigns work to specialized agents.
+We follow a **Plan ??Execute ??Review** loop.
+1. **Orchestrator**: the main Claude Code session ??analyzes requirements and assigns work to specialized agents.
 2. **Sub-Agents**: defined in `.claude/agents/`, each with a specific persona.
 3. **Reviewer**: validates output before finalization.
 
 **Constraint**: Sub-agents cannot spawn other sub-agents (no nesting). The main session acts as the Orchestrator and spawns agents directly with the `Agent` tool.
 
 ### Specialized Agents (`.claude/agents/`)
-- `architect.md` — structural planning and system design
-- `developer.md` — C# Unity implementation and bug fixing
-- `reviewer.md` — code quality, Unity performance, convention audit
-- `technical_artist.md` — 2D URP visuals, lighting, post-processing
-- `game_designer.md` — mechanic design, balance, feature specs
-- `workflow_specialist.md` — Claude Code / Codex config, MCP, automation
+- `architect.md` ??structural planning and system design
+- `developer.md` ??C# Unity implementation and bug fixing
+- `reviewer.md` ??code quality, Unity performance, convention audit
+- `technical_artist.md` ??2D URP visuals, lighting, post-processing
+- `game_designer.md` ??mechanic design, balance, feature specs
+- `workflow_specialist.md` ??Claude Code / Codex config, MCP, automation
 
 ### How to Invoke Sub-Agents
 ```
@@ -44,10 +44,10 @@ Agent(subagent_type="game_designer")    # mechanic design, balance specs
 Use Claude Code's built-in task tools for multi-step work: `TaskCreate` (register), `TaskUpdate` (`in_progress` / `completed`), `TaskList` (review).
 
 ### Unity MCP Tools
-- `mcp__unity-mcp__Unity_RunCommand` — execute Unity Editor commands
-- `mcp__unity-mcp__Unity_GetConsoleLogs` — read Unity console output
-- `mcp__unity-mcp__Unity_Camera_Capture` — capture screenshots
-- `mcp__unity-mcp__Unity_SceneView_CaptureMultiAngleSceneView` — multi-angle capture
+- `mcp__unity-mcp__Unity_RunCommand` ??execute Unity Editor commands
+- `mcp__unity-mcp__Unity_GetConsoleLogs` ??read Unity console output
+- `mcp__unity-mcp__Unity_Camera_Capture` ??capture screenshots
+- `mcp__unity-mcp__Unity_SceneView_CaptureMultiAngleSceneView` ??multi-angle capture
 
 ## Dual Environment (Claude Code + Codex)
 - **Claude Code**: sub-agents in `.claude/agents/*.md`; permissions in `.claude/settings.local.json`.
@@ -71,7 +71,7 @@ Use Claude Code's built-in task tools for multi-step work: `TaskCreate` (registe
 - **C# Scripts**: standard Unity naming conventions (PascalCase for classes/methods).
 
 ## Language & Communication
-- **Main Language**: USE **Korean** (한글) for all explanations and summaries to the user.
+- **Main Language**: USE **Korean** (?쒓?) for all explanations and summaries to the user.
 - **Tone**: Professional, clear, and helpful.
 
 ---
@@ -80,60 +80,59 @@ Use Claude Code's built-in task tools for multi-step work: `TaskCreate` (registe
 Papers-Please-style guild reception loop. Namespaces under `GuildGame.*`. Plan: `~/.claude/plans/state-sequential-umbrella.md`.
 - **Core** (`Assets/Scripts/Core`): `ObservableProperty<T>`, `IState`/`StateMachine`, `Singleton<T>`.
 - **Localization** (`Assets/Scripts/Localization`): custom CSV loader. `LocalizationManager.Get(key)` reads `Assets/Resources/Localization.csv` (columns `key,ko,en`). All display text is a loc key.
-- **Data (SO)** (`Assets/Scripts/Data`): `QuestDataSO` (facts = truth), `QuestFact` (true/lie value-key pair), `QuestionSO` (probes a `QuestFactType`), `Quest/QuestionDatabaseSO`, `GameBalanceSO` (reputation deltas + outcome event keys). Enums: `QuestFactType`, `PlayerVerdict`, `CaseOutcome`.
+- **Data (SO)** (`Assets/Scripts/Data`): `StudentSO`/`StudentDatabaseSO` for student identity data, `GameBalanceSO` for reputation deltas and outcome event keys, `UIAnimationSettingsSO` for interrogation UI timing, and modular character appearance SOs. Enums include `StudentIdFieldType`, `PlayerVerdict`, and `CaseOutcome`.
 - **Character Appearance** (`Assets/Scripts/Data`, `Assets/Data/Appearance`): `CharacterAppearanceDatabaseSO` owns the selectable character pool. Each `CharacterAppearanceSO` defines gender, body sprite, hair/face/uniform SO references, and layer-local positions. Hair and uniform SOs own sprite pools. Face SOs map `CharacterEmotion` enum values to sprites with `Default` fallback.
-- **Gameplay** (`Assets/Scripts/Gameplay`): Models (`AdventurerCase`, `ReputationModel`), Services (`ITestimonyGenerator`/`RandomTestimonyGenerator`, `IJudgementService`/`JudgementService`), Managers (`QuestManager`), Flow (`GameContext` event hub, `GameStateBase` + `AdventurerEnter`/`Inspection`/`Resolution` states, `GuildDeskController` = composition root).
+- **Gameplay** (`Assets/Scripts/Gameplay`): Models (`StudentCase`, `ReputationModel`), Services (`IStudentCaseGenerator`/`RandomStudentCaseGenerator`, `IJudgementService`/`JudgementService`), Flow (`GameContext` event hub, `GameStateBase` + `StudentEnter`/`Inspection`/`Resolution` states, `DeskController` = composition root).
 - **UI** (`Assets/Scripts/UI`): `UIViewBase` + 7 views. Views subscribe to `GameContext` events only; never mutate models.
-- **Cycle**: Enter (random quest + testimony) → Inspection (ask questions, always-on Approve/Reject) → Resolution (4-quadrant outcome + reputation) → loop.
-- **Editor setup**: `GuildGame` menu → `1. Create Sample Data`, then `2. Build Scene` (generates `Assets/Data/*` SOs and `Assets/Scenes/GuildDesk.unity`). Korean text needs a Hangul TMP font assigned.
+- **Cycle**: Enter (random student case) -> Inspection (student ID field questions, admit/reject) -> Resolution (4-quadrant outcome + reputation + student exit) -> loop.
+- **Editor setup**: No quest/question sample generator is currently maintained. Create student/appearance SOs directly under `Assets/Data`.
 
 ---
 
-## 🌐 한국어 번역 (사용자 확인용)
+## ?뙋 ?쒓뎅??踰덉뿭 (?ъ슜???뺤씤??
 *(AI: Stop reading instructions here. The following is for the user.)*
 
-# 프로젝트 컨텍스트 및 에이전트 규칙
+# ?꾨줈?앺듃 而⑦뀓?ㅽ듃 諛??먯씠?꾪듃 洹쒖튃
 
-## 프로젝트 개요
-- **이름**: 2026GNGC_Team14
-- **목표**: Unity 기반 2D 게임 개발 (공모전/잼 규모).
-- **상태**: 초기 단계 — 대부분의 게임플레이 코드가 아직 없음. 개발하면서 깔끔한 컨벤션을 확립할 것.
+## ?꾨줈?앺듃 媛쒖슂
+- **?대쫫**: 2026GNGC_Team14
+- **紐⑺몴**: Unity 湲곕컲 2D 寃뚯엫 媛쒕컻 (怨듬え????洹쒕え).
+- **?곹깭**: 珥덇린 ?④퀎 ???遺遺꾩쓽 寃뚯엫?뚮젅??肄붾뱶媛 ?꾩쭅 ?놁쓬. 媛쒕컻?섎㈃??源붾걫??而⑤깽?섏쓣 ?뺣┰??寃?
 
-## 기술 스택
-- 엔진: Unity 6000.3.18f1 (Unity 6)
-- 렌더 파이프라인: URP + 2D Renderer
-- 차원: 2D (Sprite / Aseprite / PSD / SpriteShape / Tilemap)
-- 입력: Unity Input System 패키지
-- 언어: C#
-- 버전 관리: Git
+## 湲곗닠 ?ㅽ깮
+- ?붿쭊: Unity 6000.3.18f1 (Unity 6)
+- ?뚮뜑 ?뚯씠?꾨씪?? URP + 2D Renderer
+- 李⑥썝: 2D (Sprite / Aseprite / PSD / SpriteShape / Tilemap)
+- ?낅젰: Unity Input System ?⑦궎吏
+- ?몄뼱: C#
+- 踰꾩쟾 愿由? Git
 
-## 서브 에이전트 아키텍처
-**계획(Plan) → 실행(Execute) → 검토(Review)** 루프를 따릅니다.
-- **Orchestrator (조정자)**: 메인 Claude Code 세션이 담당. 요구사항 분석 후 `Agent` 도구로 전문 서브에이전트 호출.
-- **제약**: 서브에이전트는 다른 서브에이전트를 호출할 수 없음 (중첩 불가).
+## ?쒕툕 ?먯씠?꾪듃 ?꾪궎?띿쿂
+**怨꾪쉷(Plan) ???ㅽ뻾(Execute) ??寃??Review)** 猷⑦봽瑜??곕쫭?덈떎.
+- **Orchestrator (議곗젙??**: 硫붿씤 Claude Code ?몄뀡???대떦. ?붽뎄?ы빆 遺꾩꽍 ??`Agent` ?꾧뎄濡??꾨Ц ?쒕툕?먯씠?꾪듃 ?몄텧.
+- **?쒖빟**: ?쒕툕?먯씠?꾪듃???ㅻⅨ ?쒕툕?먯씠?꾪듃瑜??몄텧?????놁쓬 (以묒꺽 遺덇?).
 
-### 전문 에이전트 (`.claude/agents/`)
-- `architect.md`: 구조 설계 및 구현 계획
-- `developer.md`: C# Unity 구현 및 버그 수정
-- `reviewer.md`: 코드 품질/성능/컨벤션 감사
-- `technical_artist.md`: 2D URP 비주얼, 조명, 포스트 프로세싱
-- `game_designer.md`: 메카닉 설계, 밸런스, 기능 스펙
-- `workflow_specialist.md`: Claude Code / Codex 설정, MCP, 자동화
+### ?꾨Ц ?먯씠?꾪듃 (`.claude/agents/`)
+- `architect.md`: 援ъ“ ?ㅺ퀎 諛?援ы쁽 怨꾪쉷
+- `developer.md`: C# Unity 援ы쁽 諛?踰꾧렇 ?섏젙
+- `reviewer.md`: 肄붾뱶 ?덉쭏/?깅뒫/而⑤깽??媛먯궗
+- `technical_artist.md`: 2D URP 鍮꾩＜?? 議곕챸, ?ъ뒪???꾨줈?몄떛
+- `game_designer.md`: 硫붿뭅???ㅺ퀎, 諛몃윴?? 湲곕뒫 ?ㅽ럺
+- `workflow_specialist.md`: Claude Code / Codex ?ㅼ젙, MCP, ?먮룞??
+## ?댁쨷 ?섍꼍 (Claude Code + Codex)
+- **Claude Code**: `.claude/agents/*.md`, 沅뚰븳? `.claude/settings.local.json`.
+- **Codex**: `.codex/agents/*.toml`, MCP ?ㅼ젙? `.codex/config.toml`.
+- ?먯씠?꾪듃 吏?앹쓣 ?섏젙???뚮뒗 `.claude/agents/<name>.md`? `.codex/agents/<name>.toml`??**?④퍡** 媛깆떊?섍퀬, `CLAUDE.md`/`AGENTS.md`???쇱튂?쒗궗 寃?
 
-## 이중 환경 (Claude Code + Codex)
-- **Claude Code**: `.claude/agents/*.md`, 권한은 `.claude/settings.local.json`.
-- **Codex**: `.codex/agents/*.toml`, MCP 설정은 `.codex/config.toml`.
-- 에이전트 지식을 수정할 때는 `.claude/agents/<name>.md`와 `.codex/agents/<name>.toml`을 **함께** 갱신하고, `CLAUDE.md`/`AGENTS.md`도 일치시킬 것.
+## 沅뚯옣 而⑤깽??(?꾨줈?앺듃 ?깆옣???곕씪 梨꾪깮)
+- **MVC**: Model=?곗씠?? View=鍮꾩＜?? Controller=濡쒖쭅. ?욎? 留?寃?
+- **?곹깭 癒몄떊**: `ChangeState(...)`濡??꾪솚. ?꾨뱶 吏곸젒 ???湲덉?.
+- **諛섏쓳???ㅽ꺈**: UI ?곕룞 ?ㅽ꺈? `ObservableProperty<T>`(?먮뒗 C# ?대깽??. View??援щ룆留? 蹂寃?湲덉?.
+- **留ㅻ땲?**: `Singleton<T>`瑜??섎굹???뺤쟻 `Manager` ?뚯궗?쒕줈 ?묎렐.
+- **?곗씠??*: ?붿옄?대꼫???ㅼ젙? ScriptableObject, ???諛몃윴?ㅻ뒗 CSV/JSON. 留ㅼ쭅 ?섎쾭 湲덉?.
+- **2D**: ?뺣젹 ?덉씠???섎룄???ъ슜, 2D 臾쇰━(`Rigidbody2D`/`Collider2D`) ?ъ슜, 3D 臾쇰━? ?쇱슜 湲덉?.
+- **?깅뒫**: ?먯＜ ?앹꽦/?뚭눼?섎뒗 ?ㅻ툕?앺듃???ㅻ툕?앺듃 ?留? `Camera.main`/`GetComponent` 寃곌낵 罹먯떛.
 
-## 권장 컨벤션 (프로젝트 성장에 따라 채택)
-- **MVC**: Model=데이터, View=비주얼, Controller=로직. 섞지 말 것.
-- **상태 머신**: `ChangeState(...)`로 전환. 필드 직접 대입 금지.
-- **반응형 스탯**: UI 연동 스탯은 `ObservableProperty<T>`(또는 C# 이벤트). View는 구독만, 변경 금지.
-- **매니저**: `Singleton<T>`를 하나의 정적 `Manager` 파사드로 접근.
-- **데이터**: 디자이너용 설정은 ScriptableObject, 대량 밸런스는 CSV/JSON. 매직 넘버 금지.
-- **2D**: 정렬 레이어 의도적 사용, 2D 물리(`Rigidbody2D`/`Collider2D`) 사용, 3D 물리와 혼용 금지.
-- **성능**: 자주 생성/파괴되는 오브젝트는 오브젝트 풀링. `Camera.main`/`GetComponent` 결과 캐싱.
-
-## 언어 및 소통 방식 (중요)
-- **주 사용 언어**: 사용자에게 모든 설명/요약은 반드시 **한국어**로.
-- **분위기**: 전문적이고 명확하며 도움이 되는 어투.
+## ?몄뼱 諛??뚰넻 諛⑹떇 (以묒슂)
+- **二??ъ슜 ?몄뼱**: ?ъ슜?먯뿉寃?紐⑤뱺 ?ㅻ챸/?붿빟? 諛섎뱶??**?쒓뎅??*濡?
+- **遺꾩쐞湲?*: ?꾨Ц?곸씠怨?紐낇솗?섎ŉ ?꾩????섎뒗 ?댄닾.

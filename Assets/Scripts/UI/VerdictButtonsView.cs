@@ -38,6 +38,17 @@ namespace GuildGame.UI
             Context.RequestVerdict(PlayerVerdict.RejectFail);
         }
 
+        public Button FailButton => _failButton;
+        public Button CompleteButton => _completeButton;
+
+        public void SetButtonsInteractable(bool completeInteractable, bool failInteractable)
+        {
+            if (_completeButton != null)
+                _completeButton.interactable = completeInteractable;
+            if (_failButton != null)
+                _failButton.interactable = failInteractable;
+        }
+
         private void OnDestroy()
         {
             if (_completeButton != null)

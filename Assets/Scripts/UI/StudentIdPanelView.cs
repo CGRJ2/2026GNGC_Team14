@@ -138,6 +138,41 @@ namespace GuildGame.UI
         private void OnMajorClicked() => Context.RequestQuestion(StudentIdFieldType.Major);
         private void OnPhotoClicked() => Context.RequestQuestion(StudentIdFieldType.FacePhoto);
 
+        public Button GetButton(StudentIdFieldType field)
+        {
+            switch (field)
+            {
+                case StudentIdFieldType.Name: return _nameButton;
+                case StudentIdFieldType.EnrollmentDate: return _enrollmentButton;
+                case StudentIdFieldType.Grade: return _gradeButton;
+                case StudentIdFieldType.Major: return _majorButton;
+                case StudentIdFieldType.FacePhoto: return _photoButton;
+                default: return null;
+            }
+        }
+
+        public void SetAllFieldButtonsInteractable(bool interactable)
+        {
+            SetFieldButtonInteractable(StudentIdFieldType.Name, interactable);
+            SetFieldButtonInteractable(StudentIdFieldType.EnrollmentDate, interactable);
+            SetFieldButtonInteractable(StudentIdFieldType.Grade, interactable);
+            SetFieldButtonInteractable(StudentIdFieldType.Major, interactable);
+            SetFieldButtonInteractable(StudentIdFieldType.FacePhoto, interactable);
+        }
+
+        public void SetOnlyFieldButtonInteractable(StudentIdFieldType field)
+        {
+            SetAllFieldButtonsInteractable(false);
+            SetFieldButtonInteractable(field, true);
+        }
+
+        private void SetFieldButtonInteractable(StudentIdFieldType field, bool interactable)
+        {
+            Button button = GetButton(field);
+            if (button != null)
+                button.interactable = interactable;
+        }
+
         private void OnDestroy()
         {
             if (Context != null)

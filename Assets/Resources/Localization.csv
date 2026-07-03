@@ -2,61 +2,12 @@ key,ko,en
 ui_reputation,평판,Reputation
 ui_verdict_complete,입학 승인,Admit
 ui_verdict_fail,위조 판정,Reject
-ui_next,다음 학생,Next
-ui_posting_title,과제 안내서,Assignment Sheet
-ui_student_hi,"안녕하세요. 교장선생님","I'm here to enroll. Please verify me."
-fact_label_targetname,대상,Target
-fact_label_targetcount,수량,Count
-fact_label_location,장소,Location
-fact_label_difficulty,난이도,Difficulty
-adv_name_0,브란 델문트,Bran Delmont
-adv_name_1,엘라라 윈드,Elara Wynd
-adv_name_2,고락 아이언핸드,Gorak Ironhand
-adv_name_3,미라 샐로우,Mira Sallow
-q_target_name,이번 과제에서 처리한 대상이 무엇이지?,What was your target on this assignment?
-q_target_count,정확히 몇이나 처리했지?,Exactly how many did you handle?
-q_location,어디에서 과제를 수행했지?,Where did you carry out the assignment?
-q_difficulty,체감한 과제 난이도는 어느 정도였지?,How difficult did the assignment feel?
-a_target_name,"{0}을(를) 처리했습니다.","I dealt with the {0}."
-a_target_count,"{0} 처리했습니다, 확실합니다.","I handled {0}, for certain."
-a_location,"{0}에서 해결했습니다.","I got it done at {0}."
-a_difficulty,"난이도는 {0} 정도였습니다.","The difficulty was about {0}."
-quest_goblin_title,고블린 소굴 토벌,Clear the Goblin Den
-quest_goblin_summary,AA마을 인근 동굴의 고블린 무리를 처치해 주시오.,Wipe out the goblins in the cave near AA village.
-val_goblin_true,고블린,goblins
-val_goblin_lie,코볼트,kobolds
-val_goblin_count_true,5마리,5
-val_goblin_count_lie,3마리,3
-val_goblin_loc_true,AA마을 옆 동굴,the cave beside AA village
-val_goblin_loc_lie,BB숲의 폐허,the ruins in BB forest
-val_goblin_diff_true,하,Low
-val_goblin_diff_lie,중,Medium
-quest_herb_title,월광초 채집,Gather Moonpetal Herbs
-quest_herb_summary,안개 습지대에서 월광초 10다발을 채집해 오시오.,Gather 10 bundles of moonpetal from the misty marsh.
-val_herb_true,월광초,moonpetal
-val_herb_lie,붉은이끼,red moss
-val_herb_count_true,10다발,10 bundles
-val_herb_count_lie,6다발,6 bundles
-val_herb_loc_true,안개 습지대,the misty marsh
-val_herb_loc_lie,마른 계곡,the dry ravine
-val_herb_diff_true,중,Medium
-val_herb_diff_lie,하,Low
-quest_wolf_title,들개 무리 퇴치,Drive Off the Wild Dogs
-quest_wolf_summary,서쪽 농장을 습격하는 들개 무리를 쫓아내 주시오.,Drive off the wild dogs raiding the western farm.
-val_wolf_true,들개,wild dogs
-val_wolf_lie,늑대,wolves
-val_wolf_count_true,8마리,8
-val_wolf_count_lie,12마리,12
-val_wolf_loc_true,서쪽 농장,the western farm
-val_wolf_loc_lie,북쪽 목장,the northern ranch
-val_wolf_diff_true,하,Low
-val_wolf_diff_lie,중,Medium
+ui_student_hi,"안녕하세요. 교장선생님","Hello, headmaster."
 outcome_truth_success,"(참 / 통과) 감사합니다.","Identity confirmed. You are admitted."
-outcome_false_caught,"(거짓 / 탈락) 걸려버렸다...","This ID is forged! You dare deceive the school. Admission denied."
-outcome_false_approved,"(거짓 / 통과)(음흉한 미소) …감사합니다, 선생님. 그럼 이만. 헤헤….","(a sly grin) ...thank you, teacher. I'll be off then. Heh heh..."
+outcome_false_caught,"(거짓 / 탈락) 걸려버렸다...","This ID is forged! Admission denied."
+outcome_false_approved,"(거짓 / 통과)(음흉한 미소) 감사합니다, 선생님. 그럼 이만. 헤헤...","(a sly grin) ...thank you, teacher. I'll be off then. Heh heh..."
 outcome_truth_misjudged,"(참 / 탈락) 억울합니다! 이런 부당한 처사가 어디 있습니까!","This is unjust! My ID is real! How is this fair!"
 ui_student_card_title,학생증,Student ID
-ui_student_unknown,???,???
 field_label_name,이름,Name
 field_label_enrollment,입학일,Enrolled
 field_label_grade,학년,Grade
@@ -65,6 +16,6 @@ field_label_photo,얼굴,Photo
 q_student_name,이름이 어떻게 되지?,What is your name?
 q_student_enrollment,입학일이 언제지?,When did you enroll?
 q_student_grade,몇 학년이지?,What grade are you in?
-q_student_major,전공 마법이 뭐지?,What is your major magic?
-q_student_photo,얼굴을 보여주겠나?,Show me your face.
+q_student_major,전공 마법은 뭐지?,What is your major magic?
+q_student_photo,...,...
 a_student,"{0}입니다.","It's {0}."

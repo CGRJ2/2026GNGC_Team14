@@ -35,9 +35,13 @@ namespace GuildGame.Gameplay.Flow
 
             string questionText = Context.Localization.Get(QuestionKey(field));
             string trueValue = Context.CurrentCase.GetTrueText(field);
-            string answerText = Context.Localization.GetFormatted("a_student", trueValue);
 
             Context.RaiseQuestion(questionText);
+
+            if (field == StudentIdFieldType.FacePhoto)
+                return;
+
+            string answerText = Context.Localization.GetFormatted("a_student", trueValue);
 
             _answerDelayTween?.Kill();
             float delay = Context.UIAnimationSettings != null

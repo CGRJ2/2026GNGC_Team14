@@ -4,7 +4,7 @@ using UnityEngine;
 namespace GuildGame.UI
 {
     /// <summary>
-    /// 판정 결과 이벤트 대사를 팝업으로 표시하고, [다음 손님] 버튼으로 사이클을 이어간다.
+    /// 판정 결과 이벤트 팝업 루트를 학생 플로우 시작 시 숨김 상태로 정리한다.
     /// </summary>
     public class EventPopupView : UIViewBase
     {

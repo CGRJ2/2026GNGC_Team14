@@ -19,6 +19,21 @@ namespace GuildGame.Data
             return students[Random.Range(0, students.Count)];
         }
 
+        public StudentSO FindById(string studentId)
+        {
+            if (string.IsNullOrEmpty(studentId) || IsEmpty)
+                return null;
+
+            for (int i = 0; i < students.Count; i++)
+            {
+                StudentSO student = students[i];
+                if (student != null && student.studentId == studentId)
+                    return student;
+            }
+
+            return null;
+        }
+
         /// <summary><paramref name="exclude"/>와 다른 학생을 무작위로 반환(위조값 출처).</summary>
         public StudentSO GetRandomOther(StudentSO exclude)
         {

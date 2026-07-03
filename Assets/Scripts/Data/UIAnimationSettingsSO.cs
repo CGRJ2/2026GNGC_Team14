@@ -54,6 +54,10 @@ namespace GuildGame.Data
         [Min(0f)]
         public float nextStudentDelay = 0.4f;
 
+        [Tooltip("학생 입장 연출이 끝난 뒤 첫 인사 대사를 표시하기까지 추가로 기다리는 시간(초)")]
+        [Min(0f)]
+        public float studentGreetingDelay = 0f;
+
         [Header("학생 일러스트 퇴장 (위로 이동 + 페이드 아웃)")]
         public FadeSlideSettings studentExit = new()
         {

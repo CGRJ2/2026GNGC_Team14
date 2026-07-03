@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 /// <summary>
 /// Panel_Table에 부착. 테이블의 버튼으로 각 패널을 열고, 각 패널의 X 버튼으로 닫는다.
@@ -21,6 +22,11 @@ public class PanelTableController : MonoBehaviour
     [SerializeField] private Button closeQuestPosting;
     [SerializeField] private Button closeSituation;
 
+    public event Action StudentIdPanelOpened;
+
+    public Button StudentIdButton => btnQuestPosting;
+    public GameObject StudentIdPanel => panelQuestPosting;
+
     private void Awake()
     {
         if (btnQuestPosting != null) btnQuestPosting.onClick.AddListener(OpenQuestPosting);
@@ -37,7 +43,17 @@ public class PanelTableController : MonoBehaviour
         if (closeSituation != null) closeSituation.onClick.RemoveListener(CloseSituation);
     }
 
-    private void OpenQuestPosting() => SetActive(panelQuestPosting, true);
+    private void OpenQuestPosting()
+    {
+        SetActive(panelQuestPosting, true);
+        StudentIdPanelOpened?.Invoke();
+    }
+
+    public void SetStudentIdButtonInteractable(bool interactable)
+    {
+        if (btnQuestPosting != null)
+            btnQuestPosting.interactable = interactable;
+    }
     private void OpenSituation() => SetActive(panelSituation, true);
     private void CloseQuestPosting() => SetActive(panelQuestPosting, false);
     private void CloseSituation() => SetActive(panelSituation, false);

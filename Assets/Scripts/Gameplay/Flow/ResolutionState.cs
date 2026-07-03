@@ -6,7 +6,7 @@ namespace GuildGame.Gameplay.Flow
 {
     /// <summary>
     /// 결과 상태. 판정 매트릭스로 결과를 도출해 평판을 적용하고 결과 이벤트를 발행한다.
-    /// 플레이어가 '다음'을 요청하면 손님 입장 상태로 루프한다.
+    /// 결과 대사를 출력한 뒤 학생 퇴장과 다음 학생 입장 상태로 루프한다.
     /// </summary>
     public class ResolutionState : GameStateBase
     {
@@ -34,11 +34,15 @@ namespace GuildGame.Gameplay.Flow
             float nextStudentDelay = settings != null ? settings.nextStudentDelay : 0.4f;
 
             _flowTween?.Kill();
-            _flowTween = DOTween.Sequence()
+            Sequence sequence = DOTween.Sequence()
                 .AppendInterval(outcomeDialogueDelay)
                 .AppendCallback(Context.RequestStudentExit)
-                .AppendInterval(exitDuration + nextStudentDelay)
-                .AppendCallback(GoNext);
+                .AppendInterval(exitDuration + nextStudentDelay);
+
+            if (Context.LoopAfterResolution)
+                sequence.AppendCallback(GoNext);
+
+            _flowTween = sequence;
         }
 
         public override void Exit()

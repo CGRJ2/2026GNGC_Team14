@@ -25,7 +25,7 @@ namespace GuildGame.Data
         public int startingReputation = 10;
 
         [Range(0f, 1f)]
-        [Tooltip("모험가가 거짓을 포함할 확률")]
+        [Tooltip("학생이 거짓을 포함할 확률")]
         public float lieChance = 0.5f;
 
         [Header("결과별 평판/이벤트")]
