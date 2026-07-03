@@ -62,6 +62,19 @@ namespace GuildGame.Data
         [Min(0f)]
         public float cutsceneLineDelay = 1.0f;
 
+        [Header("Day Transition")]
+        [Tooltip("하루 종료 시 화면이 어두워지는 페이드아웃 시간(초)")]
+        [Min(0f)]
+        public float dayFadeOutDuration = 0.8f;
+
+        [Tooltip("검은 화면에서 날짜(Day N)를 표시하고 유지하는 시간(초)")]
+        [Min(0f)]
+        public float dayLabelHoldDuration = 1.5f;
+
+        [Tooltip("다음 날 화면이 밝아지는 페이드인 시간(초)")]
+        [Min(0f)]
+        public float dayFadeInDuration = 0.8f;
+
         [Header("학생 일러스트 퇴장 (위로 이동 + 페이드 아웃)")]
         public FadeSlideSettings studentExit = new()
         {

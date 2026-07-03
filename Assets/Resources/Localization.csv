@@ -2,6 +2,7 @@ key,ko,en
 ui_reputation,평판,Reputation
 ui_verdict_complete,통과,Admit
 ui_verdict_fail,탈락,Reject
+day_label,{0}일차,Day {0}
 
 ui_student_card_title,학생증,Student ID
 field_label_name,이름,Name
