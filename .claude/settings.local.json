@@ -18,7 +18,11 @@
       "mcp__unity-mcp__Unity_GetConsoleLogs",
       "mcp__unity-mcp__Unity_SceneView_Capture2DScene",
       "mcp__unity-mcp__Unity_SceneView_CaptureMultiAngleSceneView",
-      "mcp__unity-mcp__Unity_AssetGeneration_GenerateAsset"
+      "mcp__unity-mcp__Unity_AssetGeneration_GenerateAsset",
+      "Bash(sed -n '/com.unity.ai.assistant/,/}/p' \"C:\\\\Users\\\\pukah\\\\Desktop\\\\The_Wild_Survival\\\\Packages\\\\packages-lock.json\" 2>/dev/null | head -40)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\pukah\\Desktop\\The_Wild_Survival\\Packages"
     ]
   }
 }
