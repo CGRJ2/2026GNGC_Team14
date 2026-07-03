@@ -15,7 +15,7 @@ namespace GuildGame.UI
         protected override void OnBind()
         {
             if (_claimLabel != null)
-                _claimLabel.text = Context.Localization.Get("ui_adventurer_claim");
+                _claimLabel.text = Context.Localization.Get("ui_student_hi");
 
             Context.CaseStarted += OnCaseStarted;
         }

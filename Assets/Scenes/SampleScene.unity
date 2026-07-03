@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &31556631
 RectTransform:
   m_ObjectHideFlags: 0
@@ -971,9 +971,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GuildGame.UI.EventPopupView
   _panel: {fileID: 153630746}
-  _eventLabel: {fileID: 124991820}
-  _nextButton: {fileID: 93341326}
-  _nextLabel: {fileID: 1879813492}
 --- !u!114 &153630749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3880,7 +3877,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1387789385
 RectTransform:
   m_ObjectHideFlags: 0

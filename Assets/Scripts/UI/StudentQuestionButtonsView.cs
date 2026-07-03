@@ -10,24 +10,33 @@ namespace GuildGame.UI
     /// </summary>
     public class StudentQuestionButtonsView : UIViewBase
     {
+        [SerializeField] private GameObject _panelRoot;
         [SerializeField] private TMP_Text _questionLabel;
 
         protected override void OnBind()
         {
             Context.CaseStarted += OnCaseStarted;
             Context.QuestionAsked += OnQuestionAsked;
-            Clear();
+            Context.StudentExitRequested += OnStudentExitRequested;
+
+            Hide();
         }
 
         private void OnCaseStarted(StudentCase studentCase)
         {
-            Clear();
+            Hide();
         }
 
         private void OnQuestionAsked(string question)
         {
+            Show();
             if (_questionLabel != null)
                 _questionLabel.text = question;
+        }
+
+        private void OnStudentExitRequested()
+        {
+            Hide();
         }
 
         private void Clear()
@@ -36,6 +45,19 @@ namespace GuildGame.UI
                 _questionLabel.text = string.Empty;
         }
 
+        private void Show()
+        {
+            PanelRoot.SetActive(true);
+        }
+
+        private void Hide()
+        {
+            Clear();
+            PanelRoot.SetActive(false);
+        }
+
+        private GameObject PanelRoot => _panelRoot != null ? _panelRoot : gameObject;
+
         private void OnDestroy()
         {
             if (Context == null)
@@ -43,6 +65,7 @@ namespace GuildGame.UI
 
             Context.CaseStarted -= OnCaseStarted;
             Context.QuestionAsked -= OnQuestionAsked;
+            Context.StudentExitRequested -= OnStudentExitRequested;
         }
     }
 }

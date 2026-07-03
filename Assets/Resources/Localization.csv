@@ -4,7 +4,7 @@ ui_verdict_complete,입학 승인,Admit
 ui_verdict_fail,위조 판정,Reject
 ui_next,다음 학생,Next
 ui_posting_title,과제 안내서,Assignment Sheet
-ui_adventurer_claim,"입학 수속을 하러 왔습니다. 확인 부탁드립니다.","I'm here to enroll. Please verify me."
+ui_student_hi,"안녕하세요. 교장선생님","I'm here to enroll. Please verify me."
 fact_label_targetname,대상,Target
 fact_label_targetcount,수량,Count
 fact_label_location,장소,Location
@@ -51,10 +51,10 @@ val_wolf_loc_true,서쪽 농장,the western farm
 val_wolf_loc_lie,북쪽 목장,the northern ranch
 val_wolf_diff_true,하,Low
 val_wolf_diff_lie,중,Medium
-outcome_truth_success,"(참 / 통과)신분이 확인되었다. 입학을 허가한다.","Identity confirmed. You are admitted."
-outcome_false_caught,"(거짓 / 탈락)이 학생증엔 위조가 있구나! 감히 학교를 속이려 들다니. 입학 거부다.","This ID is forged! You dare deceive the school. Admission denied."
+outcome_truth_success,"(참 / 통과) 감사합니다.","Identity confirmed. You are admitted."
+outcome_false_caught,"(거짓 / 탈락) 걸려버렸다...","This ID is forged! You dare deceive the school. Admission denied."
 outcome_false_approved,"(거짓 / 통과)(음흉한 미소) …감사합니다, 선생님. 그럼 이만. 헤헤….","(a sly grin) ...thank you, teacher. I'll be off then. Heh heh..."
-outcome_truth_misjudged,"(참 / 탈락)억울합니다! 제 학생증은 진짜입니다! 이런 부당한 처사가 어디 있습니까!","This is unjust! My ID is real! How is this fair!"
+outcome_truth_misjudged,"(참 / 탈락) 억울합니다! 이런 부당한 처사가 어디 있습니까!","This is unjust! My ID is real! How is this fair!"
 ui_student_card_title,학생증,Student ID
 ui_student_unknown,???,???
 field_label_name,이름,Name

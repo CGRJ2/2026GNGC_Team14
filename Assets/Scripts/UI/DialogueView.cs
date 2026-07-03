@@ -10,6 +10,7 @@ namespace GuildGame.UI
     /// </summary>
     public class DialogueView : UIViewBase
     {
+        [SerializeField] private GameObject _panelRoot;
         [SerializeField] private TMP_Text _logLabel;
 
         protected override void OnBind()
@@ -17,21 +18,31 @@ namespace GuildGame.UI
             Context.CaseStarted += OnCaseStarted;
             Context.AnswerGiven += OnAnswerGiven;
             Context.OutcomeResolved += OnOutcomeResolved;
+            Context.StudentExitRequested += OnStudentExitRequested;
+
+            Hide();
         }
 
         private void OnCaseStarted(StudentCase studentCase)
         {
-            Render(string.Empty);
+            Hide();
         }
 
         private void OnAnswerGiven(string question, string answer)
         {
+            Show();
             Render($"<b>A.</b> {answer}");
         }
 
         private void OnOutcomeResolved(CaseOutcome outcome, string eventText)
         {
+            Show();
             Render(eventText);
+        }
+
+        private void OnStudentExitRequested()
+        {
+            Hide();
         }
 
         private void Render(string text)
@@ -40,6 +51,19 @@ namespace GuildGame.UI
                 _logLabel.text = text;
         }
 
+        private void Show()
+        {
+            PanelRoot.SetActive(true);
+        }
+
+        private void Hide()
+        {
+            Render(string.Empty);
+            PanelRoot.SetActive(false);
+        }
+
+        private GameObject PanelRoot => _panelRoot != null ? _panelRoot : gameObject;
+
         private void OnDestroy()
         {
             if (Context == null)
@@ -47,6 +71,7 @@ namespace GuildGame.UI
             Context.CaseStarted -= OnCaseStarted;
             Context.AnswerGiven -= OnAnswerGiven;
             Context.OutcomeResolved -= OnOutcomeResolved;
+            Context.StudentExitRequested -= OnStudentExitRequested;
         }
     }
 }
