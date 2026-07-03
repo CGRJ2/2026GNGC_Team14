@@ -4,17 +4,17 @@ using GuildGame.Gameplay.Models;
 namespace GuildGame.Gameplay.Services
 {
     /// <summary>
-    /// 판정 매트릭스 구현. 평판 증감·이벤트 대사 매핑은 <see cref="GameBalanceSO"/>가 담당하고,
-    /// 여기서는 순수하게 판정(정직/거짓 × 승인/실패) → 결과 enum만 계산한다(SRP).
+    /// 판정 매트릭스. 순수하게 (진짜/위조) × (승인/거부) → 결과 enum만 계산한다(SRP).
+    /// 평판 증감·이벤트 대사는 <see cref="GameBalanceSO"/>가 담당.
     /// </summary>
     public class JudgementService : IJudgementService
     {
-        public CaseOutcome Judge(AdventurerCase adventurerCase, PlayerVerdict verdict)
+        public CaseOutcome Judge(IVerifiableCase verifiableCase, PlayerVerdict verdict)
         {
-            bool honest = adventurerCase != null && adventurerCase.IsHonest;
+            bool genuine = verifiableCase != null && verifiableCase.IsHonest;
             bool approve = verdict == PlayerVerdict.ApproveComplete;
 
-            if (honest)
+            if (genuine)
                 return approve ? CaseOutcome.TruthSuccess : CaseOutcome.TruthMisjudged;
 
             return approve ? CaseOutcome.FalseApproved : CaseOutcome.FalseCaught;

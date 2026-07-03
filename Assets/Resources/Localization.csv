@@ -1,10 +1,10 @@
 key,ko,en
 ui_reputation,평판,Reputation
-ui_verdict_complete,의뢰 완료,Approve Quest
-ui_verdict_fail,의뢰 실패,Reject Quest
+ui_verdict_complete,입학 승인,Admit
+ui_verdict_fail,위조 판정,Reject
 ui_next,다음 학생,Next
 ui_posting_title,과제 안내서,Assignment Sheet
-ui_adventurer_claim,"이번 과제를 완수했습니다. 확인 부탁드립니다.","I've finished the assignment. Please check it."
+ui_adventurer_claim,"입학 수속을 하러 왔습니다. 확인 부탁드립니다.","I'm here to enroll. Please verify me."
 fact_label_targetname,대상,Target
 fact_label_targetcount,수량,Count
 fact_label_location,장소,Location
@@ -51,7 +51,20 @@ val_wolf_loc_true,서쪽 농장,the western farm
 val_wolf_loc_lie,북쪽 목장,the northern ranch
 val_wolf_diff_true,하,Low
 val_wolf_diff_lie,중,Medium
-outcome_truth_success,"(참 / 통과)잘했다. 과제를 확실히 완수했구나. 통과다.","Well done. The assignment is truly complete. You pass."
-outcome_false_caught,"(거짓 / 탈락)그 증언엔 거짓이 있구나! 감히 학교를 속이려 들다니. 탈락이다.","Your testimony holds a lie! You dare deceive the school. You fail."
+outcome_truth_success,"(참 / 통과)신분이 확인되었다. 입학을 허가한다.","Identity confirmed. You are admitted."
+outcome_false_caught,"(거짓 / 탈락)이 학생증엔 위조가 있구나! 감히 학교를 속이려 들다니. 입학 거부다.","This ID is forged! You dare deceive the school. Admission denied."
 outcome_false_approved,"(거짓 / 통과)(음흉한 미소) …감사합니다, 선생님. 그럼 이만. 헤헤….","(a sly grin) ...thank you, teacher. I'll be off then. Heh heh..."
-outcome_truth_misjudged,"(참 / 탈락)억울합니다! 저는 분명 과제를 완수했습니다! 이런 부당한 평가가 어디 있습니까!","This is unjust! I truly finished the assignment! How is this fair!"
+outcome_truth_misjudged,"(참 / 탈락)억울합니다! 제 학생증은 진짜입니다! 이런 부당한 처사가 어디 있습니까!","This is unjust! My ID is real! How is this fair!"
+ui_student_card_title,학생증,Student ID
+ui_student_unknown,???,???
+field_label_name,이름,Name
+field_label_enrollment,입학일,Enrolled
+field_label_grade,학년,Grade
+field_label_major,전공,Major
+field_label_photo,얼굴,Photo
+q_student_name,이름이 어떻게 되지?,What is your name?
+q_student_enrollment,입학일이 언제지?,When did you enroll?
+q_student_grade,몇 학년이지?,What grade are you in?
+q_student_major,전공 마법이 뭐지?,What is your major magic?
+q_student_photo,얼굴을 보여주겠나?,Show me your face.
+a_student,"{0}입니다.","It's {0}."

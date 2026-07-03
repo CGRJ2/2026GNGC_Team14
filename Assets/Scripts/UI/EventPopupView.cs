@@ -37,7 +37,7 @@ namespace GuildGame.UI
             ShowPanel();
         }
 
-        private void OnCaseStarted(AdventurerCase adventurerCase)
+        private void OnCaseStarted(StudentCase studentCase)
         {
             HidePanel();
         }

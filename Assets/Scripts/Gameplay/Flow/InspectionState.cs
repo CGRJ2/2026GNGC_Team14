@@ -4,8 +4,8 @@ using GuildGame.Data;
 namespace GuildGame.Gameplay.Flow
 {
     /// <summary>
-    /// 검증 상태. 플레이어의 질문 요청에 증언 답변을 조합해 발행하고, 판정 요청이 오면
-    /// 결과 상태로 전이한다. 질문은 무제한이며 판정 버튼은 상시 유효하다.
+    /// 검증 상태. 필드 질문에 학생이 '진짜값'을 증언하도록 답변을 발행하고, 판정 요청 시 결과로 넘어간다.
+    /// (플레이어는 이 증언을 학생증 카드값과 대조해 위조를 찾는다.)
     /// </summary>
     public class InspectionState : GameStateBase
     {
@@ -23,16 +23,14 @@ namespace GuildGame.Gameplay.Flow
             Context.VerdictRequested -= OnVerdictRequested;
         }
 
-        private void OnQuestionRequested(QuestionSO question)
+        private void OnQuestionRequested(StudentIdFieldType field)
         {
-            if (question == null || Context.CurrentCase == null)
+            if (Context.CurrentCase == null)
                 return;
 
-            string questionText = Context.Localization.Get(question.questionTextKey);
-
-            string claimedValueKey = Context.CurrentCase.GetClaimedValueKey(question.targetFact);
-            string claimedValue = Context.Localization.Get(claimedValueKey);
-            string answerText = Context.Localization.GetFormatted(question.answerTemplateKey, claimedValue);
+            string questionText = Context.Localization.Get(QuestionKey(field));
+            string trueValue = Context.CurrentCase.GetTrueText(field);
+            string answerText = Context.Localization.GetFormatted("a_student", trueValue);
 
             Context.RaiseAnswer(questionText, answerText);
         }
@@ -41,6 +39,19 @@ namespace GuildGame.Gameplay.Flow
         {
             Context.PendingVerdict = verdict;
             GoNext();
+        }
+
+        private static string QuestionKey(StudentIdFieldType field)
+        {
+            switch (field)
+            {
+                case StudentIdFieldType.Name: return "q_student_name";
+                case StudentIdFieldType.EnrollmentDate: return "q_student_enrollment";
+                case StudentIdFieldType.Grade: return "q_student_grade";
+                case StudentIdFieldType.Major: return "q_student_major";
+                case StudentIdFieldType.FacePhoto: return "q_student_photo";
+                default: return field.ToString();
+            }
         }
     }
 }

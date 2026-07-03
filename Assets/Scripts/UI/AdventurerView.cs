@@ -4,7 +4,9 @@ using UnityEngine;
 
 namespace GuildGame.UI
 {
-    /// <summary>손님의 이름과 상투적 주장 대사를 표시한다.</summary>
+    /// <summary>
+    /// 학생의 상투적 대사만 표시한다. 이름은 학생증/질문으로만 확인 가능하므로 여기선 감춘다(???).
+    /// </summary>
     public class AdventurerView : UIViewBase
     {
         [SerializeField] private TMP_Text _nameLabel;
@@ -18,10 +20,10 @@ namespace GuildGame.UI
             Context.CaseStarted += OnCaseStarted;
         }
 
-        private void OnCaseStarted(AdventurerCase adventurerCase)
+        private void OnCaseStarted(StudentCase studentCase)
         {
-            if (_nameLabel != null && adventurerCase != null)
-                _nameLabel.text = Context.Localization.Get(adventurerCase.AdventurerNameKey);
+            if (_nameLabel != null)
+                _nameLabel.text = Context.Localization.Get("ui_student_unknown");
         }
 
         private void OnDestroy()

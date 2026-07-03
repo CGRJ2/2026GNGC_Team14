@@ -17,7 +17,7 @@ namespace GuildGame.UI
             Context.AnswerGiven += OnAnswerGiven;
         }
 
-        private void OnCaseStarted(AdventurerCase adventurerCase)
+        private void OnCaseStarted(StudentCase studentCase)
         {
             Render(string.Empty);
         }

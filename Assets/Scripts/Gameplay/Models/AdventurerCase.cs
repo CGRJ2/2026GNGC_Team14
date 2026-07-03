@@ -7,7 +7,7 @@ namespace GuildGame.Gameplay.Models
     /// 현재 손님 1명의 사건 상태(런타임). 할당된 의뢰와 항목별 거짓 여부(증언)를 보유한다.
     /// 진실 여부 판정과 증언 값 조회의 단일 출처. 생성 후 불변.
     /// </summary>
-    public class AdventurerCase
+    public class AdventurerCase : IVerifiableCase
     {
         private readonly Dictionary<QuestFactType, bool> _lies;
 

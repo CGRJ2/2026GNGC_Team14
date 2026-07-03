@@ -7,12 +7,20 @@ using UnityEngine;
 namespace GuildGame.UI
 {
     /// <summary>
-    /// 디버그용 뷰. 현재 학생 사건의 "정답표"를 표시한다:
-    /// 각 조건의 참값·증언값·참/거짓 상태와 전체 정직 여부(통과/탈락 정답).
-    /// 개발 편의용이며 배포 시 비활성화한다.
+    /// 디버그용. 현재 학생증 사건의 "정답표"를 표시한다:
+    /// 각 필드의 정답(진짜값) vs 카드 표기값, 위조 여부, 전체 진짜/위조.
     /// </summary>
     public class DebugCasePanelView : UIViewBase
     {
+        private static readonly StudentIdFieldType[] Fields =
+        {
+            StudentIdFieldType.Name,
+            StudentIdFieldType.EnrollmentDate,
+            StudentIdFieldType.Grade,
+            StudentIdFieldType.Major,
+            StudentIdFieldType.FacePhoto
+        };
+
         [SerializeField] private TMP_Text _label;
 
         protected override void OnBind()
@@ -20,51 +28,56 @@ namespace GuildGame.UI
             Context.CaseStarted += OnCaseStarted;
         }
 
-        private void OnCaseStarted(AdventurerCase adventurerCase)
+        private void OnCaseStarted(StudentCase studentCase)
         {
             if (_label == null)
                 return;
 
-            if (adventurerCase == null || adventurerCase.Quest == null)
+            if (studentCase == null || studentCase.Student == null)
             {
                 _label.text = string.Empty;
                 return;
             }
 
-            var loc = Context.Localization;
             var sb = new StringBuilder();
-
             sb.AppendLine("<b>🔍 디버그 · 정답표</b>");
-            sb.AppendLine($"학생: {loc.Get(adventurerCase.AdventurerNameKey)}");
-            sb.AppendLine(adventurerCase.IsHonest
-                ? "<color=#7CFC7C>정답: 정직 → 통과시켜야 함</color>"
-                : "<color=#FF7C7C>정답: 거짓 → 탈락시켜야 함</color>");
+            sb.AppendLine($"본인: {studentCase.Student.studentName}");
+            sb.AppendLine(studentCase.IsHonest
+                ? "<color=#7CFC7C>정답: 진짜 → 승인해야 함</color>"
+                : "<color=#FF7C7C>정답: 위조 → 거부해야 함</color>");
             sb.AppendLine("──────────────");
 
-            foreach (var fact in adventurerCase.Quest.facts)
+            foreach (var field in Fields)
             {
-                string label = loc.Get(FactLabelKey(fact.type));
-                string truth = loc.Get(fact.trueValueKey);
-                string claim = loc.Get(adventurerCase.GetClaimedValueKey(fact.type));
-                bool lie = adventurerCase.IsLie(fact.type);
+                bool forged = studentCase.IsForged(field);
+                string tag = forged ? "<color=#FF7C7C>✗ 위조</color>" : "<color=#7CFC7C>✓ 참</color>";
+                sb.AppendLine($"[{FieldLabel(field)}] {tag}");
 
-                string tag = lie ? "<color=#FF7C7C>✗ 거짓</color>" : "<color=#7CFC7C>✓ 참</color>";
-                sb.AppendLine($"[{label}] {tag}");
-                sb.AppendLine($"   정답: {truth}  /  증언: {claim}");
+                if (field == StudentIdFieldType.FacePhoto)
+                {
+                    string cardName = studentCase.CardPhoto != null ? studentCase.CardPhoto.name : "(없음)";
+                    string trueName = studentCase.TruePhoto != null ? studentCase.TruePhoto.name : "(없음)";
+                    sb.AppendLine($"   정답: {trueName}  /  카드: {cardName}");
+                }
+                else
+                {
+                    sb.AppendLine($"   정답: {studentCase.GetTrueText(field)}  /  카드: {studentCase.GetCardText(field)}");
+                }
             }
 
             _label.text = sb.ToString();
         }
 
-        private static string FactLabelKey(QuestFactType type)
+        private static string FieldLabel(StudentIdFieldType field)
         {
-            switch (type)
+            switch (field)
             {
-                case QuestFactType.TargetName: return "fact_label_targetname";
-                case QuestFactType.TargetCount: return "fact_label_targetcount";
-                case QuestFactType.Location: return "fact_label_location";
-                case QuestFactType.Difficulty: return "fact_label_difficulty";
-                default: return type.ToString();
+                case StudentIdFieldType.Name: return "이름";
+                case StudentIdFieldType.EnrollmentDate: return "입학일";
+                case StudentIdFieldType.Grade: return "학년";
+                case StudentIdFieldType.Major: return "전공";
+                case StudentIdFieldType.FacePhoto: return "얼굴";
+                default: return field.ToString();
             }
         }
 
