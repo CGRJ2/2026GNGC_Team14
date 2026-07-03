@@ -1,5 +1,6 @@
 using GuildGame.Core;
 using GuildGame.Data;
+using DG.Tweening;
 
 namespace GuildGame.Gameplay.Flow
 {
@@ -9,6 +10,8 @@ namespace GuildGame.Gameplay.Flow
     /// </summary>
     public class ResolutionState : GameStateBase
     {
+        private Tween _flowTween;
+
         public ResolutionState(GameContext context, StateMachine machine) : base(context, machine) { }
 
         public override void Enter()
@@ -21,17 +24,27 @@ namespace GuildGame.Gameplay.Flow
             string eventText = Context.Localization.Get(info.eventKey);
             Context.RaiseOutcome(outcome, eventText);
 
-            Context.NextRequested += OnNextRequested;
+            UIAnimationSettingsSO settings = Context.UIAnimationSettings;
+            float outcomeDialogueDelay = settings != null ? settings.outcomeDialogueDelay : 1.2f;
+            float exitDuration = settings != null
+                ? UnityEngine.Mathf.Max(
+                    settings.studentExit.delay + settings.studentExit.duration,
+                    settings.studentIdButtonExit.delay + settings.studentIdButtonExit.duration)
+                : 0.4f;
+            float nextStudentDelay = settings != null ? settings.nextStudentDelay : 0.4f;
+
+            _flowTween?.Kill();
+            _flowTween = DOTween.Sequence()
+                .AppendInterval(outcomeDialogueDelay)
+                .AppendCallback(Context.RequestStudentExit)
+                .AppendInterval(exitDuration + nextStudentDelay)
+                .AppendCallback(GoNext);
         }
 
         public override void Exit()
         {
-            Context.NextRequested -= OnNextRequested;
-        }
-
-        private void OnNextRequested()
-        {
-            GoNext();
+            _flowTween?.Kill();
+            _flowTween = null;
         }
     }
 }

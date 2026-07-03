@@ -22,3 +22,16 @@ MonoBehaviour:
     duration: 0.35
     startOffset: {x: 0, y: 60}
     ease: 6
+  dialogueAnswerDelay: 0.6
+  outcomeDialogueDelay: 1.2
+  nextStudentDelay: 0.4
+  studentExit:
+    delay: 0.5
+    duration: 0.25
+    startOffset: {x: 0, y: 80}
+    ease: 6
+  studentIdButtonExit:
+    delay: 0
+    duration: 0.4
+    startOffset: {x: 0, y: 40}
+    ease: 6

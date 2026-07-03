@@ -16,6 +16,7 @@ namespace GuildGame.Gameplay.Flow
     {
         [SerializeField] private GameBalanceSO _balance;
         [SerializeField] private StudentDatabaseSO _studentDatabase;
+        [SerializeField] private UIAnimationSettingsSO _uiAnimationSettings;
 
         private StateMachine _machine;
         private GameContext _context;
@@ -35,7 +36,7 @@ namespace GuildGame.Gameplay.Flow
             IJudgementService judgement = new JudgementService();
             var reputation = new ReputationModel(_balance.startingReputation);
 
-            _context = new GameContext(localization, generator, judgement, _balance, reputation);
+            _context = new GameContext(localization, generator, judgement, _balance, reputation, _uiAnimationSettings);
 
             // ---- 상태 조립 및 선형 배선 ----
             _machine = new StateMachine();

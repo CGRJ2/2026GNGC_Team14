@@ -1,4 +1,5 @@
 using GuildGame.Gameplay.Models;
+using GuildGame.Data;
 using TMPro;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace GuildGame.UI
         {
             Context.CaseStarted += OnCaseStarted;
             Context.AnswerGiven += OnAnswerGiven;
+            Context.OutcomeResolved += OnOutcomeResolved;
         }
 
         private void OnCaseStarted(StudentCase studentCase)
@@ -24,7 +26,12 @@ namespace GuildGame.UI
 
         private void OnAnswerGiven(string question, string answer)
         {
-            Render($"<b>Q.</b> {question}\n<b>A.</b> {answer}");
+            Render($"<b>A.</b> {answer}");
+        }
+
+        private void OnOutcomeResolved(CaseOutcome outcome, string eventText)
+        {
+            Render(eventText);
         }
 
         private void Render(string text)
@@ -39,6 +46,7 @@ namespace GuildGame.UI
                 return;
             Context.CaseStarted -= OnCaseStarted;
             Context.AnswerGiven -= OnAnswerGiven;
+            Context.OutcomeResolved -= OnOutcomeResolved;
         }
     }
 }

@@ -40,5 +40,32 @@ namespace GuildGame.Data
             duration = 0.35f,
             startOffset = new Vector2(0f, 60f),
         };
+
+        [Header("Dialogue")]
+        [Tooltip("질문을 표시한 뒤 답변을 표시하기까지 기다리는 시간(초)")]
+        [Min(0f)]
+        public float dialogueAnswerDelay = 0.6f;
+
+        [Tooltip("판정 결과 대사를 보여준 뒤 학생 퇴장을 시작하기까지 기다리는 시간(초)")]
+        [Min(0f)]
+        public float outcomeDialogueDelay = 1.2f;
+
+        [Tooltip("학생 퇴장 완료 후 다음 학생이 나타나기까지 기다리는 시간(초)")]
+        [Min(0f)]
+        public float nextStudentDelay = 0.4f;
+
+        [Header("학생 일러스트 퇴장 (위로 이동 + 페이드 아웃)")]
+        public FadeSlideSettings studentExit = new()
+        {
+            duration = 0.4f,
+            startOffset = new Vector2(0f, 80f),
+        };
+
+        [Header("학생증 버튼 퇴장")]
+        public FadeSlideSettings studentIdButtonExit = new()
+        {
+            duration = 0.25f,
+            startOffset = new Vector2(0f, 40f),
+        };
     }
 }

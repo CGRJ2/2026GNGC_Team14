@@ -21,6 +21,7 @@ namespace GuildGame.UI
         protected override void OnBind()
         {
             Context.CaseStarted += OnCaseStarted;
+            Context.StudentExitRequested += OnStudentExitRequested;
         }
 
         private void OnCaseStarted(StudentCase studentCase)
@@ -42,11 +43,31 @@ namespace GuildGame.UI
                 .SetLink(gameObject);
         }
 
+        private void OnStudentExitRequested()
+        {
+            if (_animationSettings == null || _illustrationAnimator == null || _studentIdButtonAnimator == null)
+                return;
+
+            _sequence?.Kill();
+
+            _sequence = DOTween.Sequence()
+                .Insert(
+                    _animationSettings.studentExit.delay,
+                    _illustrationAnimator.CreateDisappearTween(_animationSettings.studentExit))
+                .Insert(
+                    _animationSettings.studentIdButtonExit.delay,
+                    _studentIdButtonAnimator.CreateDisappearTween(_animationSettings.studentIdButtonExit))
+                .SetLink(gameObject);
+        }
+
         private void OnDestroy()
         {
             _sequence?.Kill();
             if (Context != null)
+            {
                 Context.CaseStarted -= OnCaseStarted;
+                Context.StudentExitRequested -= OnStudentExitRequested;
+            }
         }
     }
 }

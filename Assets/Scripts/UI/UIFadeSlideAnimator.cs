@@ -54,6 +54,17 @@ namespace GuildGame.UI
                 .SetLink(gameObject);
         }
 
+        /// <summary>원래 위치에서 설정된 오프셋 방향으로 이동하며 페이드 아웃하는 트윈을 만든다.</summary>
+        public Tween CreateDisappearTween(UIAnimationSettingsSO.FadeSlideSettings settings)
+        {
+            EnsureInitialized();
+
+            return DOTween.Sequence()
+                .Join(_rect.DOAnchorPos(_restPosition + settings.startOffset, settings.duration).SetEase(settings.ease))
+                .Join(_canvasGroup.DOFade(0f, settings.duration).SetEase(settings.ease))
+                .SetLink(gameObject);
+        }
+
         /// <summary>원래 위치·알파 1로 즉시 복귀한다.</summary>
         public void SnapToRest()
         {

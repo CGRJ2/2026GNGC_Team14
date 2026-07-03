@@ -1,5 +1,6 @@
 using GuildGame.Core;
 using GuildGame.Data;
+using DG.Tweening;
 
 namespace GuildGame.Gameplay.Flow
 {
@@ -9,6 +10,8 @@ namespace GuildGame.Gameplay.Flow
     /// </summary>
     public class InspectionState : GameStateBase
     {
+        private Tween _answerDelayTween;
+
         public InspectionState(GameContext context, StateMachine machine) : base(context, machine) { }
 
         public override void Enter()
@@ -21,6 +24,8 @@ namespace GuildGame.Gameplay.Flow
         {
             Context.QuestionRequested -= OnQuestionRequested;
             Context.VerdictRequested -= OnVerdictRequested;
+            _answerDelayTween?.Kill();
+            _answerDelayTween = null;
         }
 
         private void OnQuestionRequested(StudentIdFieldType field)
@@ -32,7 +37,18 @@ namespace GuildGame.Gameplay.Flow
             string trueValue = Context.CurrentCase.GetTrueText(field);
             string answerText = Context.Localization.GetFormatted("a_student", trueValue);
 
-            Context.RaiseAnswer(questionText, answerText);
+            Context.RaiseQuestion(questionText);
+
+            _answerDelayTween?.Kill();
+            float delay = Context.UIAnimationSettings != null
+                ? Context.UIAnimationSettings.dialogueAnswerDelay
+                : 0.6f;
+
+            _answerDelayTween = DOVirtual.DelayedCall(delay, () =>
+            {
+                Context.RaiseAnswer(questionText, answerText);
+                _answerDelayTween = null;
+            });
         }
 
         private void OnVerdictRequested(PlayerVerdict verdict)
