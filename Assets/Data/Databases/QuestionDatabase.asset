@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07d9f2015ddf0d34b938770648bc5af0, type: 3}
+  m_Name: QuestionDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::GuildGame.Data.QuestionDatabaseSO
+  questions:
+  - {fileID: 11400000, guid: 6700a3d64f0475a43acd4f5e7d6ee49c, type: 2}
+  - {fileID: 11400000, guid: e47c03e17e97345499efd7e21d95d362, type: 2}
+  - {fileID: 11400000, guid: 676aba6dc3dc9ed40af04c96dbd43abc, type: 2}
+  - {fileID: 11400000, guid: 717b371085172f1408c8882f537a6e8b, type: 2}
