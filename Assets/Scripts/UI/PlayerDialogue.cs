@@ -1,3 +1,4 @@
+using GuildGame.Data;
 using GuildGame.Gameplay.Models;
 using TMPro;
 using UnityEngine;
@@ -17,6 +18,8 @@ namespace GuildGame.UI
         {
             Context.CaseStarted += OnCaseStarted;
             Context.QuestionAsked += OnQuestionAsked;
+            Context.CutsceneDialogueRequested += OnCutsceneDialogueRequested;
+            Context.CutsceneEnded += OnCutsceneEnded;
             Context.StudentExitRequested += OnStudentExitRequested;
 
             Hide();
@@ -32,6 +35,24 @@ namespace GuildGame.UI
             Show();
             if (_speechLabel != null)
                 _speechLabel.text = question;
+        }
+
+        private void OnCutsceneDialogueRequested(CutsceneSpeaker speaker, string text)
+        {
+            if (speaker != CutsceneSpeaker.Player)
+            {
+                Hide();
+                return;
+            }
+
+            Show();
+            if (_speechLabel != null)
+                _speechLabel.text = text;
+        }
+
+        private void OnCutsceneEnded()
+        {
+            Hide();
         }
 
         private void OnStudentExitRequested()
@@ -65,6 +86,8 @@ namespace GuildGame.UI
 
             Context.CaseStarted -= OnCaseStarted;
             Context.QuestionAsked -= OnQuestionAsked;
+            Context.CutsceneDialogueRequested -= OnCutsceneDialogueRequested;
+            Context.CutsceneEnded -= OnCutsceneEnded;
             Context.StudentExitRequested -= OnStudentExitRequested;
         }
     }
