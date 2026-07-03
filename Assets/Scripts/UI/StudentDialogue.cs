@@ -1,18 +1,18 @@
-using GuildGame.Gameplay.Models;
-using GuildGame.Data;
 using DG.Tweening;
+using GuildGame.Data;
+using GuildGame.Gameplay.Models;
 using TMPro;
 using UnityEngine;
 
 namespace GuildGame.UI
 {
     /// <summary>
-    /// 방금 누른 질문과 그 답변만 표시한다(누적하지 않고 매번 대체). 새 학생이 오면 비운다.
+    /// Displays the current student's greeting, answers, and outcome lines.
     /// </summary>
-    public class DialogueView : UIViewBase
+    public class StudentDialogue : UIViewBase
     {
         [SerializeField] private GameObject _panelRoot;
-        [SerializeField] private TMP_Text _logLabel;
+        [SerializeField] private TMP_Text _speechLabel;
 
         private Tween _studentGreetingTween;
 
@@ -35,7 +35,7 @@ namespace GuildGame.UI
             _studentGreetingTween = DOVirtual.DelayedCall(delay, () =>
             {
                 Show();
-                Render(Context.Localization.Get("ui_student_hi"));
+                Render(Context.Localization.GetRandom("ui_student_hi"));
                 _studentGreetingTween = null;
             });
         }
@@ -65,8 +65,8 @@ namespace GuildGame.UI
 
         private void Render(string text)
         {
-            if (_logLabel != null)
-                _logLabel.text = text;
+            if (_speechLabel != null)
+                _speechLabel.text = text;
         }
 
         private void Show()
@@ -102,6 +102,7 @@ namespace GuildGame.UI
             _studentGreetingTween?.Kill();
             if (Context == null)
                 return;
+
             Context.CaseStarted -= OnCaseStarted;
             Context.AnswerGiven -= OnAnswerGiven;
             Context.OutcomeResolved -= OnOutcomeResolved;

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using GuildGame.Data;
 using GuildGame.Gameplay.Models;
 using TMPro;
@@ -24,6 +25,9 @@ namespace GuildGame.UI
         private Button _gradeButton;
         private Button _majorButton;
         private Button _photoButton;
+        private UIFadeSlideAnimator _panelAnimator;
+        private UIDraggablePanel _draggablePanel;
+        private Sequence _exitSequence;
 
         protected override void OnBind()
         {
@@ -31,11 +35,16 @@ namespace GuildGame.UI
                 _headerLabel.text = Context.Localization.Get("ui_student_card_title");
 
             BindQuestionClickTargets();
+            EnsureDraggablePanel();
             Context.CaseStarted += OnCaseStarted;
+            Context.StudentExitRequested += OnStudentExitRequested;
         }
 
         private void OnCaseStarted(StudentCase studentCase)
         {
+            _exitSequence?.Kill();
+            PanelAnimator.SnapToRest();
+
             if (studentCase == null)
                 return;
 
@@ -49,6 +58,31 @@ namespace GuildGame.UI
                 _photoImage.sprite = studentCase.CardPhoto;
                 _photoImage.enabled = studentCase.CardPhoto != null;
             }
+        }
+
+        private void OnStudentExitRequested()
+        {
+            if (!gameObject.activeSelf)
+                return;
+
+            UIAnimationSettingsSO settings = Context.UIAnimationSettings;
+            if (settings == null)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+
+            _exitSequence?.Kill();
+            PanelAnimator.CaptureRestPosition();
+            _exitSequence = DOTween.Sequence()
+                .AppendInterval(settings.studentIdButtonExit.delay)
+                .Append(PanelAnimator.CreateDisappearTween(settings.studentIdButtonExit))
+                .OnComplete(() =>
+                {
+                    gameObject.SetActive(false);
+                    _exitSequence = null;
+                })
+                .SetLink(gameObject);
         }
 
         private void SetField(TMP_Text label, string labelKey, string value)
@@ -173,10 +207,40 @@ namespace GuildGame.UI
                 button.interactable = interactable;
         }
 
+        private UIFadeSlideAnimator PanelAnimator
+        {
+            get
+            {
+                if (_panelAnimator == null)
+                {
+                    _panelAnimator = GetComponent<UIFadeSlideAnimator>();
+                    if (_panelAnimator == null)
+                        _panelAnimator = gameObject.AddComponent<UIFadeSlideAnimator>();
+                }
+
+                return _panelAnimator;
+            }
+        }
+
+        private void EnsureDraggablePanel()
+        {
+            if (_draggablePanel != null)
+                return;
+
+            _draggablePanel = GetComponent<UIDraggablePanel>();
+            if (_draggablePanel == null)
+                _draggablePanel = gameObject.AddComponent<UIDraggablePanel>();
+        }
+
         private void OnDestroy()
         {
+            _exitSequence?.Kill();
             if (Context != null)
+            {
                 Context.CaseStarted -= OnCaseStarted;
+                Context.StudentExitRequested -= OnStudentExitRequested;
+            }
+
             UnbindQuestionClickTargets();
         }
     }

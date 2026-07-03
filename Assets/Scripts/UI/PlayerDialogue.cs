@@ -5,13 +5,13 @@ using UnityEngine;
 namespace GuildGame.UI
 {
     /// <summary>
-    /// Questions 박스에 현재 학생증 데이터 클릭으로 선택된 질문을 표시한다.
-    /// 질문 버튼 생성은 StudentIdPanelView가 담당한다.
+    /// Displays the player's current student ID question in the player speech bubble.
+    /// StudentIdPanelView owns the question trigger buttons.
     /// </summary>
-    public class StudentQuestionButtonsView : UIViewBase
+    public class PlayerDialogue : UIViewBase
     {
         [SerializeField] private GameObject _panelRoot;
-        [SerializeField] private TMP_Text _questionLabel;
+        [SerializeField] private TMP_Text _speechLabel;
 
         protected override void OnBind()
         {
@@ -30,8 +30,8 @@ namespace GuildGame.UI
         private void OnQuestionAsked(string question)
         {
             Show();
-            if (_questionLabel != null)
-                _questionLabel.text = question;
+            if (_speechLabel != null)
+                _speechLabel.text = question;
         }
 
         private void OnStudentExitRequested()
@@ -41,8 +41,8 @@ namespace GuildGame.UI
 
         private void Clear()
         {
-            if (_questionLabel != null)
-                _questionLabel.text = string.Empty;
+            if (_speechLabel != null)
+                _speechLabel.text = string.Empty;
         }
 
         private void Show()

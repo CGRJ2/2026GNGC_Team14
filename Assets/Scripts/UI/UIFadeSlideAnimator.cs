@@ -74,6 +74,12 @@ namespace GuildGame.UI
             _canvasGroup.alpha = 1f;
         }
 
+        public void CaptureRestPosition()
+        {
+            EnsureInitialized();
+            _restPosition = _rect.anchoredPosition;
+        }
+
         private void KillActiveTweens()
         {
             _rect.DOKill();
