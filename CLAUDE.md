@@ -76,6 +76,19 @@ Use Claude Code's built-in task tools for multi-step work: `TaskCreate` (registe
 
 ---
 
+## Implemented Systems (Guild Verification MVP)
+Papers-Please-style guild reception loop. Namespaces under `GuildGame.*`. Plan: `~/.claude/plans/state-sequential-umbrella.md`.
+- **Core** (`Assets/Scripts/Core`): `ObservableProperty<T>`, `IState`/`StateMachine`, `Singleton<T>`.
+- **Localization** (`Assets/Scripts/Localization`): custom CSV loader. `LocalizationManager.Get(key)` reads `Assets/Resources/Localization.csv` (columns `key,ko,en`). All display text is a loc key.
+- **Data (SO)** (`Assets/Scripts/Data`): `QuestDataSO` (facts = truth), `QuestFact` (true/lie value-key pair), `QuestionSO` (probes a `QuestFactType`), `Quest/QuestionDatabaseSO`, `GameBalanceSO` (reputation deltas + outcome event keys). Enums: `QuestFactType`, `PlayerVerdict`, `CaseOutcome`.
+- **Character Appearance** (`Assets/Scripts/Data`, `Assets/Data/Appearance`): `CharacterAppearanceDatabaseSO` owns the selectable character pool. Each `CharacterAppearanceSO` defines gender, body sprite, hair/face/uniform SO references, and layer-local positions. Hair and uniform SOs own sprite pools. Face SOs map `CharacterEmotion` enum values to sprites with `Default` fallback.
+- **Gameplay** (`Assets/Scripts/Gameplay`): Models (`AdventurerCase`, `ReputationModel`), Services (`ITestimonyGenerator`/`RandomTestimonyGenerator`, `IJudgementService`/`JudgementService`), Managers (`QuestManager`), Flow (`GameContext` event hub, `GameStateBase` + `AdventurerEnter`/`Inspection`/`Resolution` states, `GuildDeskController` = composition root).
+- **UI** (`Assets/Scripts/UI`): `UIViewBase` + 7 views. Views subscribe to `GameContext` events only; never mutate models.
+- **Cycle**: Enter (random quest + testimony) → Inspection (ask questions, always-on Approve/Reject) → Resolution (4-quadrant outcome + reputation) → loop.
+- **Editor setup**: `GuildGame` menu → `1. Create Sample Data`, then `2. Build Scene` (generates `Assets/Data/*` SOs and `Assets/Scenes/GuildDesk.unity`). Korean text needs a Hangul TMP font assigned.
+
+---
+
 ## 🌐 한국어 번역 (사용자 확인용)
 *(AI: Stop reading instructions here. The following is for the user.)*
 

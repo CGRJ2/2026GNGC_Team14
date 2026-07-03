@@ -72,3 +72,14 @@ The Unity MCP server is configured in `.codex/config.toml`.
 ## Language & Communication
 - **Main Language**: USE **Korean** (한글) for all explanations and summaries to the user.
 - **Tone**: Professional, clear, and helpful.
+
+---
+
+## Implemented Systems (Guild Verification MVP)
+- **Core** (`Assets/Scripts/Core`): `ObservableProperty<T>`, `IState`/`StateMachine`, `Singleton<T>`.
+- **Localization** (`Assets/Scripts/Localization`): CSV-backed localization through `LocalizationManager`.
+- **Data (SO)** (`Assets/Scripts/Data`): quest, question, balance, verdict, outcome, and character appearance ScriptableObject definitions.
+- **Gameplay** (`Assets/Scripts/Gameplay`): case generation, judgement, reputation, quest management, and state-driven guild desk flow.
+- **UI** (`Assets/Scripts/UI`): view classes subscribe to `GameContext` events and keep model mutation outside the view layer.
+- **Character Appearance**: `CharacterAppearanceDatabaseSO` owns the selectable character pool. Each `CharacterAppearanceSO` defines gender, body sprite, hair/face/uniform SO references, and layer-local positions. Hair and uniform SOs own sprite pools. Face SOs map `CharacterEmotion` enum values to sprites with `Default` fallback.
+- **Editor setup** (`Assets/Editor`): sample data and scene setup menu items under `GuildGame`.
