@@ -25,7 +25,7 @@ MonoBehaviour:
   dialogueAnswerDelay: 0.6
   outcomeDialogueDelay: 1.2
   nextStudentDelay: 0.4
-  studentGreetingDelay: 1.8
+  studentGreetingDelay: 1.2
   studentExit:
     delay: 0.5
     duration: 0.25
