@@ -16,6 +16,7 @@ namespace GuildGame.Gameplay.Flow
         // ---- 의존성 ----
         public ILocalizationProvider Localization { get; }
         public IStudentCaseGenerator Generator { get; }
+        public StudentDatabaseSO StudentDatabase { get; }
         public IJudgementService Judgement { get; }
         public GameBalanceSO Balance { get; }
         public ReputationModel Reputation { get; }
@@ -31,6 +32,7 @@ namespace GuildGame.Gameplay.Flow
         public GameContext(
             ILocalizationProvider localization,
             IStudentCaseGenerator generator,
+            StudentDatabaseSO studentDatabase,
             IJudgementService judgement,
             GameBalanceSO balance,
             ReputationModel reputation,
@@ -41,6 +43,7 @@ namespace GuildGame.Gameplay.Flow
         {
             Localization = localization;
             Generator = generator;
+            StudentDatabase = studentDatabase;
             Judgement = judgement;
             Balance = balance;
             Reputation = reputation;
@@ -56,6 +59,8 @@ namespace GuildGame.Gameplay.Flow
         public event Action<string, string> AnswerGiven;          // (질문, 답변)
         public event Action<CaseOutcome, string> OutcomeResolved; // (결과, 이벤트 대사)
         public event Action<CutsceneSpeaker, string> CutsceneDialogueRequested;
+        public event Action<StudentSO> CutsceneStudentEnterRequested;
+        public event Action CutsceneStudentExitRequested;
         public event Action CutsceneEnded;
 
         public event Action StudentExitRequested;
@@ -68,6 +73,8 @@ namespace GuildGame.Gameplay.Flow
         public void RaiseAnswer(string question, string answer) => AnswerGiven?.Invoke(question, answer);
         public void RaiseOutcome(CaseOutcome outcome, string eventText) => OutcomeResolved?.Invoke(outcome, eventText);
         public void RaiseCutsceneDialogue(CutsceneSpeaker speaker, string text) => CutsceneDialogueRequested?.Invoke(speaker, text);
+        public void RaiseCutsceneStudentEnter(StudentSO student) => CutsceneStudentEnterRequested?.Invoke(student);
+        public void RaiseCutsceneStudentExit() => CutsceneStudentExitRequested?.Invoke();
         public void RaiseCutsceneEnded() => CutsceneEnded?.Invoke();
         public void RequestStudentExit() => StudentExitRequested?.Invoke();
         public void RaiseDayStarted(int day) => DayStarted?.Invoke(day);

@@ -25,8 +25,11 @@ MonoBehaviour:
   dialogueAnswerDelay: 0.6
   outcomeDialogueDelay: 1.2
   nextStudentDelay: 0.4
-  studentGreetingDelay: 1.2
+  studentGreetingDelay: 0.8
   cutsceneLineDelay: 1
+  dayFadeOutDuration: 0.8
+  dayLabelHoldDuration: 1.2
+  dayFadeInDuration: 0.8
   studentExit:
     delay: 0.5
     duration: 0.25

@@ -16,9 +16,13 @@ namespace GuildGame.Data
         [Serializable]
         public class Line
         {
+            public CutsceneStepType stepType = CutsceneStepType.Dialogue;
             public CutsceneSpeaker speaker = CutsceneSpeaker.Student;
+
+            [Tooltip("StudentSO.studentId. Used when speaker is Student.")]
+            public string studentId;
+
             public string localizationKey;
-            public bool useRandomVariant = true;
 
             [Tooltip("Negative values use UIAnimationSettings.cutsceneLineDelay.")]
             public float delayAfter = -1f;

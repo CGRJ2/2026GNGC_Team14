@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e7533097366c76468aa389a45c3670e, type: 3}
   m_Name: DaySchedule
   m_EditorClassIdentifier: Assembly-CSharp::GuildGame.Data.DayScheduleSO
-  defaultStudentLimit: 8
   _days:
   - {fileID: 11400000, guid: c1bc8da5b3940f1429dc517756371ca3, type: 2}
+  - {fileID: 11400000, guid: 6884bc522f2617c4b9ad305762012c61, type: 2}
+  - {fileID: 11400000, guid: 302d24e3c4b51524cb7caa409dc01257, type: 2}
+  - {fileID: 11400000, guid: aa9c5697168971f498fdbb8027d7c367, type: 2}
+  - {fileID: 11400000, guid: bd818281470838c4a997161187e29dac, type: 2}

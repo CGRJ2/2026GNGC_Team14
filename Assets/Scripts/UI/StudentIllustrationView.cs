@@ -1,3 +1,4 @@
+using GuildGame.Data;
 using GuildGame.Gameplay.Models;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,9 @@ namespace GuildGame.UI
         protected override void OnBind()
         {
             Context.CaseStarted += OnCaseStarted;
+            Context.CutsceneStudentEnterRequested += OnCutsceneStudentEnterRequested;
+
+            SetSprite(null);
         }
 
         private void OnCaseStarted(StudentCase studentCase)
@@ -30,10 +34,27 @@ namespace GuildGame.UI
             _illustrationImage.enabled = sprite != null;
         }
 
+        private void OnCutsceneStudentEnterRequested(StudentSO student)
+        {
+            SetSprite(student != null ? student.illustration : null);
+        }
+
+        private void SetSprite(Sprite sprite)
+        {
+            if (_illustrationImage == null)
+                return;
+
+            _illustrationImage.sprite = sprite;
+            _illustrationImage.enabled = sprite != null;
+        }
+
         private void OnDestroy()
         {
             if (Context != null)
+            {
                 Context.CaseStarted -= OnCaseStarted;
+                Context.CutsceneStudentEnterRequested -= OnCutsceneStudentEnterRequested;
+            }
         }
     }
 }

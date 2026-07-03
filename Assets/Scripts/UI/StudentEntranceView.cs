@@ -22,6 +22,22 @@ namespace GuildGame.UI
         {
             Context.CaseStarted += OnCaseStarted;
             Context.StudentExitRequested += OnStudentExitRequested;
+            Context.CutsceneStudentEnterRequested += OnCutsceneStudentEnterRequested;
+            Context.CutsceneStudentExitRequested += OnCutsceneStudentExitRequested;
+
+            PrepareInitialHiddenState();
+        }
+
+        private void PrepareInitialHiddenState()
+        {
+            if (_animationSettings == null)
+                return;
+
+            if (_illustrationAnimator != null)
+                _illustrationAnimator.PrepareHidden(_animationSettings.studentEnter);
+
+            if (_studentIdButtonAnimator != null)
+                _studentIdButtonAnimator.PrepareHidden(_animationSettings.studentIdButton);
         }
 
         private void OnCaseStarted(StudentCase studentCase)
@@ -60,6 +76,33 @@ namespace GuildGame.UI
                 .SetLink(gameObject);
         }
 
+        private void OnCutsceneStudentEnterRequested(StudentSO student)
+        {
+            if (_animationSettings == null || _illustrationAnimator == null)
+                return;
+
+            _sequence?.Kill();
+
+            _illustrationAnimator.PrepareHidden(_animationSettings.studentEnter);
+            _sequence = DOTween.Sequence()
+                .AppendInterval(_animationSettings.studentEnter.delay)
+                .Append(_illustrationAnimator.CreateAppearTween(_animationSettings.studentEnter))
+                .SetLink(gameObject);
+        }
+
+        private void OnCutsceneStudentExitRequested()
+        {
+            if (_animationSettings == null || _illustrationAnimator == null)
+                return;
+
+            _sequence?.Kill();
+
+            _sequence = DOTween.Sequence()
+                .AppendInterval(_animationSettings.studentExit.delay)
+                .Append(_illustrationAnimator.CreateDisappearTween(_animationSettings.studentExit))
+                .SetLink(gameObject);
+        }
+
         private void OnDestroy()
         {
             _sequence?.Kill();
@@ -67,6 +110,8 @@ namespace GuildGame.UI
             {
                 Context.CaseStarted -= OnCaseStarted;
                 Context.StudentExitRequested -= OnStudentExitRequested;
+                Context.CutsceneStudentEnterRequested -= OnCutsceneStudentEnterRequested;
+                Context.CutsceneStudentExitRequested -= OnCutsceneStudentExitRequested;
             }
         }
     }

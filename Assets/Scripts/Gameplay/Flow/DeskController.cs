@@ -52,6 +52,7 @@ namespace GuildGame.Gameplay.Flow
             _context = new GameContext(
                 localization,
                 generator,
+                _studentDatabase,
                 judgement,
                 _balance,
                 reputation,

@@ -95,6 +95,14 @@ namespace GuildGame.Localization
             return texts[0];
         }
 
+        public IReadOnlyList<string> GetAll(string key)
+        {
+            if (!TryGetTexts(key, out List<string> texts))
+                return new[] { $"!{key}!" };
+
+            return texts;
+        }
+
         public string GetRandom(string key)
         {
             if (!TryGetTexts(key, out List<string> texts))

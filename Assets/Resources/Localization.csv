@@ -31,3 +31,13 @@ outcome_truth_success,(참 / 통과) 감사합니다.,Identity confirmed. You ar
 outcome_false_caught,(거짓 / 탈락) 걸려버렸다...,This ID is forged! Admission denied.
 outcome_false_approved,"(거짓 / 통과)(음흉한 미소) 감사합니다, 선생님. 그럼 이만. 헤헤...","(a sly grin) ...thank you, teacher. I'll be off then. Heh heh..."
 outcome_truth_misjudged,(참 / 탈락) 억울합니다! 이런 부당한 처사가 어디 있습니까!,This is unjust! My ID is real! How is this fair!
+,,
+cutscene01_A_01,반갑다.,
+,첫번째 컷씬을 진행할게,
+cutscene01_Player_01,첫번째 컷씬 확인,
+,플레이어 대사도 정상적으로 나온다,
+cutscene01_A_02,정상작동 확인,
+,나는 퇴장한다.,
+cutscene01_Player_02,학생 퇴장 후 플레이어 독백 테스트
+,잘된다.
+,컷씬 종료 후 일과 시작한다.

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using GuildGame.Data;
 using UnityEngine;
 
@@ -8,8 +9,10 @@ namespace GuildGame.UI
     {
         [SerializeField] private CutsceneSO _playOnBind;
         [SerializeField] private bool _autoPlayOnBind;
+        [SerializeField] private bool _exitStudentOnEnd = true;
 
         private Coroutine _playRoutine;
+        private string _currentStudentId;
 
         public bool IsPlaying => _playRoutine != null;
 
@@ -26,37 +29,99 @@ namespace GuildGame.UI
             if (cutscene == null || Context == null)
                 return;
 
-            Stop();
+            Stop(raiseEnded: false);
             _playRoutine = StartCoroutine(PlayRoutine(cutscene));
         }
 
         public void Stop()
+        {
+            Stop(raiseEnded: true);
+        }
+
+        private void Stop(bool raiseEnded)
         {
             if (_playRoutine == null)
                 return;
 
             StopCoroutine(_playRoutine);
             _playRoutine = null;
-            Context?.RaiseCutsceneEnded();
+            ExitCurrentStudent();
+            if (raiseEnded)
+                Context?.RaiseCutsceneEnded();
         }
 
         private IEnumerator PlayRoutine(CutsceneSO cutscene)
         {
             foreach (CutsceneSO.Line line in cutscene.Lines)
             {
-                if (line == null || string.IsNullOrWhiteSpace(line.localizationKey))
+                if (line == null)
                     continue;
 
-                string text = line.useRandomVariant
-                    ? Context.Localization.GetRandom(line.localizationKey)
-                    : Context.Localization.Get(line.localizationKey);
+                if (line.stepType == CutsceneStepType.StudentExit)
+                {
+                    ExitCurrentStudent(force: true);
+                    yield return new WaitForSeconds(GetStudentExitDelay());
+                    yield return new WaitForSeconds(GetLineDelay(line));
+                    continue;
+                }
 
-                Context.RaiseCutsceneDialogue(line.speaker, text);
-                yield return new WaitForSeconds(GetLineDelay(line));
+                if (string.IsNullOrWhiteSpace(line.localizationKey))
+                    continue;
+
+                if (line.speaker == CutsceneSpeaker.Student)
+                    yield return EnterStudentIfNeeded(line.studentId);
+
+                IReadOnlyList<string> texts = Context.Localization.GetAll(line.localizationKey);
+                for (int i = 0; i < texts.Count; i++)
+                {
+                    Context.RaiseCutsceneDialogue(line.speaker, texts[i]);
+                    yield return new WaitForSeconds(GetLineDelay(line));
+                }
+            }
+
+            if (_exitStudentOnEnd && !string.IsNullOrEmpty(_currentStudentId))
+            {
+                ExitCurrentStudent(force: true);
+                yield return new WaitForSeconds(GetStudentExitDelay());
             }
 
             _playRoutine = null;
             Context.RaiseCutsceneEnded();
+        }
+
+        private IEnumerator EnterStudentIfNeeded(string studentId)
+        {
+            if (string.IsNullOrWhiteSpace(studentId) || studentId == _currentStudentId)
+                yield break;
+
+            StudentSO student = Context.StudentDatabase != null
+                ? Context.StudentDatabase.FindById(studentId)
+                : null;
+
+            if (student == null)
+            {
+                Debug.LogWarning($"[Cutscene] Student '{studentId}' was not found in StudentDatabaseSO.");
+                yield break;
+            }
+
+            if (!string.IsNullOrEmpty(_currentStudentId))
+            {
+                ExitCurrentStudent(force: true);
+                yield return new WaitForSeconds(GetStudentExitDelay());
+            }
+
+            _currentStudentId = studentId;
+            Context.RaiseCutsceneStudentEnter(student);
+            yield return new WaitForSeconds(GetStudentEnterDelay());
+        }
+
+        private void ExitCurrentStudent(bool force = false)
+        {
+            if (!force && string.IsNullOrEmpty(_currentStudentId))
+                return;
+
+            _currentStudentId = null;
+            Context?.RaiseCutsceneStudentExit();
         }
 
         private float GetLineDelay(CutsceneSO.Line line)
@@ -68,6 +133,24 @@ namespace GuildGame.UI
             return settings != null ? settings.cutsceneLineDelay : 1.0f;
         }
 
+        private float GetStudentEnterDelay()
+        {
+            UIAnimationSettingsSO settings = Context.UIAnimationSettings;
+            if (settings == null || settings.studentEnter == null)
+                return 0.4f;
+
+            return settings.studentEnter.delay + settings.studentEnter.duration;
+        }
+
+        private float GetStudentExitDelay()
+        {
+            UIAnimationSettingsSO settings = Context.UIAnimationSettings;
+            if (settings == null || settings.studentExit == null)
+                return 0.4f;
+
+            return settings.studentExit.delay + settings.studentExit.duration;
+        }
+
         private void OnDestroy()
         {
             if (Context != null)
@@ -77,6 +160,7 @@ namespace GuildGame.UI
                 StopCoroutine(_playRoutine);
 
             _playRoutine = null;
+            _currentStudentId = null;
         }
     }
 }

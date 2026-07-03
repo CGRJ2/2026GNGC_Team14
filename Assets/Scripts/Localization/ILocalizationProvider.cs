@@ -1,8 +1,12 @@
+using System.Collections.Generic;
+
 namespace GuildGame.Localization
 {
     public interface ILocalizationProvider
     {
         string Get(string key);
+
+        IReadOnlyList<string> GetAll(string key);
 
         string GetRandom(string key);
 

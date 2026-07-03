@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a77de5392f314634a8030fcd00dfc8f0, type: 3}
+  m_Name: Cutscene_Day01
+  m_EditorClassIdentifier: Assembly-CSharp::GuildGame.Data.CutsceneSO
+  _id: example_cutscene
+  _lines:
+  - stepType: 0
+    speaker: 1
+    studentId: std_c
+    localizationKey: cutscene01_A_01
+    delayAfter: 1
+  - stepType: 0
+    speaker: 0
+    studentId: std_c
+    localizationKey: cutscene01_Player_01
+    delayAfter: 1
+  - stepType: 0
+    speaker: 1
+    studentId: std_c
+    localizationKey: cutscene01_A_02
+    delayAfter: 1
+  - stepType: 1
+    speaker: 1
+    studentId: 
+    localizationKey: 
+    delayAfter: 1
+  - stepType: 0
+    speaker: 0
+    studentId: 
+    localizationKey: cutscene01_Player_02
+    delayAfter: 2

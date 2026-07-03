@@ -14,11 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GuildGame.Data.CutsceneSO
   _id: example_cutscene
   _lines:
-  - speaker: 1
-    localizationKey: ui_student_hi
-    useRandomVariant: 1
-    delayAfter: -1
-  - speaker: 0
-    localizationKey: q_student_photo_tuto
-    useRandomVariant: 1
-    delayAfter: -1
+  - stepType: 0
+    speaker: 1
+    studentId: std_d
+    localizationKey: cutscene01_A_01
+    delayAfter: 1
+  - stepType: 0
+    speaker: 0
+    studentId: std_d
+    localizationKey: cutscene01_Player_01
+    delayAfter: 1
+  - stepType: 0
+    speaker: 1
+    studentId: std_d
+    localizationKey: cutscene01_A_02
+    delayAfter: 1
+  - stepType: 1
+    speaker: 1
+    studentId: 
+    localizationKey: 
+    delayAfter: 1
+  - stepType: 0
+    speaker: 0
+    studentId: 
+    localizationKey: cutscene01_Player_02
+    delayAfter: 2

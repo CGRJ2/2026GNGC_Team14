@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: Day01
   m_EditorClassIdentifier: Assembly-CSharp::GuildGame.Data.DayConfigSO
   day: 1
-  overrideStudentLimit: 0
-  studentLimit: 4
-  dayStartCutscene: {fileID: 11400000, guid: 9912a742e25b4e24aab72824a270d050, type: 2}
+  studentLimit: 3
+  dayStartCutscene: {fileID: 11400000, guid: cba27d2eea0408547b34e6341c4065c7, type: 2}

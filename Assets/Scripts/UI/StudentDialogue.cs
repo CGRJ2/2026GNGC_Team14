@@ -22,6 +22,7 @@ namespace GuildGame.UI
             Context.AnswerGiven += OnAnswerGiven;
             Context.OutcomeResolved += OnOutcomeResolved;
             Context.CutsceneDialogueRequested += OnCutsceneDialogueRequested;
+            Context.CutsceneStudentExitRequested += OnCutsceneStudentExitRequested;
             Context.CutsceneEnded += OnCutsceneEnded;
             Context.StudentExitRequested += OnStudentExitRequested;
 
@@ -78,6 +79,13 @@ namespace GuildGame.UI
             Hide();
         }
 
+        private void OnCutsceneStudentExitRequested()
+        {
+            _studentGreetingTween?.Kill();
+            _studentGreetingTween = null;
+            Hide();
+        }
+
         private void OnStudentExitRequested()
         {
             _studentGreetingTween?.Kill();
@@ -129,6 +137,7 @@ namespace GuildGame.UI
             Context.AnswerGiven -= OnAnswerGiven;
             Context.OutcomeResolved -= OnOutcomeResolved;
             Context.CutsceneDialogueRequested -= OnCutsceneDialogueRequested;
+            Context.CutsceneStudentExitRequested -= OnCutsceneStudentExitRequested;
             Context.CutsceneEnded -= OnCutsceneEnded;
             Context.StudentExitRequested -= OnStudentExitRequested;
         }
