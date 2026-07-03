@@ -21,6 +21,7 @@ namespace GuildGame.Gameplay.Flow
         public ReputationModel Reputation { get; }
         public UIAnimationSettingsSO UIAnimationSettings { get; }
         public bool LoopAfterResolution { get; }
+        public bool IsTutorial { get; }
 
         // ---- 사이클 상태 ----
         public StudentCase CurrentCase { get; set; }
@@ -33,7 +34,8 @@ namespace GuildGame.Gameplay.Flow
             GameBalanceSO balance,
             ReputationModel reputation,
             UIAnimationSettingsSO uiAnimationSettings,
-            bool loopAfterResolution = true)
+            bool loopAfterResolution = true,
+            bool isTutorial = false)
         {
             Localization = localization;
             Generator = generator;
@@ -42,6 +44,7 @@ namespace GuildGame.Gameplay.Flow
             Reputation = reputation;
             UIAnimationSettings = uiAnimationSettings;
             LoopAfterResolution = loopAfterResolution;
+            IsTutorial = isTutorial;
         }
 
         // ---- 출력 이벤트 (상태가 발행, 뷰가 구독) ----

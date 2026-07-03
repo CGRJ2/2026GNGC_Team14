@@ -21,7 +21,7 @@ namespace GuildGame.Gameplay.Flow
             GameBalanceSO.OutcomeInfo info = Context.Balance.GetInfo(outcome);
             Context.Reputation.Apply(info.reputationDelta);
 
-            string eventText = Context.Localization.Get(info.eventKey);
+            string eventText = Context.Localization.GetRandom(info.eventKey);
             Context.RaiseOutcome(outcome, eventText);
 
             UIAnimationSettingsSO settings = Context.UIAnimationSettings;

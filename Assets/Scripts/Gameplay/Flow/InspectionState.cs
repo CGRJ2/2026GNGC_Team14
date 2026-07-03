@@ -33,7 +33,7 @@ namespace GuildGame.Gameplay.Flow
             if (Context.CurrentCase == null)
                 return;
 
-            string questionText = Context.Localization.Get(QuestionKey(field));
+            string questionText = Context.Localization.GetRandom(QuestionKey(field));
             string trueValue = Context.CurrentCase.GetTrueText(field);
 
             Context.RaiseQuestion(questionText);
@@ -41,7 +41,7 @@ namespace GuildGame.Gameplay.Flow
             if (field == StudentIdFieldType.FacePhoto)
                 return;
 
-            string answerText = Context.Localization.GetFormatted("a_student", trueValue);
+            string answerText = Context.Localization.GetFormattedRandom("a_student", trueValue);
 
             _answerDelayTween?.Kill();
             float delay = Context.UIAnimationSettings != null
@@ -61,7 +61,7 @@ namespace GuildGame.Gameplay.Flow
             GoNext();
         }
 
-        private static string QuestionKey(StudentIdFieldType field)
+        private string QuestionKey(StudentIdFieldType field)
         {
             switch (field)
             {
@@ -69,7 +69,8 @@ namespace GuildGame.Gameplay.Flow
                 case StudentIdFieldType.EnrollmentDate: return "q_student_enrollment";
                 case StudentIdFieldType.Grade: return "q_student_grade";
                 case StudentIdFieldType.Major: return "q_student_major";
-                case StudentIdFieldType.FacePhoto: return "q_student_photo";
+                case StudentIdFieldType.FacePhoto:
+                    return Context.IsTutorial ? "q_student_photo_tuto" : "q_student_photo";
                 default: return field.ToString();
             }
         }

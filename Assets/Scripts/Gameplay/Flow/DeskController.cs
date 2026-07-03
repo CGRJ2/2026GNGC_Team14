@@ -54,7 +54,8 @@ namespace GuildGame.Gameplay.Flow
                 _balance,
                 reputation,
                 _uiAnimationSettings,
-                loopAfterResolution: !_runTutorialOnStart);
+                loopAfterResolution: !_runTutorialOnStart,
+                isTutorial: _runTutorialOnStart);
 
             _machine = new StateMachine();
             var enter = new StudentEnterState(_context, _machine);

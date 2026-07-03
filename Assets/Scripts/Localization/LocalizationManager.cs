@@ -4,26 +4,18 @@ using UnityEngine;
 
 namespace GuildGame.Localization
 {
-    /// <summary>
-    /// Resources의 CSV 표(key, ko, en, ...)를 로드해 키→언어별 텍스트로 보관하는 매니저.
-    /// 언어 전환 시 <see cref="OnLanguageChanged"/>를 발행해 View가 갱신하도록 한다.
-    /// </summary>
     public class LocalizationManager : Singleton<LocalizationManager>, ILocalizationProvider
     {
-        [Tooltip("Resources 하위 CSV 파일 경로(확장자 제외).")]
+        [Tooltip("CSV file path under Resources without extension.")]
         [SerializeField] private string _resourcePath = "Localization";
 
         [SerializeField] private Language _currentLanguage = Language.Korean;
 
-        // key -> (Language -> text)
-        private readonly Dictionary<string, Dictionary<Language, string>> _table = new();
-
-        // CSV 컬럼 인덱스 -> Language
+        private readonly Dictionary<string, Dictionary<Language, List<string>>> _table = new();
         private readonly Dictionary<int, Language> _columnToLanguage = new();
 
         private bool _loaded;
 
-        /// <summary>언어가 바뀌었을 때 발행. 인자는 새 언어.</summary>
         public event System.Action<Language> OnLanguageChanged;
 
         public Language CurrentLanguage => _currentLanguage;
@@ -41,7 +33,7 @@ namespace GuildGame.Localization
             var asset = Resources.Load<TextAsset>(_resourcePath);
             if (asset == null)
             {
-                Debug.LogError($"[Localization] CSV를 찾을 수 없음: Resources/{_resourcePath}");
+                Debug.LogError($"[Localization] CSV not found: Resources/{_resourcePath}");
                 _loaded = true;
                 return;
             }
@@ -49,7 +41,6 @@ namespace GuildGame.Localization
             LoadFromText(asset.text);
         }
 
-        /// <summary>CSV 원문에서 표를 구축한다(테스트에서도 직접 호출 가능).</summary>
         public void LoadFromText(string csv)
         {
             _table.Clear();
@@ -58,21 +49,21 @@ namespace GuildGame.Localization
             var rows = CsvParser.Parse(csv);
             if (rows.Count == 0)
             {
-                Debug.LogWarning("[Localization] CSV가 비어 있음.");
+                Debug.LogWarning("[Localization] CSV is empty.");
                 _loaded = true;
                 return;
             }
 
-            // 헤더: 0번은 key, 이후 컬럼명을 Language로 매핑.
             var header = rows[0];
             for (int col = 1; col < header.Length; col++)
             {
                 if (TryParseLanguage(header[col], out var lang))
                     _columnToLanguage[col] = lang;
                 else
-                    Debug.LogWarning($"[Localization] 알 수 없는 언어 컬럼 무시: '{header[col]}'");
+                    Debug.LogWarning($"[Localization] Ignored unknown language column: '{header[col]}'");
             }
 
+            string currentKey = null;
             for (int r = 1; r < rows.Count; r++)
             {
                 var row = rows[r];
@@ -81,58 +72,45 @@ namespace GuildGame.Localization
 
                 string key = row[0].Trim();
                 if (string.IsNullOrEmpty(key))
-                    continue;
-
-                var byLang = new Dictionary<Language, string>();
-                foreach (var kv in _columnToLanguage)
                 {
-                    int col = kv.Key;
-                    if (col < row.Length)
-                        byLang[kv.Value] = row[col];
+                    if (!string.IsNullOrEmpty(currentKey))
+                        AppendRowVariants(currentKey, row);
+                    continue;
                 }
-                _table[key] = byLang;
+
+                currentKey = key;
+                _table[key] = new Dictionary<Language, List<string>>();
+                AppendRowVariants(key, row);
             }
 
             _loaded = true;
-            Debug.Log($"[Localization] 로드 완료: {_table.Count}개 키, 언어 {_columnToLanguage.Count}종.");
+            Debug.Log($"[Localization] Loaded {_table.Count} keys, {_columnToLanguage.Count} languages.");
         }
 
         public string Get(string key)
         {
-            EnsureLoaded();
+            if (!TryGetTexts(key, out List<string> texts))
+                return $"!{key}!";
 
-            if (string.IsNullOrEmpty(key))
-                return string.Empty;
+            return texts[0];
+        }
 
-            if (_table.TryGetValue(key, out var byLang))
-            {
-                if (byLang.TryGetValue(_currentLanguage, out var text) && !string.IsNullOrEmpty(text))
-                    return text;
+        public string GetRandom(string key)
+        {
+            if (!TryGetTexts(key, out List<string> texts))
+                return $"!{key}!";
 
-                // 현재 언어 값이 비면 한국어로 폴백.
-                if (byLang.TryGetValue(Language.Korean, out var ko) && !string.IsNullOrEmpty(ko))
-                    return ko;
-            }
-
-            Debug.LogWarning($"[Localization] 누락 키: '{key}'");
-            return $"!{key}!";
+            return texts[Random.Range(0, texts.Count)];
         }
 
         public string GetFormatted(string key, params object[] args)
         {
-            string template = Get(key);
-            if (args == null || args.Length == 0)
-                return template;
+            return FormatTemplate(key, Get(key), args);
+        }
 
-            try
-            {
-                return string.Format(template, args);
-            }
-            catch (System.FormatException)
-            {
-                Debug.LogWarning($"[Localization] 포맷 실패 키: '{key}' template='{template}'");
-                return template;
-            }
+        public string GetFormattedRandom(string key, params object[] args)
+        {
+            return FormatTemplate(key, GetRandom(key), args);
         }
 
         public void SetLanguage(Language language)
@@ -142,6 +120,74 @@ namespace GuildGame.Localization
 
             _currentLanguage = language;
             OnLanguageChanged?.Invoke(_currentLanguage);
+        }
+
+        private void AppendRowVariants(string key, string[] row)
+        {
+            if (!_table.TryGetValue(key, out var byLang))
+            {
+                byLang = new Dictionary<Language, List<string>>();
+                _table[key] = byLang;
+            }
+
+            foreach (var kv in _columnToLanguage)
+            {
+                int col = kv.Key;
+                if (col >= row.Length)
+                    continue;
+
+                string text = row[col];
+                if (string.IsNullOrEmpty(text))
+                    continue;
+
+                if (!byLang.TryGetValue(kv.Value, out List<string> variants))
+                {
+                    variants = new List<string>();
+                    byLang[kv.Value] = variants;
+                }
+
+                variants.Add(text);
+            }
+        }
+
+        private bool TryGetTexts(string key, out List<string> texts)
+        {
+            EnsureLoaded();
+            texts = null;
+
+            if (string.IsNullOrEmpty(key))
+            {
+                texts = new List<string> { string.Empty };
+                return true;
+            }
+
+            if (_table.TryGetValue(key, out var byLang))
+            {
+                if (byLang.TryGetValue(_currentLanguage, out texts) && texts.Count > 0)
+                    return true;
+
+                if (byLang.TryGetValue(Language.Korean, out texts) && texts.Count > 0)
+                    return true;
+            }
+
+            Debug.LogWarning($"[Localization] Missing key: '{key}'");
+            return false;
+        }
+
+        private static string FormatTemplate(string key, string template, params object[] args)
+        {
+            if (args == null || args.Length == 0)
+                return template;
+
+            try
+            {
+                return string.Format(template, args);
+            }
+            catch (System.FormatException)
+            {
+                Debug.LogWarning($"[Localization] Format failed: '{key}' template='{template}'");
+                return template;
+            }
         }
 
         private static bool TryParseLanguage(string column, out Language language)
