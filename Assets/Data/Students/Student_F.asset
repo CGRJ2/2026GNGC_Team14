@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09a6ac4e894c1534ea83b6698303edad, type: 3}
+  m_Name: Student_F
+  m_EditorClassIdentifier: Assembly-CSharp::GuildGame.Data.StudentSO
+  studentId: std_d
+  studentName: "\uAE40\uC218\uBBFC"
+  enrollmentDate: 2024-03-02
+  grade: "1\uD559\uB144"
+  major: "\uBC88\uAC1C \uB9C8\uBC95"
+  illustration: {fileID: 21300000, guid: fb95ad45bb3f3f24b94468d1b59b1a0d, type: 3}
+  idPhoto: {fileID: 0}

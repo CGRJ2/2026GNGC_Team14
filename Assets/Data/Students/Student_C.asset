@@ -17,5 +17,5 @@ MonoBehaviour:
   enrollmentDate: 2022-09-01
   grade: "3\uD559\uB144"
   major: "\uCE58\uC720 \uB9C8\uBC95"
-  illustration: {fileID: -6470460504253458178, guid: fb2c0999fdd33d241ba90df4c5fc8cc7, type: 3}
+  illustration: {fileID: 21300000, guid: 7c495c9e859cbca498eaa13fd54d2279, type: 3}
   idPhoto: {fileID: 0}
