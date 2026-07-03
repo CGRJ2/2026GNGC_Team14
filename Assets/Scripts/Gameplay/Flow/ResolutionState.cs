@@ -12,6 +12,9 @@ namespace GuildGame.Gameplay.Flow
     {
         private Tween _flowTween;
 
+        /// <summary>오늘 제한 인원을 모두 처리했을 때 전이할 상태(컨트롤러가 배선).</summary>
+        public IState DayEnd { get; set; }
+
         public ResolutionState(GameContext context, StateMachine machine) : base(context, machine) { }
 
         public override void Enter()
@@ -20,6 +23,7 @@ namespace GuildGame.Gameplay.Flow
 
             GameBalanceSO.OutcomeInfo info = Context.Balance.GetInfo(outcome);
             Context.Reputation.Apply(info.reputationDelta);
+            Context.Day.CountProcessed();
 
             string eventText = Context.Localization.GetRandom(info.eventKey);
             Context.RaiseOutcome(outcome, eventText);
@@ -40,7 +44,13 @@ namespace GuildGame.Gameplay.Flow
                 .AppendInterval(exitDuration + nextStudentDelay);
 
             if (Context.LoopAfterResolution)
-                sequence.AppendCallback(GoNext);
+                sequence.AppendCallback(() =>
+                {
+                    if (Context.Day.IsQuotaReached && DayEnd != null)
+                        Machine.ChangeState(DayEnd);
+                    else
+                        GoNext();
+                });
 
             _flowTween = sequence;
         }

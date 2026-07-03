@@ -61,16 +61,21 @@ namespace GuildGame.Gameplay.Flow
                 isTutorial: _runTutorialOnStart);
 
             _machine = new StateMachine();
+            var dayStart = new DayStartState(_context, _machine);
             var enter = new StudentEnterState(_context, _machine);
             var inspection = new InspectionState(_context, _machine);
             var resolution = new ResolutionState(_context, _machine);
+            var dayEnd = new DayEndState(_context, _machine);
 
+            dayStart.Next = enter;
             enter.Next = inspection;
             inspection.Next = resolution;
             resolution.Next = enter;
+            resolution.DayEnd = dayEnd;
+            dayEnd.Next = dayStart;
 
             BindViews();
-            _machine.ChangeState(enter);
+            _machine.ChangeState(_runTutorialOnStart ? (IState)enter : dayStart);
 
             if (_runTutorialOnStart)
                 StartCoroutine(RunTutorialSequence());
