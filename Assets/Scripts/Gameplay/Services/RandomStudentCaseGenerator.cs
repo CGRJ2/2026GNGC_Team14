@@ -7,18 +7,17 @@ namespace MageAcademy.Gameplay.Services
 {
     /// <summary>
     /// 랜덤 학생을 뽑고 위조를 적용한다.
-    /// - 레포트 미포함 날: 기존 방식(정직/위조 판정 후 학생증 1~2개 위조).
-    /// - 레포트 포함 날: 정직/위조 판정 후, 위조면 {학생증필드 / 레포트헤더 / 레포트본문} 중 한 축만 위조.
-    /// 위조값은 DB의 다른 학생 값을 섞어 만든다.
+    /// - 레포트 미포함 날: 정직/위조 판정 후 학생증 1~2개 위조.
+    /// - 레포트 포함 날: 정직/위조 판정 후, 위조면 {학생증필드 / 레포트본문} 중 한 축만 위조.
+    ///   레포트 본문 위조는 한 그룹(주제)의 문단 하나를 다른 주제 또는 오류 그룹 텍스트로 교체한다.
     /// </summary>
     public class RandomStudentCaseGenerator : IStudentCaseGenerator
     {
-        private enum ForgeAxis { IdField, ReportHeader, ReportBody }
+        private enum ForgeAxis { IdField, ReportBody }
 
         private static readonly StudentIdFieldType[] AllFields =
         {
             StudentIdFieldType.Name,
-            StudentIdFieldType.EnrollmentDate,
             StudentIdFieldType.Grade,
             StudentIdFieldType.Major,
             StudentIdFieldType.FacePhoto
@@ -51,13 +50,19 @@ namespace MageAcademy.Gameplay.Services
             }
             Sprite cardPhoto = real.IdPhoto;
 
-            // 정직 레포트를 먼저 만든다(포함 날에 한해).
-            ReportData report = includeReport ? BuildHonestReport(real) : null;
+            // 정직 레포트를 먼저 만든다(포함 날 & 그룹 데이터 존재 시).
+            ReportSO.ReportGroup group = null;
+            ReportData report = null;
+            if (includeReport && _report != null && _report.HasGroups)
+            {
+                group = _report.GetRandomGroup();
+                report = BuildHonestReport(group);
+            }
 
             if (Random.value < _forgeChance)
             {
-                if (includeReport)
-                    report = ForgeSingleTell(real, forged, cardText, ref cardPhoto, report);
+                if (report != null)
+                    report = ForgeSingleTell(real, forged, cardText, ref cardPhoto, group, report);
                 else
                     ForgeIdFields(real, forged, cardText, ref cardPhoto, Random.Range(1, 3));
             }
@@ -65,17 +70,13 @@ namespace MageAcademy.Gameplay.Services
             return new StudentCase(real, forged, cardText, cardPhoto, report);
         }
 
-        private ReportData BuildHonestReport(StudentSO real)
+        private ReportData BuildHonestReport(ReportSO.ReportGroup group)
         {
-            int count = _report != null ? _report.ParagraphCount : 1;
-            List<string> keys = _report != null ? _report.PickStandardKeys(count) : new List<string>();
-            return new ReportData(
-                printedName: real.studentName,
-                printedMajor: real.major,
-                bodyKeys: keys,
-                foreignParagraphIndex: -1,
-                nameForged: false,
-                majorForged: false);
+            int count = _report.ParagraphCount;
+            var keys = new List<string>(count);
+            for (int i = 0; i < count && i < group.paragraphKeys.Count; i++)
+                keys.Add(group.paragraphKeys[i]);
+            return new ReportData(group.topicKey, keys, forgedParagraphIndex: -1);
         }
 
         private static List<string> ExtractKeys(ReportData report)
@@ -86,44 +87,30 @@ namespace MageAcademy.Gameplay.Services
             return keys;
         }
 
-        /// <summary>세 축 중 실현 가능한 한 곳만 위조한다. 실패 시 다른 축으로 폴백.</summary>
+        /// <summary>실현 가능한 한 축만 위조한다. 실패 시 다른 축으로 폴백.</summary>
         private ReportData ForgeSingleTell(
             StudentSO real,
             Dictionary<StudentIdFieldType, bool> forged,
             Dictionary<StudentIdFieldType, string> cardText,
             ref Sprite cardPhoto,
+            ReportSO.ReportGroup group,
             ReportData honestReport)
         {
-            var axes = new List<ForgeAxis> { ForgeAxis.IdField, ForgeAxis.ReportHeader, ForgeAxis.ReportBody };
+            var axes = new List<ForgeAxis> { ForgeAxis.IdField, ForgeAxis.ReportBody };
             Shuffle(axes);
 
             foreach (var axis in axes)
             {
-                switch (axis)
+                if (axis == ForgeAxis.IdField)
                 {
-                    case ForgeAxis.IdField:
-                        if (ForgeIdFields(real, forged, cardText, ref cardPhoto, 1) > 0)
-                            return honestReport;
-                        break;
-
-                    case ForgeAxis.ReportHeader:
-                        ReportData headerForged = ForgeReportHeader(real, honestReport);
-                        if (headerForged != null)
-                            return headerForged;
-                        break;
-
-                    case ForgeAxis.ReportBody:
-                        if (_report != null && _report.HasForeign && honestReport.ParagraphCount > 0)
-                        {
-                            var keys = ExtractKeys(honestReport);
-                            int idx = Random.Range(0, keys.Count);
-                            keys[idx] = _report.GetRandomForeignKey();
-                            return new ReportData(
-                                honestReport.PrintedName, honestReport.PrintedMajor,
-                                keys, foreignParagraphIndex: idx,
-                                nameForged: false, majorForged: false);
-                        }
-                        break;
+                    if (ForgeIdFields(real, forged, cardText, ref cardPhoto, 1) > 0)
+                        return honestReport;
+                }
+                else
+                {
+                    ReportData bodyForged = ForgeReportBody(group, honestReport);
+                    if (bodyForged != null)
+                        return bodyForged;
                 }
             }
 
@@ -131,35 +118,28 @@ namespace MageAcademy.Gameplay.Services
             return honestReport;
         }
 
-        /// <summary>레포트 헤더(이름 또는 과목)를 다른 학생 값으로 위조한다. 실패 시 null.</summary>
-        private ReportData ForgeReportHeader(StudentSO real, ReportData honest)
+        /// <summary>본문 한 문단을 다른 주제 또는 오류 그룹 텍스트로 교체한다. 실패 시 null.</summary>
+        private ReportData ForgeReportBody(ReportSO.ReportGroup group, ReportData honest)
         {
-            bool forgeName = Random.value < 0.5f;
+            if (group == null || honest.ParagraphCount == 0)
+                return null;
 
-            for (int attempt = 0; attempt < 2; attempt++)
-            {
-                bool tryName = forgeName ^ (attempt == 1);
-                for (int i = 0; i < 8; i++)
-                {
-                    StudentSO other = _database.GetRandomOther(real);
-                    if (other == null)
-                        return null;
+            ReportSO.ReportGroup other = _report.GetRandomOtherGroup(group);
+            bool canWrongTopic = other != null;
+            bool canError = _report.HasError;
+            if (!canWrongTopic && !canError)
+                return null;
 
-                    if (tryName)
-                    {
-                        if (!string.IsNullOrEmpty(other.studentName) && other.studentName != real.studentName)
-                            return new ReportData(other.studentName, honest.PrintedMajor, ExtractKeys(honest),
-                                foreignParagraphIndex: -1, nameForged: true, majorForged: false);
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(other.major) && other.major != real.major)
-                            return new ReportData(honest.PrintedName, other.major, ExtractKeys(honest),
-                                foreignParagraphIndex: -1, nameForged: false, majorForged: true);
-                    }
-                }
-            }
-            return null;
+            var keys = ExtractKeys(honest);
+            int idx = Random.Range(0, keys.Count);
+
+            bool useError = canError && (!canWrongTopic || Random.value < 0.5f);
+            string replacement = useError ? _report.GetRandomErrorKey() : other.GetRandomParagraph();
+            if (string.IsNullOrEmpty(replacement))
+                return null;
+
+            keys[idx] = replacement;
+            return new ReportData(honest.TopicKey, keys, forgedParagraphIndex: idx);
         }
 
         /// <summary>학생증 필드를 최대 target개 위조한다. 실제 위조된 개수를 반환.</summary>

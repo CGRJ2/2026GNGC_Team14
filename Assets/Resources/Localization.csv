@@ -42,24 +42,6 @@ cutscene01_Player_02,요즘엔 정말 너도 나도 다 골렘을 쓰는군
 ,확실히 효과적인 마법 도구이긴 하다만...
 ,학생들이 골렘에 의존하지 말아야 할텐데...
 
-report_label_name,이름,Name
-report_label_major,전공,Major
-report_body_std_1,"본 논문은 원소 마법의 기초 이론과 응용을 다룬다. 특히 화염계 주문의 안정성에 주목하였다.","This thesis covers elemental magic fundamentals and applications, focusing on fire-type spell stability."
-report_body_std_2,"이 보고서는 소환술의 윤리적 문제와 소환체의 자율성을 고찰한다.","This report examines the ethics of summoning and the autonomy of summoned beings."
-report_body_foreign_1,"Arcanum incantatio: golemus fabricatum est per magiam obscuram, et vita simulata datur.","Arcanum incantatio: golemus fabricatum est per magiam obscuram, et vita simulata datur."
-report_body_foreign_2,"Fhtagn nyar golem, vivifika per necromantia, obliteracio memoria studentis.","Fhtagn nyar golem, vivifika per necromantia, obliteracio memoria studentis."
-
-# report paragraphs (standard pool)
-report_para_std_1,"서론: 본 과제는 원소 마법의 기본 순환 구조를 분석한다.","Intro: this paper analyzes the basic cycle of elemental magic."
-report_para_std_2,"화염계 주문은 안정성 확보를 위해 촉매의 순도가 중요하다.","Fire spells require pure catalysts for stability."
-report_para_std_3,"빙결계는 시전 속도와 지속 시간 사이의 균형이 핵심이다.","Frost magic hinges on balancing cast speed and duration."
-report_para_std_4,"실험에서 소환진의 안정성은 룬의 배치에 크게 좌우되었다.","In tests, summon-circle stability depended on rune placement."
-report_para_std_5,"결론적으로 원소 간 상성은 마력 효율에 큰 영향을 준다.","In conclusion, elemental affinities greatly affect mana efficiency."
-report_para_std_6,"향후 연구는 복합 원소 주문의 부작용을 다룰 필요가 있다.","Future work should address side effects of compound spells."
-# report paragraphs (foreign / forged)
-report_para_foreign_1,"Xhulthaa nekro golem fabrica, vita falsa incantatum est.","Xhulthaa nekro golem fabrica, vita falsa incantatum est."
-report_para_foreign_2,"Голем некромантио обфускацио, веритас деструктум.","Голем некромантио обфускацио, веритас деструктум."
-report_para_foreign_3,"Zzyphar qux golem-signum, memoria studentis obliterata.","Zzyphar qux golem-signum, memoria studentis obliterata."
 # report interrogation reactions
 report_react_flustered,"그, 그건... 제가 인용한 고대 문헌이라서요...","T-thats... an ancient text I quoted..."
 ,"어? 거긴 신경 쓰지 마세요!","H-huh? Dont mind that part!"
@@ -69,3 +51,24 @@ report_react_normal,"그 문단은 평범한 분석 내용인데요?","That para
 
 outcome_timeout,"(시간 초과) 뭘 그리 꾸물거려! 시간 다 됐다, 다음!","(Times up) Too slow! Times over. Next!"
 ,"(째깍) ...늦었네요. 검사 실패입니다.","(tick) ...too late. Inspection failed."
+
+# report topic groups
+report_topic_fire,"화염술 개론","Introduction to Pyromancy"
+report_fire_1,"화염술은 마력을 열에너지로 변환하는 기초 원소 마법이다.","Pyromancy converts mana into heat, a basic elemental art."
+report_fire_2,"촉매의 순도가 높을수록 불꽃이 더 안정적으로 유지된다.","The purer the catalyst, the more stable the flame."
+report_fire_3,"시전자는 발화점 조절로 위력과 지속시간을 조율한다.","Casters tune power and duration by adjusting the ignition point."
+report_fire_4,"결론적으로 화염술의 핵심은 열의 통제에 있다.","In sum, pyromancy is mastery of heat control."
+report_topic_summon,"소환술 개론","Introduction to Summoning"
+report_summon_1,"소환술은 다른 차원의 존재를 계약으로 불러내는 마법이다.","Summoning calls beings from other planes via contracts."
+report_summon_2,"소환진의 룬 배치가 소환체의 안정성을 좌우한다.","Rune placement in the circle governs the summons stability."
+report_summon_3,"계약 조건이 명확할수록 소환체를 통제하기 쉬워진다.","Clearer contract terms make the summon easier to control."
+report_summon_4,"결론적으로 소환술은 존재와의 계약이 핵심이다.","In sum, summoning is the art of the contract."
+report_topic_alchemy,"연금술 개론","Introduction to Alchemy"
+report_alchemy_1,"연금술은 물질의 성질을 변환하는 정밀 마법이다.","Alchemy is the precise art of transmuting matter."
+report_alchemy_2,"재료의 배합 비율이 변성 결과를 결정한다.","The ratio of reagents determines the outcome."
+report_alchemy_3,"촉매 반응은 정확한 온도와 시간을 요구한다.","Catalytic reactions demand exact temperature and timing."
+report_alchemy_4,"결론적으로 연금술은 배합과 정밀함의 학문이다.","In sum, alchemy is a discipline of mixture and precision."
+# report error group (broken / foreign)
+report_err_1,"Xhulthaa nekro golem fabrica, vita falsa incantatum est.","Xhulthaa nekro golem fabrica, vita falsa incantatum est."
+report_err_2,"Голем некромантио обфускацио, веритас деструктум.","Голем некромантио обфускацио, веритас деструктум."
+report_err_3,"Zzyphar qux golem-signum, memoria studentis obliterata.","Zzyphar qux golem-signum, memoria studentis obliterata."

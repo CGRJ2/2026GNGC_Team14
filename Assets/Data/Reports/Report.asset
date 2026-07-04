@@ -13,14 +13,26 @@ MonoBehaviour:
   m_Name: Report
   m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.ReportSO
   paragraphCount: 4
-  paragraphStandardKeys:
-  - report_para_std_1
-  - report_para_std_2
-  - report_para_std_3
-  - report_para_std_4
-  - report_para_std_5
-  - report_para_std_6
-  paragraphForeignKeys:
-  - report_para_foreign_1
-  - report_para_foreign_2
-  - report_para_foreign_3
+  groups:
+  - topicKey: report_topic_fire
+    paragraphKeys:
+    - report_fire_1
+    - report_fire_2
+    - report_fire_3
+    - report_fire_4
+  - topicKey: report_topic_summon
+    paragraphKeys:
+    - report_summon_1
+    - report_summon_2
+    - report_summon_3
+    - report_summon_4
+  - topicKey: report_topic_alchemy
+    paragraphKeys:
+    - report_alchemy_1
+    - report_alchemy_2
+    - report_alchemy_3
+    - report_alchemy_4
+  errorKeys:
+  - report_err_1
+  - report_err_2
+  - report_err_3

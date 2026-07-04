@@ -98,10 +98,10 @@ namespace MageAcademy.Gameplay.Flow
             if (report == null)
                 return;
 
-            bool foreign = report.IsParagraphForeign(paragraphIndex);
-            string line = Context.Localization.GetRandom(foreign ? "report_react_flustered" : "report_react_normal");
+            bool suspicious = report.IsParagraphForged(paragraphIndex);
+            string line = Context.Localization.GetRandom(suspicious ? "report_react_flustered" : "report_react_normal");
 
-            Context.RaiseStudentEmotion(foreign ? StudentEmotion.Flustered : StudentEmotion.Normal);
+            Context.RaiseStudentEmotion(suspicious ? StudentEmotion.Flustered : StudentEmotion.Normal);
             Context.RaiseStudentReaction(line);
         }
 

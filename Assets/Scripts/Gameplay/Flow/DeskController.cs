@@ -169,7 +169,6 @@ namespace MageAcademy.Gameplay.Flow
             table.SetStudentIdButtonInteractable(false);
 
             yield return RunFieldStep(idPanel, StudentIdFieldType.Name);
-            yield return RunFieldStep(idPanel, StudentIdFieldType.EnrollmentDate);
             yield return RunFieldStep(idPanel, StudentIdFieldType.Grade);
             yield return RunFieldStep(idPanel, StudentIdFieldType.Major);
             yield return RunPhotoStep(idPanel, verdict);
@@ -263,7 +262,6 @@ namespace MageAcademy.Gameplay.Flow
                 var forged = new Dictionary<StudentIdFieldType, bool>
                 {
                     [StudentIdFieldType.Name] = false,
-                    [StudentIdFieldType.EnrollmentDate] = false,
                     [StudentIdFieldType.Grade] = false,
                     [StudentIdFieldType.Major] = false,
                     [StudentIdFieldType.FacePhoto] = true,
@@ -272,7 +270,6 @@ namespace MageAcademy.Gameplay.Flow
                 var cardText = new Dictionary<StudentIdFieldType, string>
                 {
                     [StudentIdFieldType.Name] = _student.GetText(StudentIdFieldType.Name),
-                    [StudentIdFieldType.EnrollmentDate] = _student.GetText(StudentIdFieldType.EnrollmentDate),
                     [StudentIdFieldType.Grade] = _student.GetText(StudentIdFieldType.Grade),
                     [StudentIdFieldType.Major] = _student.GetText(StudentIdFieldType.Major),
                 };

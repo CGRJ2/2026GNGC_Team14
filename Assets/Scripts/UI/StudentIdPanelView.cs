@@ -19,7 +19,6 @@ namespace MageAcademy.UI
         [SerializeField] private Image _photoImage;
 
         private Button _nameButton;
-        private Button _enrollmentButton;
         private Button _gradeButton;
         private Button _majorButton;
         private Button _photoButton;
@@ -130,9 +129,6 @@ namespace MageAcademy.UI
                 case StudentIdFieldType.Name:
                     button.onClick.AddListener(OnNameClicked);
                     break;
-                case StudentIdFieldType.EnrollmentDate:
-                    button.onClick.AddListener(OnEnrollmentClicked);
-                    break;
                 case StudentIdFieldType.Grade:
                     button.onClick.AddListener(OnGradeClicked);
                     break;
@@ -149,8 +145,6 @@ namespace MageAcademy.UI
         {
             if (_nameButton != null)
                 _nameButton.onClick.RemoveListener(OnNameClicked);
-            if (_enrollmentButton != null)
-                _enrollmentButton.onClick.RemoveListener(OnEnrollmentClicked);
             if (_gradeButton != null)
                 _gradeButton.onClick.RemoveListener(OnGradeClicked);
             if (_majorButton != null)
@@ -160,7 +154,6 @@ namespace MageAcademy.UI
         }
 
         private void OnNameClicked() => Context.RequestQuestion(StudentIdFieldType.Name);
-        private void OnEnrollmentClicked() => Context.RequestQuestion(StudentIdFieldType.EnrollmentDate);
         private void OnGradeClicked() => Context.RequestQuestion(StudentIdFieldType.Grade);
         private void OnMajorClicked() => Context.RequestQuestion(StudentIdFieldType.Major);
         private void OnPhotoClicked() => Context.RequestQuestion(StudentIdFieldType.FacePhoto);
@@ -170,7 +163,6 @@ namespace MageAcademy.UI
             switch (field)
             {
                 case StudentIdFieldType.Name: return _nameButton;
-                case StudentIdFieldType.EnrollmentDate: return _enrollmentButton;
                 case StudentIdFieldType.Grade: return _gradeButton;
                 case StudentIdFieldType.Major: return _majorButton;
                 case StudentIdFieldType.FacePhoto: return _photoButton;
@@ -181,7 +173,6 @@ namespace MageAcademy.UI
         public void SetAllFieldButtonsInteractable(bool interactable)
         {
             SetFieldButtonInteractable(StudentIdFieldType.Name, interactable);
-            SetFieldButtonInteractable(StudentIdFieldType.EnrollmentDate, interactable);
             SetFieldButtonInteractable(StudentIdFieldType.Grade, interactable);
             SetFieldButtonInteractable(StudentIdFieldType.Major, interactable);
             SetFieldButtonInteractable(StudentIdFieldType.FacePhoto, interactable);

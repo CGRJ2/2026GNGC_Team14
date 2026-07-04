@@ -662,6 +662,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 767839064609276019, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4990952951099349712, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_Name
+      value: Topic_Title
+      objectReference: {fileID: 0}
     - target: {fileID: 5453110394674133281, guid: 6591233f2031ab74c924b173130cc276, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -706,11 +714,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: InGameUI
       objectReference: {fileID: 0}
+    - target: {fileID: 7198623219897132400, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: _topicLabel
+      value: 
+      objectReference: {fileID: 2571330066754943064}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+--- !u!114 &2571330066754943064 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6638371354345397035, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+  m_PrefabInstance: {fileID: 2571330066754943063}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

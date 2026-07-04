@@ -1,4 +1,3 @@
-using MageAcademy.Data;
 using MageAcademy.Gameplay.Models;
 using TMPro;
 using UnityEngine;
@@ -7,15 +6,14 @@ using UnityEngine.UI;
 namespace MageAcademy.UI
 {
     /// <summary>
-    /// 레포트 패널. 헤더(이름·과목)는 학생증과 동일하게 클릭 시 학생에게 질문(진술과 대조),
-    /// 본문은 여러 문단으로 나뉘며 수상한(외국어) 문단을 클릭하면 학생을 추궁한다.
-    /// 레포트를 요구하지 않는 날(Report==null)에는 열기 버튼을 숨긴다.
+    /// 레포트 패널. 상단에 주제(제목)를 표시하고, 본문 여러 문단 중 주제와 어긋나는(다른 주제/오류)
+    /// 문단을 클릭하면 학생을 추궁한다. 레포트를 요구하지 않는 날(Report==null)에는 열기 버튼을 숨긴다.
     /// 뷰는 이벤트 구독만 하고 모델을 변경하지 않는다.
     /// </summary>
     public class ReportPanelView : UIViewBase
     {
-        [SerializeField] private TMP_Text _nameLabel;
-        [SerializeField] private TMP_Text _majorLabel;
+        [Tooltip("레포트 주제(제목) 라벨")]
+        [SerializeField] private TMP_Text _topicLabel;
 
         [Tooltip("본문 문단 라벨들(순서대로). 클릭 시 해당 문단을 추궁한다.")]
         [SerializeField] private TMP_Text[] _bodyParagraphs;
@@ -23,14 +21,10 @@ namespace MageAcademy.UI
         [Tooltip("테이블의 레포트 열기 버튼. 레포트 없는 날엔 숨긴다.")]
         [SerializeField] private Button _openButton;
 
-        private Button _nameButton;
-        private Button _majorButton;
         private UIDraggablePanel _draggablePanel;
 
         protected override void OnBind()
         {
-            _nameButton = BindQuestion(_nameLabel, StudentIdFieldType.Name);
-            _majorButton = BindQuestion(_majorLabel, StudentIdFieldType.Major);
             BindParagraphs();
             EnsureDraggablePanel();
 
@@ -53,8 +47,9 @@ namespace MageAcademy.UI
             }
 
             SetOpenButtonVisible(true);
-            SetField(_nameLabel, "report_label_name", report.PrintedName);
-            SetField(_majorLabel, "report_label_major", report.PrintedMajor);
+
+            if (_topicLabel != null)
+                _topicLabel.text = Context.Localization.Get(report.TopicKey);
 
             if (_bodyParagraphs != null)
             {
@@ -81,27 +76,6 @@ namespace MageAcademy.UI
         {
             if (_openButton != null)
                 _openButton.gameObject.SetActive(visible);
-        }
-
-        private void SetField(TMP_Text label, string labelKey, string value)
-        {
-            if (label != null)
-                label.text = $"{Context.Localization.Get(labelKey)}: {value}";
-        }
-
-        private Button BindQuestion(TMP_Text label, StudentIdFieldType field)
-        {
-            if (label == null)
-                return null;
-
-            label.raycastTarget = true;
-            Button button = label.GetComponent<Button>();
-            if (button == null)
-                button = label.gameObject.AddComponent<Button>();
-
-            button.targetGraphic = label;
-            button.onClick.AddListener(() => Context.RequestQuestion(field));
-            return button;
         }
 
         private void BindParagraphs()
@@ -143,11 +117,6 @@ namespace MageAcademy.UI
                 Context.CaseStarted -= OnCaseStarted;
                 Context.StudentExitRequested -= OnStudentExitRequested;
             }
-
-            if (_nameButton != null)
-                _nameButton.onClick.RemoveAllListeners();
-            if (_majorButton != null)
-                _majorButton.onClick.RemoveAllListeners();
 
             if (_bodyParagraphs != null)
             {
