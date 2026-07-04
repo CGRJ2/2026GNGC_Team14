@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.DayConfigSO
   day: 3
   studentLimit: 5
-  dayStartCutscene: {fileID: 11400000, guid: 9912a742e25b4e24aab72824a270d050, type: 2}
+  requiresReport: 1
+  dayStartCutscene: {fileID: 0}
+  endDayIllustration: {fileID: 0}
+  endDayIllustrationDuration: 3

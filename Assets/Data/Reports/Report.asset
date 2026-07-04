@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b989f8f2d2e1d6640b214ca8630acebd, type: 3}
+  m_Name: Report
+  m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.ReportSO
+  paragraphCount: 4
+  paragraphStandardKeys:
+  - report_para_std_1
+  - report_para_std_2
+  - report_para_std_3
+  - report_para_std_4
+  - report_para_std_5
+  - report_para_std_6
+  paragraphForeignKeys:
+  - report_para_foreign_1
+  - report_para_foreign_2
+  - report_para_foreign_3

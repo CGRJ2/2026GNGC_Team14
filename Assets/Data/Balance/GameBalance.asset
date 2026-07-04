@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.GameBalanceSO
   startingReputation: 10
   lieChance: 0.5
+  inspectionTimeLimit: 30
   truthSuccess:
     reputationDelta: 1
     eventKey: outcome_truth_success
@@ -26,3 +27,6 @@ MonoBehaviour:
   truthMisjudged:
     reputationDelta: -1
     eventKey: outcome_truth_misjudged
+  timeout:
+    reputationDelta: -2
+    eventKey: outcome_timeout

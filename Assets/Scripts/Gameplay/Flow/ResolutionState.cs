@@ -19,11 +19,16 @@ namespace MageAcademy.Gameplay.Flow
 
         public override void Enter()
         {
-            CaseOutcome outcome = Context.Judgement.Judge(Context.CurrentCase, Context.PendingVerdict);
+            CaseOutcome outcome = Context.PendingTimeout
+                ? CaseOutcome.Timeout
+                : Context.Judgement.Judge(Context.CurrentCase, Context.PendingVerdict);
+            Context.PendingTimeout = false;
 
             GameBalanceSO.OutcomeInfo info = Context.Balance.GetInfo(outcome);
             Context.Reputation.Apply(info.reputationDelta);
             Context.Day.CountProcessed();
+
+            RaiseOutcomeEmotion(outcome);
 
             string eventText = Context.Localization.GetRandom(info.eventKey);
             Context.RaiseOutcome(outcome, eventText);
@@ -53,6 +58,26 @@ namespace MageAcademy.Gameplay.Flow
                 });
 
             _flowTween = sequence;
+        }
+
+        private void RaiseOutcomeEmotion(CaseOutcome outcome)
+        {
+            switch (outcome)
+            {
+                case CaseOutcome.TruthSuccess:
+                    Context.RaiseStudentEmotion(StudentEmotion.Happy);
+                    break;
+                case CaseOutcome.FalseApproved:
+                    Context.RaiseStudentEmotion(StudentEmotion.Sneer);
+                    break;
+                case CaseOutcome.TruthMisjudged: // 억울하게 불합격 → 화남
+                case CaseOutcome.Timeout:
+                    Context.RaiseStudentEmotion(StudentEmotion.Angry);
+                    break;
+                default:
+                    Context.RaiseStudentEmotion(StudentEmotion.Normal);
+                    break;
+            }
         }
 
         public override void Exit()

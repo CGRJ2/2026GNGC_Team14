@@ -31,6 +31,9 @@ namespace MageAcademy.Gameplay.Flow
         public StudentCase CurrentCase { get; set; }
         public PlayerVerdict PendingVerdict { get; set; }
 
+        /// <summary>검사 제한시간 초과로 결과가 확정되어야 하면 true.</summary>
+        public bool PendingTimeout { get; set; }
+
         /// <summary>
         /// 현재 진행 상황(날짜·평판)을 세이브로 기록한다. 저장 항목이 늘어나면 여기서 조립한다.
         /// 튜토리얼 모드에서는 저장하지 않는다.
@@ -87,6 +90,10 @@ namespace MageAcademy.Gameplay.Flow
         public event Action<CutsceneSO> CutscenePlayRequested;
         public event Action<Sprite> DayEndIllustrationShown;
         public event Action DayEndIllustrationHidden;
+        public event Action<string> StudentReactionRequested;      // 추궁 반응 대사
+        public event Action<StudentEmotion> StudentEmotionChanged; // 표정 스왑
+        public event Action<float, float> InspectionTimerUpdated;  // (남은 시간, 총 시간)
+        public event Action InspectionTimerHidden;
 
         public void RaiseCaseStarted(StudentCase c) => CaseStarted?.Invoke(c);
         public void RaiseQuestion(string question) => QuestionAsked?.Invoke(question);
@@ -102,12 +109,18 @@ namespace MageAcademy.Gameplay.Flow
         public void RequestCutscene(CutsceneSO cutscene) => CutscenePlayRequested?.Invoke(cutscene);
         public void RaiseDayEndIllustrationShown(Sprite illustration) => DayEndIllustrationShown?.Invoke(illustration);
         public void RaiseDayEndIllustrationHidden() => DayEndIllustrationHidden?.Invoke();
+        public void RaiseStudentReaction(string line) => StudentReactionRequested?.Invoke(line);
+        public void RaiseStudentEmotion(StudentEmotion emotion) => StudentEmotionChanged?.Invoke(emotion);
+        public void RaiseInspectionTimer(float remaining, float total) => InspectionTimerUpdated?.Invoke(remaining, total);
+        public void RaiseInspectionTimerHidden() => InspectionTimerHidden?.Invoke();
 
         // ---- 입력 이벤트 (뷰가 요청, 상태가 구독) ----
         public event Action<StudentIdFieldType> QuestionRequested;
         public event Action<PlayerVerdict> VerdictRequested;
+        public event Action<int> ReportInterrogationRequested; // 레포트 문단 클릭(추궁)
 
         public void RequestQuestion(StudentIdFieldType field) => QuestionRequested?.Invoke(field);
         public void RequestVerdict(PlayerVerdict verdict) => VerdictRequested?.Invoke(verdict);
+        public void RequestReportInterrogation(int paragraphIndex) => ReportInterrogationRequested?.Invoke(paragraphIndex);
     }
 }

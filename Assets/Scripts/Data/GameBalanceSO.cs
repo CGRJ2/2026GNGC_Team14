@@ -28,11 +28,16 @@ namespace MageAcademy.Data
         [Tooltip("학생이 거짓을 포함할 확률")]
         public float lieChance = 0.5f;
 
+        [Min(1f)]
+        [Tooltip("학생 1명당 검사 제한시간(초)")]
+        public float inspectionTimeLimit = 30f;
+
         [Header("결과별 평판/이벤트")]
         public OutcomeInfo truthSuccess = new() { reputationDelta = 1, eventKey = "outcome_truth_success" };
         public OutcomeInfo falseCaught = new() { reputationDelta = 1, eventKey = "outcome_false_caught" };
         public OutcomeInfo falseApproved = new() { reputationDelta = -2, eventKey = "outcome_false_approved" };
         public OutcomeInfo truthMisjudged = new() { reputationDelta = -1, eventKey = "outcome_truth_misjudged" };
+        public OutcomeInfo timeout = new() { reputationDelta = -2, eventKey = "outcome_timeout" };
 
         public OutcomeInfo GetInfo(CaseOutcome outcome)
         {
@@ -42,6 +47,7 @@ namespace MageAcademy.Data
                 case CaseOutcome.FalseCaught: return falseCaught;
                 case CaseOutcome.FalseApproved: return falseApproved;
                 case CaseOutcome.TruthMisjudged: return truthMisjudged;
+                case CaseOutcome.Timeout: return timeout;
                 default: return truthSuccess;
             }
         }

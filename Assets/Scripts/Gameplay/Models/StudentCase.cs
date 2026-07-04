@@ -19,19 +19,24 @@ namespace MageAcademy.Gameplay.Models
         /// <summary>학생증에 표기된 얼굴 사진(위조 시 다른 학생 사진).</summary>
         public Sprite CardPhoto { get; }
 
+        /// <summary>레포트를 요구하는 날의 제출 레포트. 없으면 null.</summary>
+        public ReportData Report { get; }
+
         public StudentCase(
             StudentSO student,
             Dictionary<StudentIdFieldType, bool> forged,
             Dictionary<StudentIdFieldType, string> cardText,
-            Sprite cardPhoto)
+            Sprite cardPhoto,
+            ReportData report = null)
         {
             Student = student;
             _forged = forged ?? new Dictionary<StudentIdFieldType, bool>();
             _cardText = cardText ?? new Dictionary<StudentIdFieldType, string>();
             CardPhoto = cardPhoto;
+            Report = report;
         }
 
-        /// <summary>어떤 필드도 위조되지 않았으면 진짜(=정직).</summary>
+        /// <summary>학생증·레포트 어떤 항목도 위조되지 않았으면 진짜(=정직).</summary>
         public bool IsHonest
         {
             get
@@ -41,7 +46,7 @@ namespace MageAcademy.Gameplay.Models
                     if (forged)
                         return false;
                 }
-                return true;
+                return Report == null || Report.IsHonest;
             }
         }
 

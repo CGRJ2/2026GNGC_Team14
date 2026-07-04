@@ -32,12 +32,40 @@ outcome_false_caught,(거짓 / 탈락) 걸려버렸다...,This ID is forged! Adm
 outcome_false_approved,"(거짓 / 통과)(음흉한 미소) 감사합니다, 선생님. 그럼 이만. 헤헤...","(a sly grin) ...thank you, teacher. I'll be off then. Heh heh..."
 outcome_truth_misjudged,(참 / 탈락) 억울합니다! 이런 부당한 처사가 어디 있습니까!,This is unjust! My ID is real! How is this fair!
 ,,
-cutscene01_A_01,반갑다.,
-,첫번째 컷씬을 진행할게,
-cutscene01_Player_01,첫번째 컷씬 확인,
-,플레이어 대사도 정상적으로 나온다,
-cutscene01_A_02,정상작동 확인,
-,나는 퇴장한다.,
-cutscene01_Player_02,학생 퇴장 후 플레이어 독백 테스트
-,잘된다.
-,컷씬 종료 후 일과 시작한다.
+cutscene01_A_01,교수님 그거 아세요?,
+,요즘에 골렘을 사람처럼 바꾸는 마법이 유행하고 있대요.,
+cutscene01_Player_01,이녀석들이...,
+,새로운 정보 고맙네.,
+cutscene01_A_02,두눈 크게 뜨고 잘 봐야할거에요.,
+,그럼 저는 이만.,
+cutscene01_Player_02,요즘엔 정말 너도 나도 다 골렘을 쓰는군
+,확실히 효과적인 마법 도구이긴 하다만...
+,학생들이 골렘에 의존하지 말아야 할텐데...
+
+report_label_name,이름,Name
+report_label_major,전공,Major
+report_body_std_1,"본 논문은 원소 마법의 기초 이론과 응용을 다룬다. 특히 화염계 주문의 안정성에 주목하였다.","This thesis covers elemental magic fundamentals and applications, focusing on fire-type spell stability."
+report_body_std_2,"이 보고서는 소환술의 윤리적 문제와 소환체의 자율성을 고찰한다.","This report examines the ethics of summoning and the autonomy of summoned beings."
+report_body_foreign_1,"Arcanum incantatio: golemus fabricatum est per magiam obscuram, et vita simulata datur.","Arcanum incantatio: golemus fabricatum est per magiam obscuram, et vita simulata datur."
+report_body_foreign_2,"Fhtagn nyar golem, vivifika per necromantia, obliteracio memoria studentis.","Fhtagn nyar golem, vivifika per necromantia, obliteracio memoria studentis."
+
+# report paragraphs (standard pool)
+report_para_std_1,"서론: 본 과제는 원소 마법의 기본 순환 구조를 분석한다.","Intro: this paper analyzes the basic cycle of elemental magic."
+report_para_std_2,"화염계 주문은 안정성 확보를 위해 촉매의 순도가 중요하다.","Fire spells require pure catalysts for stability."
+report_para_std_3,"빙결계는 시전 속도와 지속 시간 사이의 균형이 핵심이다.","Frost magic hinges on balancing cast speed and duration."
+report_para_std_4,"실험에서 소환진의 안정성은 룬의 배치에 크게 좌우되었다.","In tests, summon-circle stability depended on rune placement."
+report_para_std_5,"결론적으로 원소 간 상성은 마력 효율에 큰 영향을 준다.","In conclusion, elemental affinities greatly affect mana efficiency."
+report_para_std_6,"향후 연구는 복합 원소 주문의 부작용을 다룰 필요가 있다.","Future work should address side effects of compound spells."
+# report paragraphs (foreign / forged)
+report_para_foreign_1,"Xhulthaa nekro golem fabrica, vita falsa incantatum est.","Xhulthaa nekro golem fabrica, vita falsa incantatum est."
+report_para_foreign_2,"Голем некромантио обфускацио, веритас деструктум.","Голем некромантио обфускацио, веритас деструктум."
+report_para_foreign_3,"Zzyphar qux golem-signum, memoria studentis obliterata.","Zzyphar qux golem-signum, memoria studentis obliterata."
+# report interrogation reactions
+report_react_flustered,"그, 그건... 제가 인용한 고대 문헌이라서요...","T-thats... an ancient text I quoted..."
+,"어? 거긴 신경 쓰지 마세요!","H-huh? Dont mind that part!"
+,"그 부분은... 그냥 오타입니다. 네, 오타요.","That bit is... just a typo. Yes, a typo."
+report_react_normal,"그 문단은 평범한 분석 내용인데요?","That paragraph is just plain analysis."
+,"문제될 게 있나요?","Is something wrong with it?"
+
+outcome_timeout,"(시간 초과) 뭘 그리 꾸물거려! 시간 다 됐다, 다음!","(Times up) Too slow! Times over. Next!"
+,"(째깍) ...늦었네요. 검사 실패입니다.","(tick) ...too late. Inspection failed."

@@ -11,7 +11,8 @@ namespace MageAcademy.Gameplay.Flow
 
         public override void Enter()
         {
-            StudentCase newCase = Context.Generator.Generate();
+            bool includeReport = Context.Day.TodayConfig != null && Context.Day.TodayConfig.requiresReport;
+            StudentCase newCase = Context.Generator.Generate(includeReport);
             if (newCase == null)
             {
                 Debug.LogError("[Flow] 학생 데이터가 없어 사이클을 진행할 수 없음.");

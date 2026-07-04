@@ -18,4 +18,8 @@ MonoBehaviour:
   grade: "1\uD559\uB144"
   major: "\uD654\uC5FC \uB9C8\uBC95"
   illustration: {fileID: 21300000, guid: 3212bc1c77b2713428b891c8fa2b028c, type: 3}
-  idPhoto: {fileID: 0}
+  idPhoto: {fileID: 21300000, guid: b0d9293bbc192594b9872430579bb0bf, type: 3}
+  happyIllustration: {fileID: 21300000, guid: d1b664e30361a3843bc8528337463d28, type: 3}
+  flusteredIllustration: {fileID: 21300000, guid: 775ee30a2103ab949ae86d1a4336085b, type: 3}
+  angryIllustration: {fileID: 21300000, guid: 05c9b86803debc740af9affafb16bdf2, type: 3}
+  sneerIllustration: {fileID: 21300000, guid: 2bd46aa84a8ddf34086ec900c376989f, type: 3}

@@ -16,6 +16,9 @@ namespace MageAcademy.Data
         [Tooltip("이 날 검사할 학생 수")]
         public int studentLimit = 4;
 
+        [Tooltip("이 날 학생이 레포트를 제출하는지(레포트 검증면 활성화). Day2~ = true")]
+        public bool requiresReport;
+
         [Header("하루 시작 이벤트")]
         [Tooltip("하루 시작 연출이 끝난 뒤 재생할 컷씬. 없으면 바로 학생 입장")]
         public CutsceneSO dayStartCutscene;

@@ -23,7 +23,35 @@ namespace MageAcademy.Data
         [Tooltip("학생증 얼굴 사진(미지정 시 illustration 사용)")]
         public Sprite idPhoto;
 
+        [Header("표정 일러스트 (미지정 시 기본 illustration 폴백)")]
+        [Tooltip("기쁨: 참인데 통과시켰을 때")]
+        public Sprite happyIllustration;
+
+        [Tooltip("당황: 거짓 정보를 추궁당했을 때")]
+        public Sprite flusteredIllustration;
+
+        [Tooltip("화남: 검사 제한시간을 초과했을 때")]
+        public Sprite angryIllustration;
+
+        [Tooltip("비열: 거짓인데 통과시켰을 때")]
+        public Sprite sneerIllustration;
+
         public Sprite IdPhoto => idPhoto != null ? idPhoto : illustration;
+
+        /// <summary>표정에 맞는 일러스트를 반환한다(미지정 시 기본 illustration).</summary>
+        public Sprite GetEmotionSprite(StudentEmotion emotion)
+        {
+            Sprite sprite;
+            switch (emotion)
+            {
+                case StudentEmotion.Happy: sprite = happyIllustration; break;
+                case StudentEmotion.Flustered: sprite = flusteredIllustration; break;
+                case StudentEmotion.Angry: sprite = angryIllustration; break;
+                case StudentEmotion.Sneer: sprite = sneerIllustration; break;
+                default: sprite = illustration; break;
+            }
+            return sprite != null ? sprite : illustration;
+        }
 
         /// <summary>텍스트 필드의 진짜값을 반환한다(FacePhoto는 빈 문자열).</summary>
         public string GetText(StudentIdFieldType field)

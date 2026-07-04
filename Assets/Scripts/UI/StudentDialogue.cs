@@ -20,6 +20,7 @@ namespace MageAcademy.UI
         {
             Context.CaseStarted += OnCaseStarted;
             Context.AnswerGiven += OnAnswerGiven;
+            Context.StudentReactionRequested += OnStudentReaction;
             Context.OutcomeResolved += OnOutcomeResolved;
             Context.CutsceneDialogueRequested += OnCutsceneDialogueRequested;
             Context.CutsceneStudentExitRequested += OnCutsceneStudentExitRequested;
@@ -49,6 +50,14 @@ namespace MageAcademy.UI
             _studentGreetingTween = null;
             Show();
             Render($"<b>A.</b> {answer}");
+        }
+
+        private void OnStudentReaction(string line)
+        {
+            _studentGreetingTween?.Kill();
+            _studentGreetingTween = null;
+            Show();
+            Render(line);
         }
 
         private void OnOutcomeResolved(CaseOutcome outcome, string eventText)
@@ -135,6 +144,7 @@ namespace MageAcademy.UI
 
             Context.CaseStarted -= OnCaseStarted;
             Context.AnswerGiven -= OnAnswerGiven;
+            Context.StudentReactionRequested -= OnStudentReaction;
             Context.OutcomeResolved -= OnOutcomeResolved;
             Context.CutsceneDialogueRequested -= OnCutsceneDialogueRequested;
             Context.CutsceneStudentExitRequested -= OnCutsceneStudentExitRequested;

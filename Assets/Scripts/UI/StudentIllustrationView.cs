@@ -13,25 +13,32 @@ namespace MageAcademy.UI
     {
         [SerializeField] private Image _illustrationImage;
 
+        private StudentSO _currentStudent;
+
         protected override void OnBind()
         {
             Context.CaseStarted += OnCaseStarted;
             Context.CutsceneStudentEnterRequested += OnCutsceneStudentEnterRequested;
+            Context.StudentEmotionChanged += OnStudentEmotionChanged;
 
             SetSprite(null);
         }
 
         private void OnCaseStarted(StudentCase studentCase)
         {
-            if (_illustrationImage == null)
+            _currentStudent = studentCase != null ? studentCase.Student : null;
+
+            // 새 학생은 항상 기본 표정으로 시작.
+            Sprite sprite = _currentStudent != null ? _currentStudent.GetEmotionSprite(StudentEmotion.Normal) : null;
+            SetSprite(sprite);
+        }
+
+        private void OnStudentEmotionChanged(StudentEmotion emotion)
+        {
+            if (_currentStudent == null)
                 return;
 
-            Sprite sprite = studentCase != null && studentCase.Student != null
-                ? studentCase.Student.illustration
-                : null;
-
-            _illustrationImage.sprite = sprite;
-            _illustrationImage.enabled = sprite != null;
+            SetSprite(_currentStudent.GetEmotionSprite(emotion));
         }
 
         private void OnCutsceneStudentEnterRequested(StudentSO student)
@@ -54,6 +61,7 @@ namespace MageAcademy.UI
             {
                 Context.CaseStarted -= OnCaseStarted;
                 Context.CutsceneStudentEnterRequested -= OnCutsceneStudentEnterRequested;
+                Context.StudentEmotionChanged -= OnStudentEmotionChanged;
             }
         }
     }
