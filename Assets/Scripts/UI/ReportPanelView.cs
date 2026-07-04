@@ -1,3 +1,5 @@
+using DG.Tweening;
+using MageAcademy.Data;
 using MageAcademy.Gameplay.Models;
 using TMPro;
 using UnityEngine;
@@ -22,11 +24,14 @@ namespace MageAcademy.UI
         [SerializeField] private Button _openButton;
 
         private UIDraggablePanel _draggablePanel;
+        private UIFadeSlideAnimator _openButtonAnimator;
+        private Tween _openButtonTween;
 
         protected override void OnBind()
         {
             BindParagraphs();
             EnsureDraggablePanel();
+            _openButtonAnimator = EnsureOpenButtonAnimator();
 
             Context.CaseStarted += OnCaseStarted;
             Context.StudentExitRequested += OnStudentExitRequested;
@@ -46,7 +51,7 @@ namespace MageAcademy.UI
                 return;
             }
 
-            SetOpenButtonVisible(true);
+            ShowOpenButtonAnimated();
 
             if (_topicLabel != null)
                 _topicLabel.text = Context.Localization.Get(report.TopicKey);
@@ -69,13 +74,71 @@ namespace MageAcademy.UI
 
         private void OnStudentExitRequested()
         {
-            gameObject.SetActive(false);
+            // 패널 자체는 PanelTableController의 스택 파도타기 퇴장이 처리한다.
+            // 여기선 테이블의 레포트 열기 버튼만 아래로 내리며 페이드아웃한다.
+            HideOpenButtonAnimated();
         }
 
         private void SetOpenButtonVisible(bool visible)
         {
             if (_openButton != null)
                 _openButton.gameObject.SetActive(visible);
+        }
+
+        private UIFadeSlideAnimator EnsureOpenButtonAnimator()
+        {
+            if (_openButton == null)
+                return null;
+
+            UIFadeSlideAnimator animator = _openButton.GetComponent<UIFadeSlideAnimator>();
+            if (animator == null)
+                animator = _openButton.gameObject.AddComponent<UIFadeSlideAnimator>();
+            return animator;
+        }
+
+        /// <summary>레포트 열기 버튼을 아래에서 위로 슬라이드+페이드인(학생 등장에 맞춰).</summary>
+        private void ShowOpenButtonAnimated()
+        {
+            if (_openButton == null)
+                return;
+
+            _openButton.gameObject.SetActive(true);
+
+            UIAnimationSettingsSO s = Context.UIAnimationSettings;
+            if (_openButtonAnimator == null || s == null)
+                return;
+
+            _openButtonTween?.Kill();
+            _openButtonAnimator.PrepareHidden(s.reportButtonEnter);
+
+            float delay = s.studentDoorOpenLeadDelay
+                + s.studentEnter.delay + s.studentEnter.duration
+                + s.studentIdButton.delay;
+
+            _openButtonTween = DOTween.Sequence()
+                .AppendInterval(delay)
+                .Append(_openButtonAnimator.CreateAppearTween(s.reportButtonEnter))
+                .SetLink(_openButton.gameObject);
+        }
+
+        /// <summary>레포트 열기 버튼을 위에서 아래로 슬라이드+페이드아웃 후 숨긴다.</summary>
+        private void HideOpenButtonAnimated()
+        {
+            if (_openButton == null || !_openButton.gameObject.activeSelf)
+                return;
+
+            UIAnimationSettingsSO s = Context.UIAnimationSettings;
+            if (_openButtonAnimator == null || s == null)
+            {
+                _openButton.gameObject.SetActive(false);
+                return;
+            }
+
+            _openButtonTween?.Kill();
+            _openButtonTween = DOTween.Sequence()
+                .Append(_openButtonAnimator.CreateDisappearTween(s.reportButtonExit))
+                .AppendCallback(() => _openButton.gameObject.SetActive(false))
+                .SetLink(_openButton.gameObject);
         }
 
         private void BindParagraphs()
@@ -112,6 +175,8 @@ namespace MageAcademy.UI
 
         private void OnDestroy()
         {
+            _openButtonTween?.Kill();
+
             if (Context != null)
             {
                 Context.CaseStarted -= OnCaseStarted;

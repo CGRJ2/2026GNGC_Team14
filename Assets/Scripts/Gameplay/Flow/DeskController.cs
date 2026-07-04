@@ -24,6 +24,7 @@ namespace MageAcademy.Gameplay.Flow
         [SerializeField] private StudentDatabaseSO _studentDatabase;
         [SerializeField] private UIAnimationSettingsSO _uiAnimationSettings;
         [SerializeField] private DayScheduleSO _daySchedule;
+        [SerializeField] private EndingSettingsSO _endingSettings;
         [SerializeField] private ReportSO _report;
         [SerializeField] private CrystalSO _crystal;
         [SerializeField] private UVSO _uv;
@@ -64,7 +65,7 @@ namespace MageAcademy.Gameplay.Flow
             IJudgementService judgement = new JudgementService();
             // 세이브가 있으면 저장된 날짜/평판부터 재개한다(튜토리얼 모드 제외).
             SaveData save = _runTutorialOnStart ? null : SaveSystem.SaveSystem.Load();
-            int startDay = save != null ? Mathf.Max(1, save.currentDay) : 1;
+            int startDay = save != null ? Mathf.Max(0, save.currentDay) : 1;
             int startReputation = save != null ? save.reputation : _balance.startingReputation;
 
             var reputation = new ReputationModel(startReputation);
@@ -87,7 +88,7 @@ namespace MageAcademy.Gameplay.Flow
             var enter = new StudentEnterState(_context, _machine);
             var inspection = new InspectionState(_context, _machine);
             var resolution = new ResolutionState(_context, _machine);
-            var dayEnd = new DayEndState(_context, _machine);
+            var dayEnd = new DayEndState(_context, _machine, _endingSettings);
 
             dayStart.Next = enter;
             enter.Next = inspection;
@@ -97,7 +98,8 @@ namespace MageAcademy.Gameplay.Flow
             dayEnd.Next = dayStart;
 
             BindViews();
-            _machine.ChangeState(_runTutorialOnStart ? (IState)enter : dayStart);
+            IState initialState = _runTutorialOnStart ? enter : startDay == 0 ? dayEnd : dayStart;
+            _machine.ChangeState(initialState);
 
             if (_runTutorialOnStart)
                 StartCoroutine(RunTutorialSequence());
@@ -152,7 +154,7 @@ namespace MageAcademy.Gameplay.Flow
 
             float enterDelay = _uiAnimationSettings != null
                 ? Mathf.Max(
-                    _uiAnimationSettings.studentEnter.delay + _uiAnimationSettings.studentEnter.duration,
+                    _uiAnimationSettings.studentDoorOpenLeadDelay + _uiAnimationSettings.studentEnter.delay + _uiAnimationSettings.studentEnter.duration,
                     _uiAnimationSettings.studentIdButton.delay + _uiAnimationSettings.studentIdButton.duration)
                 : 0.5f;
             yield return new WaitForSeconds(enterDelay);
@@ -183,7 +185,7 @@ namespace MageAcademy.Gameplay.Flow
         {
             SaveSystem.SaveSystem.Save(new SaveData
             {
-                currentDay = 1,
+                currentDay = 0,
                 reputation = _balance.startingReputation,
             });
 

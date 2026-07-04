@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace MageAcademy.UI
 {
@@ -12,6 +13,7 @@ namespace MageAcademy.UI
         private RectTransform _parentRect;
         private RectTransform _clampRect;
         private UIFadeSlideAnimator _fadeSlideAnimator;
+        private Graphic _raycastGraphic;
         private Vector2 _pointerOffset;
         private readonly Vector3[] _clampWorldCorners = new Vector3[4];
         private readonly Vector3[] _selfWorldCorners = new Vector3[4];
@@ -27,6 +29,9 @@ namespace MageAcademy.UI
             _parentRect = _rect.parent as RectTransform;
             _clampRect = ResolveClampRect();
             _fadeSlideAnimator = GetComponent<UIFadeSlideAnimator>();
+            _raycastGraphic = GetComponent<Graphic>();
+            if (_raycastGraphic != null)
+                _raycastGraphic.raycastTarget = true;
         }
 
         public void OnBeginDrag(PointerEventData eventData)

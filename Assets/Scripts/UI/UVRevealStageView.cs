@@ -18,11 +18,16 @@ namespace MageAcademy.UI
 
         [Tooltip("테이블의 UV 열기 버튼. UV 검증 없는 날엔 숨긴다.")]
         [SerializeField] private Button _openButton;
+        [SerializeField] private string _topCoverName = "UV_TopCover";
+        [SerializeField] private string _bottomHiddenName = "UV_BottomHidden";
+        [SerializeField] private string _hiddenClickAreaRootName = "UV_HiddenClickAreas";
+        [SerializeField] private string _hiddenSignatureRendererName = "HiddenInfo_ClickArea";
 
         private readonly List<UVRevealClickable> _subscribedClickables = new();
 
         protected override void OnBind()
         {
+            CacheSceneReferences();
             Context.CaseStarted += OnCaseStarted;
             SubscribeClickables();
         }
@@ -71,6 +76,8 @@ namespace MageAcademy.UI
 
         private void OnCaseStarted(StudentCase studentCase)
         {
+            CacheSceneReferences();
+
             if (_assignRandomSpriteOnCaseStarted)
                 AssignRandomSprite();
 
@@ -109,6 +116,33 @@ namespace MageAcademy.UI
                 if (sprite != null)
                     return sprite;
             }
+
+            return null;
+        }
+
+        private void CacheSceneReferences()
+        {
+            if (_topCover == null)
+                _topCover = FindSpriteRendererByName(_topCoverName);
+            if (_bottomHidden == null)
+                _bottomHidden = FindSpriteRendererByName(_bottomHiddenName);
+            if (_hiddenClickAreaRoot == null)
+                _hiddenClickAreaRoot = FindTransformByName(_hiddenClickAreaRootName);
+            if (_hiddenSignatureRenderer == null)
+                _hiddenSignatureRenderer = FindSpriteRendererByName(_hiddenSignatureRendererName);
+        }
+
+        private static SpriteRenderer FindSpriteRendererByName(string objectName)
+        {
+            Transform transform = FindTransformByName(objectName);
+            return transform != null ? transform.GetComponent<SpriteRenderer>() : null;
+        }
+
+        private static Transform FindTransformByName(string objectName)
+        {
+            foreach (Transform transform in FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                if (transform != null && transform.gameObject.name == objectName)
+                    return transform;
 
             return null;
         }

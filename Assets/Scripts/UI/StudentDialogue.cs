@@ -1,4 +1,5 @@
 using DG.Tweening;
+using MageAcademy.Audio;
 using MageAcademy.Data;
 using MageAcademy.Gameplay.Models;
 using TMPro;
@@ -13,8 +14,11 @@ namespace MageAcademy.UI
     {
         [SerializeField] private GameObject _panelRoot;
         [SerializeField] private TMP_Text _speechLabel;
+        [SerializeField] private AudioClip[] _golemDialogueClips;
 
         private Tween _studentGreetingTween;
+        private int _golemDialogueClipIndex;
+        private StudentSO _activeStudent;
 
         protected override void OnBind()
         {
@@ -23,6 +27,7 @@ namespace MageAcademy.UI
             Context.StudentReactionRequested += OnStudentReaction;
             Context.OutcomeResolved += OnOutcomeResolved;
             Context.CutsceneDialogueRequested += OnCutsceneDialogueRequested;
+            Context.CutsceneStudentEnterRequested += OnCutsceneStudentEnterRequested;
             Context.CutsceneStudentExitRequested += OnCutsceneStudentExitRequested;
             Context.CutsceneEnded += OnCutsceneEnded;
             Context.StudentExitRequested += OnStudentExitRequested;
@@ -33,13 +38,17 @@ namespace MageAcademy.UI
         private void OnCaseStarted(StudentCase studentCase)
         {
             Hide();
+            _golemDialogueClipIndex = 0;
+            _activeStudent = studentCase != null ? studentCase.Student : null;
 
             _studentGreetingTween?.Kill();
             float delay = StudentEntranceDelay;
             _studentGreetingTween = DOVirtual.DelayedCall(delay, () =>
             {
                 Show();
+                PlayDialogueVoice();
                 Render(Context.Localization.GetRandom("ui_student_hi"));
+                Context.RaiseStudentGreetingShown();
                 _studentGreetingTween = null;
             });
         }
@@ -49,6 +58,7 @@ namespace MageAcademy.UI
             _studentGreetingTween?.Kill();
             _studentGreetingTween = null;
             Show();
+            PlayDialogueVoice();
             Render($"<b>A.</b> {answer}");
         }
 
@@ -57,6 +67,7 @@ namespace MageAcademy.UI
             _studentGreetingTween?.Kill();
             _studentGreetingTween = null;
             Show();
+            PlayDialogueVoice();
             Render(line);
         }
 
@@ -65,6 +76,7 @@ namespace MageAcademy.UI
             _studentGreetingTween?.Kill();
             _studentGreetingTween = null;
             Show();
+            PlayDialogueVoice();
             Render(eventText);
         }
 
@@ -80,18 +92,27 @@ namespace MageAcademy.UI
             }
 
             Show();
+            PlayDialogueVoice();
             Render(text);
         }
 
         private void OnCutsceneEnded()
         {
+            _activeStudent = null;
             Hide();
+        }
+
+        private void OnCutsceneStudentEnterRequested(StudentSO student)
+        {
+            _activeStudent = student;
+            _golemDialogueClipIndex = 0;
         }
 
         private void OnCutsceneStudentExitRequested()
         {
             _studentGreetingTween?.Kill();
             _studentGreetingTween = null;
+            _activeStudent = null;
             Hide();
         }
 
@@ -99,6 +120,7 @@ namespace MageAcademy.UI
         {
             _studentGreetingTween?.Kill();
             _studentGreetingTween = null;
+            _activeStudent = null;
             Hide();
         }
 
@@ -106,6 +128,54 @@ namespace MageAcademy.UI
         {
             if (_speechLabel != null)
                 _speechLabel.text = text;
+        }
+
+        private void PlayDialogueVoice()
+        {
+            if (Context != null && Context.IsTutorial)
+            {
+                PlayTutorialGolemDialogue();
+                return;
+            }
+
+            PlayStudentVoice();
+        }
+
+        private void PlayTutorialGolemDialogue()
+        {
+            if (_golemDialogueClips == null || _golemDialogueClips.Length == 0 || AudioManager.Instance == null || Context == null)
+                return;
+
+            AudioClip clip = _golemDialogueClips[_golemDialogueClipIndex % _golemDialogueClips.Length];
+            _golemDialogueClipIndex++;
+
+            if (clip != null)
+                AudioManager.Instance.PlaySfx(clip);
+        }
+
+        private void PlayStudentVoice()
+        {
+            if (AudioManager.Instance == null)
+                return;
+
+            StudentSO student = _activeStudent != null
+                ? _activeStudent
+                : Context != null && Context.CurrentCase != null
+                    ? Context.CurrentCase.Student
+                    : null;
+
+            if (student == null || student.dialogueVoiceClips == null || student.dialogueVoiceClips.Count == 0)
+                return;
+
+            for (int i = 0; i < student.dialogueVoiceClips.Count; i++)
+            {
+                AudioClip clip = student.dialogueVoiceClips[Random.Range(0, student.dialogueVoiceClips.Count)];
+                if (clip == null)
+                    continue;
+
+                AudioManager.Instance.PlaySfx(clip);
+                return;
+            }
         }
 
         private void Show()
@@ -130,7 +200,7 @@ namespace MageAcademy.UI
                     return 0f;
 
                 return Mathf.Max(
-                    settings.studentEnter.delay + settings.studentEnter.duration,
+                    settings.studentDoorOpenLeadDelay + settings.studentEnter.delay + settings.studentEnter.duration,
                     settings.studentIdButton.delay + settings.studentIdButton.duration)
                     + settings.studentGreetingDelay;
             }
@@ -147,6 +217,7 @@ namespace MageAcademy.UI
             Context.StudentReactionRequested -= OnStudentReaction;
             Context.OutcomeResolved -= OnOutcomeResolved;
             Context.CutsceneDialogueRequested -= OnCutsceneDialogueRequested;
+            Context.CutsceneStudentEnterRequested -= OnCutsceneStudentEnterRequested;
             Context.CutsceneStudentExitRequested -= OnCutsceneStudentExitRequested;
             Context.CutsceneEnded -= OnCutsceneEnded;
             Context.StudentExitRequested -= OnStudentExitRequested;

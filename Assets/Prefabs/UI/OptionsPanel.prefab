@@ -3601,6 +3601,7 @@ GameObject:
   - component: {fileID: 5906795264800515308}
   - component: {fileID: 6663418866788792280}
   - component: {fileID: 7834551800796137153}
+  - component: {fileID: 610930003}
   m_Layer: 0
   m_Name: OptionsPanel
   m_TagString: Untagged
@@ -3712,6 +3713,20 @@ MonoBehaviour:
   _masterVolumeSlider: {fileID: 754969241625905556}
   _bgmVolumeSlider: {fileID: 3303465403439486880}
   _sfxVolumeSlider: {fileID: 4285410862747292079}
+--- !u!114 &610930003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7834551800796137151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52fc3d8b79d741d9854b54e868f16e8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.UI.ButtonClickSfxBinder
+  _clickClip: {fileID: 8300000, guid: 521f1b27c9268c744ab46ef03e9fed2b, type: 3}
+  _includeInactive: 1
 --- !u!1 &7886994815617469162
 GameObject:
   m_ObjectHideFlags: 0

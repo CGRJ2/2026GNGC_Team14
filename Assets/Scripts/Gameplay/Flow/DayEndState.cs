@@ -2,6 +2,7 @@ using DG.Tweening;
 using MageAcademy.Core;
 using MageAcademy.Data;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MageAcademy.Gameplay.Flow
 {
@@ -12,8 +13,12 @@ namespace MageAcademy.Gameplay.Flow
     public class DayEndState : GameStateBase
     {
         private Tween _flowTween;
+        private readonly EndingSettingsSO _endingSettings;
 
-        public DayEndState(GameContext context, StateMachine machine) : base(context, machine) { }
+        public DayEndState(GameContext context, StateMachine machine, EndingSettingsSO endingSettings = null) : base(context, machine)
+        {
+            _endingSettings = endingSettings;
+        }
 
         public override void Enter()
         {
@@ -25,6 +30,7 @@ namespace MageAcademy.Gameplay.Flow
             // 끝나는 날(AdvanceDay 이전)의 종료 일러스트.
             DayConfigSO endingConfig = Context.Day.TodayConfig;
             Sprite illustration = endingConfig != null ? endingConfig.endDayIllustration : null;
+            string illustrationText = endingConfig != null ? endingConfig.endDayIllustrationText : string.Empty;
             float illustrationDuration = endingConfig != null ? endingConfig.endDayIllustrationDuration : 0f;
 
             _flowTween?.Kill();
@@ -33,17 +39,15 @@ namespace MageAcademy.Gameplay.Flow
 
             if (illustration != null && illustrationDuration > 0f)
             {
-                sequence.AppendCallback(() => Context.RaiseDayEndIllustrationShown(illustration));
+                sequence.AppendCallback(() => Context.RaiseDayEndIllustrationShown(illustration, illustrationText));
                 sequence.AppendInterval(illustrationDuration);
                 sequence.AppendCallback(Context.RaiseDayEndIllustrationHidden);
             }
 
-            sequence.AppendCallback(() =>
-            {
-                Context.Day.AdvanceDay();
-                Context.SaveProgress();
-                GoNext();
-            });
+            if (ShouldShowEnding())
+                AppendEndingSequence(sequence);
+            else
+                sequence.AppendCallback(AdvanceToNextDay);
 
             _flowTween = sequence;
         }
@@ -52,6 +56,49 @@ namespace MageAcademy.Gameplay.Flow
         {
             _flowTween?.Kill();
             _flowTween = null;
+        }
+
+        private bool ShouldShowEnding()
+        {
+            if (Context.IsTutorial || _endingSettings == null || Context.Day == null)
+                return false;
+
+            int nextDay = Context.Day.CurrentDay.Value + 1;
+            return !Context.Day.HasConfig(nextDay);
+        }
+
+        private void AppendEndingSequence(Sequence sequence)
+        {
+            EndingSettingsSO.EndingPresentation presentation = _endingSettings.GetPresentation(Context.Reputation.Value.Value);
+            Sprite illustration = presentation != null ? presentation.illustration : null;
+            string text = presentation != null ? presentation.text : string.Empty;
+            float duration = presentation != null ? Mathf.Max(0f, presentation.duration) : 0f;
+
+            sequence.AppendCallback(() => Context.RaiseDayEndIllustrationShown(illustration, text));
+            sequence.AppendInterval(duration);
+            sequence.AppendCallback(Context.RaiseDayEndIllustrationHidden);
+            sequence.AppendCallback(LoadTitleScene);
+        }
+
+        private void AdvanceToNextDay()
+        {
+            Context.Day.AdvanceDay();
+            Context.SaveProgress();
+            GoNext();
+        }
+
+        private void LoadTitleScene()
+        {
+            MageAcademy.SaveSystem.SaveSystem.Delete();
+
+            string titleSceneName = _endingSettings != null ? _endingSettings.titleSceneName : "TitleScene";
+            if (string.IsNullOrWhiteSpace(titleSceneName))
+            {
+                Debug.LogWarning("[Ending] Title scene name is empty.");
+                return;
+            }
+
+            SceneManager.LoadScene(titleSceneName);
         }
     }
 }

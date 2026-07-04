@@ -21,6 +21,12 @@ namespace MageAcademy.Data
             return _byDay.TryGetValue(day, out DayConfigSO config) ? config : null;
         }
 
+        public bool HasConfig(int day)
+        {
+            EnsureIndex();
+            return _byDay.ContainsKey(day);
+        }
+
         /// <summary>해당 일자의 검사 인원 제한. 날짜 설정이 없으면 최소값으로 방어한다.</summary>
         public int GetStudentLimit(int day)
         {

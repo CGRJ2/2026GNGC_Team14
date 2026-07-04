@@ -17,6 +17,9 @@ namespace MageAcademy.UI
         [SerializeField] private TMP_Text _failLabel;
         [SerializeField] private JudgeActionView _judgeAction;
 
+        private bool _caseGreetingShown;
+        private bool _cutscenePlaying;
+
         protected override void OnBind()
         {
             if (_completeLabel != null)
@@ -30,11 +33,42 @@ namespace MageAcademy.UI
                 _failButton.onClick.AddListener(OnFailClicked);
 
             Context.CaseStarted += OnCaseStarted;
+            Context.CutsceneStarted += OnCutsceneStarted;
+            Context.CutsceneEnded += OnCutsceneEnded;
+            Context.StudentGreetingShown += OnStudentGreetingShown;
+            Context.StudentExitRequested += OnStudentExitRequested;
+
+            SetButtonsInteractable(false, false);
         }
 
         private void OnCaseStarted(StudentCase studentCase)
         {
-            SetButtonsInteractable(studentCase != null, studentCase != null);
+            _caseGreetingShown = false;
+            SetButtonsInteractable(false, false);
+        }
+
+        private void OnCutsceneStarted()
+        {
+            _cutscenePlaying = true;
+            SetButtonsInteractable(false, false);
+        }
+
+        private void OnCutsceneEnded()
+        {
+            _cutscenePlaying = false;
+            RefreshButtons();
+        }
+
+        private void OnStudentGreetingShown()
+        {
+            _caseGreetingShown = true;
+            RefreshButtons();
+        }
+
+        private void OnStudentExitRequested()
+        {
+            _caseGreetingShown = false;
+            SetButtonsInteractable(false, false);
         }
 
         private void OnCompleteClicked()
@@ -71,10 +105,22 @@ namespace MageAcademy.UI
                 _failButton.interactable = failInteractable;
         }
 
+        private void RefreshButtons()
+        {
+            bool interactable = !Context.IsTutorial && !_cutscenePlaying && _caseGreetingShown && Context.CurrentCase != null;
+            SetButtonsInteractable(interactable, interactable);
+        }
+
         private void OnDestroy()
         {
             if (Context != null)
+            {
                 Context.CaseStarted -= OnCaseStarted;
+                Context.CutsceneStarted -= OnCutsceneStarted;
+                Context.CutsceneEnded -= OnCutsceneEnded;
+                Context.StudentGreetingShown -= OnStudentGreetingShown;
+                Context.StudentExitRequested -= OnStudentExitRequested;
+            }
             if (_completeButton != null)
                 _completeButton.onClick.RemoveListener(OnCompleteClicked);
             if (_failButton != null)

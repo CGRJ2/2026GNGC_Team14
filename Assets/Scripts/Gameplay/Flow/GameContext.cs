@@ -82,14 +82,16 @@ namespace MageAcademy.Gameplay.Flow
         public event Action<CutsceneSpeaker, string> CutsceneDialogueRequested;
         public event Action<StudentSO> CutsceneStudentEnterRequested;
         public event Action CutsceneStudentExitRequested;
+        public event Action CutsceneStarted;
         public event Action CutsceneEnded;
 
         public event Action StudentExitRequested;
         public event Action<int> DayStarted;
         public event Action<int> DayEnded;
         public event Action<CutsceneSO> CutscenePlayRequested;
-        public event Action<Sprite> DayEndIllustrationShown;
+        public event Action<Sprite, string> DayEndIllustrationShown;
         public event Action DayEndIllustrationHidden;
+        public event Action StudentGreetingShown;
         public event Action<string> StudentReactionRequested;      // 추궁 반응 대사
         public event Action<StudentEmotion> StudentEmotionChanged; // 표정 스왑
         public event Action<float, float> InspectionTimerUpdated;  // (남은 시간, 총 시간)
@@ -102,13 +104,15 @@ namespace MageAcademy.Gameplay.Flow
         public void RaiseCutsceneDialogue(CutsceneSpeaker speaker, string text) => CutsceneDialogueRequested?.Invoke(speaker, text);
         public void RaiseCutsceneStudentEnter(StudentSO student) => CutsceneStudentEnterRequested?.Invoke(student);
         public void RaiseCutsceneStudentExit() => CutsceneStudentExitRequested?.Invoke();
+        public void RaiseCutsceneStarted() => CutsceneStarted?.Invoke();
         public void RaiseCutsceneEnded() => CutsceneEnded?.Invoke();
         public void RequestStudentExit() => StudentExitRequested?.Invoke();
         public void RaiseDayStarted(int day) => DayStarted?.Invoke(day);
         public void RaiseDayEnded(int day) => DayEnded?.Invoke(day);
         public void RequestCutscene(CutsceneSO cutscene) => CutscenePlayRequested?.Invoke(cutscene);
-        public void RaiseDayEndIllustrationShown(Sprite illustration) => DayEndIllustrationShown?.Invoke(illustration);
+        public void RaiseDayEndIllustrationShown(Sprite illustration, string text = "") => DayEndIllustrationShown?.Invoke(illustration, text);
         public void RaiseDayEndIllustrationHidden() => DayEndIllustrationHidden?.Invoke();
+        public void RaiseStudentGreetingShown() => StudentGreetingShown?.Invoke();
         public void RaiseStudentReaction(string line) => StudentReactionRequested?.Invoke(line);
         public void RaiseStudentEmotion(StudentEmotion emotion) => StudentEmotionChanged?.Invoke(emotion);
         public void RaiseInspectionTimer(float remaining, float total) => InspectionTimerUpdated?.Invoke(remaining, total);

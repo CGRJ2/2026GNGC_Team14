@@ -3,6 +3,8 @@ using MageAcademy.Gameplay.Models;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.UI;
 
 namespace MageAcademy.UI
@@ -36,6 +38,21 @@ namespace MageAcademy.UI
                 return;
 
             Hide();
+        }
+
+        private void Update()
+        {
+            if (!_hideOnClick || !PanelRoot.activeInHierarchy)
+                return;
+
+            if (!TryGetPressedPointerPosition(out Vector2 screenPosition))
+                return;
+
+            if (!TryGetPanelRect(out RectTransform rectTransform))
+                return;
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(rectTransform, screenPosition, GetEventCamera()))
+                Hide();
         }
 
         private void OnCaseStarted(StudentCase studentCase)
@@ -96,6 +113,45 @@ namespace MageAcademy.UI
         {
             if (PanelRoot.TryGetComponent(out Graphic graphic))
                 graphic.raycastTarget = true;
+        }
+
+        private bool TryGetPanelRect(out RectTransform rectTransform)
+        {
+            rectTransform = PanelRoot.transform as RectTransform;
+            return rectTransform != null;
+        }
+
+        private Camera GetEventCamera()
+        {
+            Canvas canvas = PanelRoot.GetComponentInParent<Canvas>();
+            if (canvas == null)
+                return null;
+
+            return canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
+        }
+
+        private static bool TryGetPressedPointerPosition(out Vector2 screenPosition)
+        {
+            if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                screenPosition = Mouse.current.position.ReadValue();
+                return true;
+            }
+
+            if (Touchscreen.current != null)
+            {
+                foreach (TouchControl touch in Touchscreen.current.touches)
+                {
+                    if (!touch.press.wasPressedThisFrame)
+                        continue;
+
+                    screenPosition = touch.position.ReadValue();
+                    return true;
+                }
+            }
+
+            screenPosition = default;
+            return false;
         }
 
         private void OnDestroy()

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using MageAcademy.Audio;
 using MageAcademy.Data;
 using MageAcademy.Gameplay.Models;
 using UnityEngine;
@@ -15,6 +16,8 @@ namespace MageAcademy.UI
         [SerializeField] private UIAnimationSettingsSO _animationSettings;
         [SerializeField] private UIFadeSlideAnimator _illustrationAnimator;
         [SerializeField] private UIFadeSlideAnimator _studentIdButtonAnimator;
+        [SerializeField] private AudioClip _doorOpenBeforeStudentClip;
+        [SerializeField] private AudioClip _studentAppearClip;
 
         private Sequence _sequence;
 
@@ -52,8 +55,11 @@ namespace MageAcademy.UI
             _studentIdButtonAnimator.PrepareHidden(_animationSettings.studentIdButton);
 
             _sequence = DOTween.Sequence()
+                .AppendCallback(() => PlaySfx(_doorOpenBeforeStudentClip))
+                .AppendInterval(_animationSettings.studentDoorOpenLeadDelay)
                 .AppendInterval(_animationSettings.studentEnter.delay)
                 .Append(_illustrationAnimator.CreateAppearTween(_animationSettings.studentEnter))
+                .AppendCallback(() => PlaySfx(_studentAppearClip))
                 .AppendInterval(_animationSettings.studentIdButton.delay)
                 .Append(_studentIdButtonAnimator.CreateAppearTween(_animationSettings.studentIdButton))
                 .SetLink(gameObject);
@@ -85,8 +91,11 @@ namespace MageAcademy.UI
 
             _illustrationAnimator.PrepareHidden(_animationSettings.studentEnter);
             _sequence = DOTween.Sequence()
+                .AppendCallback(() => PlaySfx(_doorOpenBeforeStudentClip))
+                .AppendInterval(_animationSettings.studentDoorOpenLeadDelay)
                 .AppendInterval(_animationSettings.studentEnter.delay)
                 .Append(_illustrationAnimator.CreateAppearTween(_animationSettings.studentEnter))
+                .AppendCallback(() => PlaySfx(_studentAppearClip))
                 .SetLink(gameObject);
         }
 
@@ -113,6 +122,12 @@ namespace MageAcademy.UI
                 Context.CutsceneStudentEnterRequested -= OnCutsceneStudentEnterRequested;
                 Context.CutsceneStudentExitRequested -= OnCutsceneStudentExitRequested;
             }
+        }
+
+        private static void PlaySfx(AudioClip clip)
+        {
+            if (clip != null && AudioManager.Instance != null)
+                AudioManager.Instance.PlaySfx(clip);
         }
     }
 }

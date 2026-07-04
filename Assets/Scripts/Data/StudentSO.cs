@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MageAcademy.Data
@@ -35,6 +36,10 @@ namespace MageAcademy.Data
 
         [Tooltip("비열: 거짓인데 통과시켰을 때")]
         public Sprite sneerIllustration;
+
+        [Header("Audio")]
+        [Tooltip("학생 대사가 표시될 때 이 리스트 중 하나를 랜덤으로 재생한다.")]
+        public List<AudioClip> dialogueVoiceClips = new();
 
         public Sprite IdPhoto => idPhoto != null ? idPhoto : illustration;
 

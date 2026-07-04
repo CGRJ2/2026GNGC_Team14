@@ -23,6 +23,11 @@ namespace MageAcademy.Gameplay.Models
         /// <summary>오늘의 일자별 데이터. 등록되지 않은 날짜거나 스케줄이 없으면 null.</summary>
         public DayConfigSO TodayConfig => _schedule != null ? _schedule.GetConfig(CurrentDay.Value) : null;
 
+        public bool HasConfig(int day)
+        {
+            return _schedule != null && _schedule.HasConfig(day);
+        }
+
         public DayModel(DayScheduleSO schedule, int startDay = 1)
         {
             _schedule = schedule;

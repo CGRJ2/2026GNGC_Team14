@@ -13,9 +13,22 @@ MonoBehaviour:
   m_Name: UV
   m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.UVSO
   signatureSprites:
-  - {fileID: 6758970711597127838, guid: 13da8c898ad69f241b3e9f8457e75543, type: 3}
-  - {fileID: -3549493382825583616, guid: 8d5c746ca8c51d94a9ac0256ff09c4cf, type: 3}
-  - {fileID: -4459925911979955267, guid: f60048b035338f64ba310db4d878d7f3, type: 3}
+  - {fileID: -6576543882360864673, guid: 6ccfe18976177a84db55ab3f4808cecd, type: 3}
+  - {fileID: -5209855637129488175, guid: 6ccfe18976177a84db55ab3f4808cecd, type: 3}
+  - {fileID: 2025790049705341135, guid: 6ccfe18976177a84db55ab3f4808cecd, type: 3}
+  - {fileID: 755371901414202613, guid: 6ccfe18976177a84db55ab3f4808cecd, type: 3}
+  - {fileID: -4240120690439670272, guid: 6ccfe18976177a84db55ab3f4808cecd, type: 3}
+  - {fileID: 6564476398953174839, guid: 6ccfe18976177a84db55ab3f4808cecd, type: 3}
+  - {fileID: 1437468304780485334, guid: 6ccfe18976177a84db55ab3f4808cecd, type: 3}
+  - {fileID: -2021310511702936289, guid: 28cada3b80b2e4941911c65edb1549f0, type: 3}
+  - {fileID: 6435704162922726625, guid: 28cada3b80b2e4941911c65edb1549f0, type: 3}
+  - {fileID: -9212711361637332082, guid: 28cada3b80b2e4941911c65edb1549f0, type: 3}
+  - {fileID: -6684092234414614232, guid: 28cada3b80b2e4941911c65edb1549f0, type: 3}
+  - {fileID: -3019203369437598646, guid: 28cada3b80b2e4941911c65edb1549f0, type: 3}
+  - {fileID: -4727419085390237534, guid: 28cada3b80b2e4941911c65edb1549f0, type: 3}
+  - {fileID: -5485885791172235879, guid: 28cada3b80b2e4941911c65edb1549f0, type: 3}
+  - {fileID: -8695739171841941949, guid: 52bf9cf11c4f6a348a82500e4cf7ede9, type: 3}
+  - {fileID: -4518523318104957127, guid: bed39d182fb0b5f41a34d6240b3335ca, type: 3}
   questionKey: uv_question
   reactionKeys:
   - uv_reaction

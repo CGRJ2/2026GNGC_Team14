@@ -30,6 +30,7 @@ namespace MageAcademy.UI
                 return;
 
             Stop(raiseEnded: false);
+            Context.RaiseCutsceneStarted();
             _playRoutine = StartCoroutine(PlayRoutine(cutscene));
         }
 
@@ -139,7 +140,7 @@ namespace MageAcademy.UI
             if (settings == null || settings.studentEnter == null)
                 return 0.4f;
 
-            return settings.studentEnter.delay + settings.studentEnter.duration;
+            return settings.studentDoorOpenLeadDelay + settings.studentEnter.delay + settings.studentEnter.duration;
         }
 
         private float GetStudentExitDelay()

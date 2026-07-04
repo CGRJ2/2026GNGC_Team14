@@ -17,6 +17,7 @@ MonoBehaviour:
   requiresReport: 1
   requiresCrystal: 0
   requiresUV: 1
-  dayStartCutscene: {fileID: 0}
+  dayStartCutscene: {fileID: 11400000, guid: 562754dac5234144db514788360366b9, type: 2}
   endDayIllustration: {fileID: 0}
+  endDayIllustrationText: 
   endDayIllustrationDuration: 3

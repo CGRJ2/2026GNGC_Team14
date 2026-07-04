@@ -12,7 +12,7 @@ field_label_major,전공,Major
 field_label_photo,얼굴,Photo
 
 ui_student_hi,안녕하세요. 교장선생님,"Hello, headmaster."
-,교장 안녕~,
+,안녕하세요~,
 ,좋은 아침입니다 선생님.,
 
 q_student_name,이름이 어떻게 되지?,What is your name?
@@ -27,10 +27,18 @@ a_student,{0}입니다.,It's {0}.
 ,{0}이에요.,
 ,{0}인데요. 왜요.,
 
-outcome_truth_success,(참 / 통과) 감사합니다.,Identity confirmed. You are admitted.
-outcome_false_caught,(거짓 / 탈락) 걸려버렸다...,This ID is forged! Admission denied.
-outcome_false_approved,"(거짓 / 통과)(음흉한 미소) 감사합니다, 선생님. 그럼 이만. 헤헤...","(a sly grin) ...thank you, teacher. I'll be off then. Heh heh..."
-outcome_truth_misjudged,(참 / 탈락) 억울합니다! 이런 부당한 처사가 어디 있습니까!,This is unjust! My ID is real! How is this fair!
+outcome_truth_success,"확인 감사합니다. 그럼 들어가 보겠습니다.","Thank you for checking. I'll head in."
+,"역시 문제 없었죠? 좋은 하루 되세요!","No problems, right? Have a good day!"
+,"휴, 통과다. 감사합니다 선생님.","Phew, I'm through. Thank you, teacher."
+outcome_false_caught,"쳇, 걸려버렸네...","Tch, I got caught..."
+,"이, 이건 오해예요! ...아니, 죄송합니다.","T-this is a misunderstanding! ...no, I'm sorry."
+,"어떻게 알아챈 거지...!","How did you figure it out...!"
+outcome_false_approved,"후후, 감사합니다 선생님. 그럼 이만.","Heh heh, thank you, teacher. I'll be off."
+,"역시 눈치 못 채셨군요. 헤헤.","You didn't notice after all. Heh heh."
+,"너무 쉬운데요? 수고하세요~","Too easy. Take care~"
+outcome_truth_misjudged,"억울합니다! 전 아무 잘못 없어요!","This is unfair! I did nothing wrong!"
+,"이런 부당한 처사가 어디 있습니까!","How is this unjust treatment allowed!"
+,"네? 다시 한번 확인해 주세요!","What? Please check again!"
 ,,
 cutscene01_A_01,교수님 그거 아세요?,
 ,요즘에 골렘을 사람처럼 바꾸는 마법이 유행하고 있대요.,
@@ -41,6 +49,18 @@ cutscene01_A_02,두눈 크게 뜨고 잘 봐야할거에요.,
 cutscene01_Player_02,요즘엔 정말 너도 나도 다 골렘을 쓰는군
 ,확실히 효과적인 마법 도구이긴 하다만...
 ,학생들이 골렘에 의존하지 말아야 할텐데...
+cutscene02_Player_01,오늘은 레포트 제출 날이군.,
+cutscene02_Player_02,골렘에게 시켜 대리로 작성한 녀석들도 있을 테니...,
+cutscene02_Player_03,레포트를 꼼꼼히 살펴봐야겠어.,
+cutscene03_Player_01,드디어 마법의 수정구슬을 손에 넣었군.,
+cutscene03_Player_02,이걸로 어제 학생들이 뭘 하고 다녔는지 들여다볼 수 있지.,
+cutscene03_Player_03,진술이 수상하면 수정구슬로 확인해 추궁하면 되겠어.,
+cutscene04_Player_01,오늘은 그림 그리기 과제를 검사하는 날이군.,
+cutscene04_Player_02,생성형 마법으로 그린 가짜 그림엔 숨겨진 마크가 남는다지.,
+cutscene04_Player_03,이 지팡이 마법으로 비춰서 그 흔적을 구별해내 보자.,
+cutscene05_Player_01,다음 주엔 마탑의 승급 심사가 있다지...,
+cutscene05_Player_02,우리 학생들의 실력이 어느 정도일지 걱정이 되는군.,
+cutscene05_Player_03,부정한 녀석이 심사에 오르지 않도록, 오늘은 모든 걸 총동원해 살펴보자.,
 
 # report interrogation reactions
 report_react_flustered,"그, 그건... 제가 인용한 고대 문헌이라서요...","T-thats... an ancient text I quoted..."
@@ -82,7 +102,7 @@ crystal_library_honest,"네, 도서관에서 계속 공부했어요.","Yes, I st
 crystal_library_lie,"그럼요, 도서관에 있었어요.","Sure, I was at the library."
 
 # uv wand (golem trace) interrogation
-uv_question,"이 흔적... 골렘이 남긴 서명이잖아! 네가 만든 게 아니지?","This mark... its a golems signature! You didnt make this, did you?"
+uv_question,"이 흔적에 대해...","This mark... its a golems signature! You didnt make this, did you?"
 uv_reaction,"그, 그건... 아니 그게...","T-thats... no, I mean..."
 ,"헉! 어떻게 그걸 찾은 거죠...","Ugh! How did you find that..."
 ,"제, 제가 안 그랬어요! (식은땀)","I-I didnt do it! (cold sweat)"

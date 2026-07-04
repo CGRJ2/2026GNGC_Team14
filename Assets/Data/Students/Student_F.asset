@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: Student_F
   m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.StudentSO
   studentId: std_d
-  studentName: "\uAE40\uC218\uBBFC"
+  studentName: "\uB9D0\uB860 \uADF8\uB808\uC774\uBE0C\uC2A4"
   enrollmentDate: 2024-03-02
-  grade: "1\uD559\uB144"
-  major: "\uBC88\uAC1C \uB9C8\uBC95"
+  grade: "2\uD559\uB144"
+  major: "\uBC29\uC5B4\uB9C8\uBC95"
   illustration: {fileID: 21300000, guid: fb95ad45bb3f3f24b94468d1b59b1a0d, type: 3}
   idPhoto: {fileID: 21300000, guid: b2b379af26b510f4fa0a52ec895871c2, type: 3}
   happyIllustration: {fileID: 21300000, guid: 0421b2f81d26f354383415f7f3788444, type: 3}
   flusteredIllustration: {fileID: 21300000, guid: d99195bc2e2e4e14d9a857344f68cab1, type: 3}
   angryIllustration: {fileID: 21300000, guid: 363017aaec1792e438661ee3360202e1, type: 3}
   sneerIllustration: {fileID: 21300000, guid: f08796534b81f3b4c8859e88e6a5f0cd, type: 3}
+  dialogueVoiceClips: []

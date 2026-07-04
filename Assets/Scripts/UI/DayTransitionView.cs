@@ -33,14 +33,16 @@ namespace MageAcademy.UI
             SetIllustration(null, false);
         }
 
-        private void OnDayEndIllustrationShown(Sprite illustration)
+        private void OnDayEndIllustrationShown(Sprite illustration, string text)
         {
             SetIllustration(illustration, illustration != null);
+            SetIllustrationText(text);
         }
 
         private void OnDayEndIllustrationHidden()
         {
             SetIllustration(null, false);
+            SetLabelVisible(false);
         }
 
         private void SetIllustration(Sprite illustration, bool visible)
@@ -51,6 +53,21 @@ namespace MageAcademy.UI
             if (illustration != null)
                 _endDayIllustration.sprite = illustration;
             _endDayIllustration.gameObject.SetActive(visible);
+        }
+
+        private void SetIllustrationText(string text)
+        {
+            if (_dayLabel == null)
+                return;
+
+            bool visible = !string.IsNullOrWhiteSpace(text);
+            if (visible)
+            {
+                ApplyDayLabelFontSize();
+                _dayLabel.text = text;
+                _dayLabel.transform.SetAsLastSibling();
+            }
+            SetLabelVisible(visible);
         }
 
         private void OnDayEnded(int day)
@@ -73,7 +90,10 @@ namespace MageAcademy.UI
             SetOverlay(1f, true);
 
             if (_dayLabel != null)
+            {
+                ApplyDayLabelFontSize();
                 _dayLabel.text = Context.Localization.GetFormatted("day_label", day);
+            }
             SetLabelVisible(true);
 
             _tween = DOTween.Sequence()
@@ -108,6 +128,16 @@ namespace MageAcademy.UI
         {
             UIAnimationSettingsSO settings = Context.UIAnimationSettings;
             return settings != null ? settings.dayLabelHoldDuration : 1.5f;
+        }
+
+        private void ApplyDayLabelFontSize()
+        {
+            if (_dayLabel == null)
+                return;
+
+            UIAnimationSettingsSO settings = Context.UIAnimationSettings;
+            if (settings != null)
+                _dayLabel.fontSize = settings.dayLabelFontSize;
         }
 
         private float GetFadeInDuration()

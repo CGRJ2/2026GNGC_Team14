@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using MageAcademy.Audio;
 using MageAcademy.Localization;
 using TMPro;
 using UnityEngine;
@@ -9,17 +10,10 @@ namespace MageAcademy.UI
 {
     public class OptionsPanelView : MonoBehaviour
     {
-        private const string MasterVolumeKey = "settings.volume.master";
-        private const string BgmVolumeKey = "settings.volume.bgm";
-        private const string SfxVolumeKey = "settings.volume.sfx";
         private const string LanguageKey = "settings.language";
         private const string ScreenModeKey = "settings.screenMode";
 
-        private const string MasterVolumeParameter = "MasterVolume";
-        private const string BgmVolumeParameter = "BGMVolume";
-        private const string SfxVolumeParameter = "SFXVolume";
-        private const float MinDecibel = -80f;
-
+        [Tooltip("AudioManager가 없는 테스트 씬에서만 사용하는 fallback mixer")]
         [SerializeField] private AudioMixer _audioMixer;
         [SerializeField] private Button _closeButton;
         [SerializeField] private TMP_Dropdown _screenModeDropdown;
@@ -77,26 +71,26 @@ namespace MageAcademy.UI
             }
 
             if (_masterVolumeSlider != null)
-                _masterVolumeSlider.onValueChanged.AddListener(value => ApplyVolume(MasterVolumeKey, MasterVolumeParameter, value));
+                _masterVolumeSlider.onValueChanged.AddListener(ApplyMasterVolume);
             if (_bgmVolumeSlider != null)
-                _bgmVolumeSlider.onValueChanged.AddListener(value => ApplyVolume(BgmVolumeKey, BgmVolumeParameter, value));
+                _bgmVolumeSlider.onValueChanged.AddListener(ApplyBgmVolume);
             if (_sfxVolumeSlider != null)
-                _sfxVolumeSlider.onValueChanged.AddListener(value => ApplyVolume(SfxVolumeKey, SfxVolumeParameter, value));
+                _sfxVolumeSlider.onValueChanged.AddListener(ApplySfxVolume);
         }
 
         private void LoadSettings()
         {
-            float masterVolume = PlayerPrefs.GetFloat(MasterVolumeKey, 1f);
-            float bgmVolume = PlayerPrefs.GetFloat(BgmVolumeKey, 1f);
-            float sfxVolume = PlayerPrefs.GetFloat(SfxVolumeKey, 1f);
+            float masterVolume = PlayerPrefs.GetFloat(AudioManager.MasterVolumeKey, 1f);
+            float bgmVolume = PlayerPrefs.GetFloat(AudioManager.BgmVolumeKey, 1f);
+            float sfxVolume = PlayerPrefs.GetFloat(AudioManager.SfxVolumeKey, 1f);
 
             SetSliderValue(_masterVolumeSlider, masterVolume);
             SetSliderValue(_bgmVolumeSlider, bgmVolume);
             SetSliderValue(_sfxVolumeSlider, sfxVolume);
 
-            ApplyVolume(MasterVolumeKey, MasterVolumeParameter, masterVolume, save: false);
-            ApplyVolume(BgmVolumeKey, BgmVolumeParameter, bgmVolume, save: false);
-            ApplyVolume(SfxVolumeKey, SfxVolumeParameter, sfxVolume, save: false);
+            ApplyMasterVolume(masterVolume, save: false);
+            ApplyBgmVolume(bgmVolume, save: false);
+            ApplySfxVolume(sfxVolume, save: false);
 
             var savedScreenMode = (FullScreenMode)PlayerPrefs.GetInt(ScreenModeKey, (int)Screen.fullScreenMode);
             int screenModeIndex = Mathf.Max(0, _screenModes.IndexOf(savedScreenMode));
@@ -150,11 +144,61 @@ namespace MageAcademy.UI
             PlayerPrefs.Save();
         }
 
-        private void ApplyVolume(string key, string mixerParameter, float value, bool save = true)
+        private void ApplyMasterVolume(float value)
         {
+            ApplyMasterVolume(value, save: true);
+        }
+
+        private void ApplyBgmVolume(float value)
+        {
+            ApplyBgmVolume(value, save: true);
+        }
+
+        private void ApplySfxVolume(float value)
+        {
+            ApplySfxVolume(value, save: true);
+        }
+
+        private void ApplyMasterVolume(float value, bool save)
+        {
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.SetMasterVolume(value, save);
+                return;
+            }
+
+            ApplyFallbackVolume(AudioManager.MasterVolumeKey, "MasterVolume", value, save);
+        }
+
+        private void ApplyBgmVolume(float value, bool save)
+        {
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.SetBgmVolume(value, save);
+                return;
+            }
+
+            ApplyFallbackVolume(AudioManager.BgmVolumeKey, "BGMVolume", value, save);
+        }
+
+        private void ApplySfxVolume(float value, bool save)
+        {
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.SetSfxVolume(value, save);
+                return;
+            }
+
+            ApplyFallbackVolume(AudioManager.SfxVolumeKey, "SFXVolume", value, save);
+        }
+
+        private void ApplyFallbackVolume(string key, string mixerParameter, float value, bool save)
+        {
+            value = Mathf.Clamp01(value);
+
             if (_audioMixer != null)
-                _audioMixer.SetFloat(mixerParameter, LinearToDecibel(value));
-            else if (mixerParameter == MasterVolumeParameter)
+                _audioMixer.SetFloat(mixerParameter, AudioManager.LinearToDecibel(value));
+            else if (mixerParameter == "MasterVolume")
                 AudioListener.volume = value;
 
             if (!save)
@@ -162,14 +206,6 @@ namespace MageAcademy.UI
 
             PlayerPrefs.SetFloat(key, value);
             PlayerPrefs.Save();
-        }
-
-        private static float LinearToDecibel(float value)
-        {
-            if (value <= 0.0001f)
-                return MinDecibel;
-
-            return Mathf.Log10(value) * 20f;
         }
 
         private void OnDestroy()
@@ -180,6 +216,12 @@ namespace MageAcademy.UI
                 _screenModeDropdown.onValueChanged.RemoveListener(OnScreenModeChanged);
             if (_languageDropdown != null)
                 _languageDropdown.onValueChanged.RemoveListener(OnLanguageChanged);
+            if (_masterVolumeSlider != null)
+                _masterVolumeSlider.onValueChanged.RemoveListener(ApplyMasterVolume);
+            if (_bgmVolumeSlider != null)
+                _bgmVolumeSlider.onValueChanged.RemoveListener(ApplyBgmVolume);
+            if (_sfxVolumeSlider != null)
+                _sfxVolumeSlider.onValueChanged.RemoveListener(ApplySfxVolume);
         }
     }
 }

@@ -92,7 +92,7 @@ namespace MageAcademy.Gameplay.Flow
                 return 0.5f;
 
             return Mathf.Max(
-                s.studentEnter.delay + s.studentEnter.duration,
+                s.studentDoorOpenLeadDelay + s.studentEnter.delay + s.studentEnter.duration,
                 s.studentIdButton.delay + s.studentIdButton.duration);
         }
 

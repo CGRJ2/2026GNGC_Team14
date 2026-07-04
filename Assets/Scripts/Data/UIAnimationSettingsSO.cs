@@ -34,6 +34,10 @@ namespace MageAcademy.Data
             startOffset = new Vector2(0f, -60f),
         };
 
+        [Tooltip("Door open SFX after-delay before the student starts appearing.")]
+        [Min(0f)]
+        public float studentDoorOpenLeadDelay = 0.3f;
+
         [Header("학생증 버튼 등장 (위 → 아래, 일러스트 등장 완료 후)")]
         public FadeSlideSettings studentIdButton = new()
         {
@@ -71,6 +75,10 @@ namespace MageAcademy.Data
         [Min(0f)]
         public float dayLabelHoldDuration = 1.5f;
 
+        [Tooltip("DayTransitionOverlay DayLabel TMP font size")]
+        [Min(1f)]
+        public float dayLabelFontSize = 60f;
+
         [Tooltip("다음 날 화면이 밝아지는 페이드인 시간(초)")]
         [Min(0f)]
         public float dayFadeInDuration = 0.8f;
@@ -85,6 +93,9 @@ namespace MageAcademy.Data
 
         [Min(0f)]
         public float judgeActionStampHoldDuration = 1f;
+
+        [Min(0f)]
+        public float judgeActionStampDelay = 0.15f;
 
         public FadeSlideSettings judgeActionExit = new()
         {
@@ -105,5 +116,30 @@ namespace MageAcademy.Data
             duration = 0.25f,
             startOffset = new Vector2(0f, 40f),
         };
+
+        [Header("레포트 버튼 등장 (아래 → 위)")]
+        public FadeSlideSettings reportButtonEnter = new()
+        {
+            duration = 0.35f,
+            startOffset = new Vector2(0f, -60f),
+        };
+
+        [Header("레포트 버튼 퇴장 (위 → 아래)")]
+        public FadeSlideSettings reportButtonExit = new()
+        {
+            duration = 0.25f,
+            startOffset = new Vector2(0f, -60f),
+        };
+
+        [Header("패널 퇴장 (위로 이동 + 페이드아웃, 스택 파도타기)")]
+        public FadeSlideSettings panelExit = new()
+        {
+            duration = 0.3f,
+            startOffset = new Vector2(0f, 80f),
+        };
+
+        [Min(0f)]
+        [Tooltip("패널이 스택 순으로 사라질 때 각 패널 사이의 시차(초)")]
+        public float panelDismissStagger = 0.08f;
     }
 }

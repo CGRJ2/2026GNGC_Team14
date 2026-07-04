@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: DaySchedule
   m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.DayScheduleSO
   _days:
+  - {fileID: 11400000, guid: 7b706b7dc54f3db4bb878511a60c4c97, type: 2}
   - {fileID: 11400000, guid: c1bc8da5b3940f1429dc517756371ca3, type: 2}
   - {fileID: 11400000, guid: 6884bc522f2617c4b9ad305762012c61, type: 2}
   - {fileID: 11400000, guid: 302d24e3c4b51524cb7caa409dc01257, type: 2}

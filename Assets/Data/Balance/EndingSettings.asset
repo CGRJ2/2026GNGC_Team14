@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4188d749114b08bda2750af1dbd7a1, type: 3}
+  m_Name: EndingSettings
+  m_EditorClassIdentifier: 
+  badMaxReputation: 8
+  normalMaxReputation: 15
+  titleSceneName: TitleScene
+  badEnding:
+    illustration: {fileID: 0}
+    text: "\uB354 \uC774\uC0C1 \uD559\uC0DD\uB4E4\uC740 \uC2A4\uC2A4\uB85C \uC0DD\uAC01\uD558\uC9C0
+      \uC54A\uB294 \uACBD\uC9C0\uC5D0 \uC774\uB974\uB800\uACE0, \uD559\uAD50\uC758
+      \uD3C9\uD310\uC740 \uBC14\uB2E5\uC73C\uB85C \uB5A8\uC5B4\uC84C\uB2E4.\n\n[
+      \uBC30\uB4DC \uC5D4\uB529 ]"
+    duration: 3
+  normalEnding:
+    illustration: {fileID: 0}
+    text: "\uD559\uAD50\uB294 \uAC00\uAE4C\uC2A4\uB85C \uC9C8\uC11C\uB97C \uB418\uCC3E\uC558\uB2E4.
+      \uC644\uBCBD\uD558\uC9C4 \uC54A\uC558\uC9C0\uB9CC, \uD559\uC0DD\uB4E4\uC740
+      \uB2E4\uC2DC \uC2A4\uC2A4\uB85C\uC758 \uACFC\uC81C\uB97C \uB9C8\uC8FC\uD558\uAE30
+      \uC2DC\uC791\uD588\uB2E4.\n\n[ \uB178\uB9D0 \uC5D4\uB529 ]"
+    duration: 3
+  goodEnding:
+    illustration: {fileID: 0}
+    text: "\uD559\uAD50\uC758 \uD3C9\uD310\uC740 \uBE5B\uC744 \uB418\uCC3E\uC558\uB2E4.
+      \uACE8\uB818 \uBD80\uC815 \uC0AC\uC6A9\uC740 \uD06C\uAC8C \uC904\uC5C8\uACE0,
+      \uB2F9\uC2E0\uC758 \uD310\uC815\uC740 \uC0C8\uB85C\uC6B4 \uAE30\uC900\uC774
+      \uB418\uC5C8\uB2E4.\n\n[ \uAD7F \uC5D4\uB529 ]"
+    duration: 3

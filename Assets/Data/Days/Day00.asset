@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90397ec8339976b4ebc70da3803f5185, type: 3}
   m_Name: Day00
   m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.DayConfigSO
-  day: 1
-  studentLimit: 3
+  day: 0
+  studentLimit: 1
   requiresReport: 0
   requiresCrystal: 0
   requiresUV: 0
   dayStartCutscene: {fileID: 0}
   endDayIllustration: {fileID: 21300000, guid: 8f499f7d05f59c34d92c0203f5622d61, type: 3}
+  endDayIllustrationText: "\uC624\uB298\uBD80\uD130 \uACE8\uB818\uC0AC\uC6A9 \uAE08\uC9C0\uC57C!!!"
   endDayIllustrationDuration: 3

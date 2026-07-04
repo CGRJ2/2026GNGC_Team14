@@ -16,6 +16,8 @@ MonoBehaviour:
   studentLimit: 5
   requiresReport: 1
   requiresCrystal: 1
-  dayStartCutscene: {fileID: 0}
+  requiresUV: 0
+  dayStartCutscene: {fileID: 11400000, guid: e61905a79420d1c4e8205e5f8ec8e71f, type: 2}
   endDayIllustration: {fileID: 0}
+  endDayIllustrationText: 
   endDayIllustrationDuration: 3

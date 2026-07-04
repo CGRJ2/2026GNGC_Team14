@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using MageAcademy.Audio;
 using MageAcademy.Data;
 using UnityEngine;
 
@@ -14,7 +15,6 @@ namespace MageAcademy.UI
         [Header("Stamp")]
         [SerializeField] private GameObject _passedImage;
         [SerializeField] private GameObject _failImage;
-        [SerializeField] private AudioSource _audioSource;
         [SerializeField] private AudioClip _stampClip;
 
         private RectTransform _rect;
@@ -36,6 +36,7 @@ namespace MageAcademy.UI
             UIAnimationSettingsSO.FadeSlideSettings enter = settings != null ? settings.judgeActionEnter : null;
             UIAnimationSettingsSO.FadeSlideSettings exit = settings != null ? settings.judgeActionExit : null;
             float holdDuration = settings != null ? settings.judgeActionStampHoldDuration : 1f;
+            float stampDelay = settings != null ? settings.judgeActionStampDelay : 0.15f;
 
             enter ??= new UIAnimationSettingsSO.FadeSlideSettings { startOffset = new Vector2(0f, -80f), duration = 0.35f };
             exit ??= new UIAnimationSettingsSO.FadeSlideSettings { startOffset = new Vector2(0f, 80f), duration = 0.4f };
@@ -51,6 +52,7 @@ namespace MageAcademy.UI
             _sequence = DOTween.Sequence()
                 .AppendInterval(enter.delay)
                 .Append(CreateMoveFadeTween(_restPosition, 1f, enter.duration, enter.ease))
+                .AppendInterval(Mathf.Max(0f, stampDelay))
                 .AppendCallback(() =>
                 {
                     SetStampVisible(verdict, visible: true);
@@ -81,8 +83,11 @@ namespace MageAcademy.UI
 
         private void PlayStampSound()
         {
-            if (_audioSource != null && _stampClip != null)
-                _audioSource.PlayOneShot(_stampClip);
+            if (_stampClip == null)
+                return;
+
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySfx(_stampClip);
         }
 
         private Tween CreateMoveFadeTween(Vector2 targetPosition, float targetAlpha, float duration, Ease ease)

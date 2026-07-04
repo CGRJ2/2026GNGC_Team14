@@ -1,6 +1,7 @@
 using DG.Tweening;
 using MageAcademy.Core;
 using MageAcademy.Data;
+using MageAcademy.Gameplay.Services;
 
 namespace MageAcademy.Gameplay.Flow
 {
@@ -17,6 +18,9 @@ namespace MageAcademy.Gameplay.Flow
 
         public override void Enter()
         {
+            if (Context.Generator is IStudentCaseGeneratorLifecycle lifecycle)
+                lifecycle.BeginDay(Context.Day.CurrentDay.Value);
+
             Context.RaiseDayStarted(Context.Day.CurrentDay.Value);
 
             UIAnimationSettingsSO settings = Context.UIAnimationSettings;

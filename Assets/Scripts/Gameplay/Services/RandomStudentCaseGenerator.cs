@@ -10,7 +10,7 @@ namespace MageAcademy.Gameplay.Services
     /// - 검증면(학생증/레포트/수정구슬)이 그날 활성인지에 따라, 위조 케이스는 활성 축 중 한 곳만 위조한다.
     ///   레포트 본문 위조는 한 문단을 다른 주제/오류로, 수정구슬 위조는 진술과 모순되는 장면(거짓말)으로.
     /// </summary>
-    public class RandomStudentCaseGenerator : IStudentCaseGenerator
+    public class RandomStudentCaseGenerator : IStudentCaseGenerator, IStudentCaseGeneratorLifecycle
     {
         private enum ForgeAxis { IdField, ReportBody, CrystalLie, UVGolem }
 
@@ -28,6 +28,7 @@ namespace MageAcademy.Gameplay.Services
         private readonly ReportSO _report;
         private readonly CrystalSO _crystal;
         private readonly UVSO _uv;
+        private readonly HashSet<StudentSO> _usedStudentsToday = new();
 
         public RandomStudentCaseGenerator(StudentDatabaseSO database, GameBalanceSO balance,
             ReportSO report = null, CrystalSO crystal = null, UVSO uv = null)
@@ -38,6 +39,11 @@ namespace MageAcademy.Gameplay.Services
             _report = report;
             _crystal = crystal;
             _uv = uv;
+        }
+
+        public void BeginDay(int day)
+        {
+            _usedStudentsToday.Clear();
         }
 
         private float AxisWeight(ForgeAxis axis)
@@ -56,9 +62,11 @@ namespace MageAcademy.Gameplay.Services
 
         public StudentCase Generate(bool includeReport, bool includeCrystal, bool includeUV)
         {
-            StudentSO real = _database != null ? _database.GetRandom() : null;
+            StudentSO real = PickUnusedStudent();
             if (real == null)
                 return null;
+
+            _usedStudentsToday.Add(real);
 
             var forged = new Dictionary<StudentIdFieldType, bool>();
             var cardText = new Dictionary<StudentIdFieldType, string>();
@@ -101,6 +109,29 @@ namespace MageAcademy.Gameplay.Services
             }
 
             return new StudentCase(real, forged, cardText, cardPhoto, report, crystal, uv);
+        }
+
+        private StudentSO PickUnusedStudent()
+        {
+            if (_database == null || _database.IsEmpty)
+                return null;
+
+            int count = _database.Count;
+            for (int i = 0; i < count * 2; i++)
+            {
+                StudentSO candidate = _database.GetRandom();
+                if (candidate != null && !_usedStudentsToday.Contains(candidate))
+                    return candidate;
+            }
+
+            foreach (StudentSO student in _database.students)
+            {
+                if (student != null && !_usedStudentsToday.Contains(student))
+                    return student;
+            }
+
+            Debug.LogWarning("[StudentCase] Student pool exhausted for this day. Reusing a student.");
+            return _database.GetRandom();
         }
 
         /// <summary>활성 축 {학생증 / 레포트 / 수정구슬 / UV} 중 실현 가능한 한 곳만 위조한다.</summary>

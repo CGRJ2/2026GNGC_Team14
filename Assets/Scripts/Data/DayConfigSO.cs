@@ -8,7 +8,7 @@ namespace MageAcademy.Data
     [CreateAssetMenu(fileName = "DayConfig", menuName = "MageAcademy/Day Config", order = 40)]
     public class DayConfigSO : ScriptableObject
     {
-        [Min(1)]
+        [Min(0)]
         [Tooltip("몇 일차 데이터인지. 1일차 = 1")]
         public int day = 1;
 
@@ -32,6 +32,9 @@ namespace MageAcademy.Data
         [Header("하루 종료 일러스트")]
         [Tooltip("이 날 종료 시 검은 화면 위에 띄울 풀스크린 일러스트. 없으면 생략")]
         public Sprite endDayIllustration;
+
+        [TextArea]
+        public string endDayIllustrationText;
 
         [Min(0f)]
         [Tooltip("종료 일러스트 노출 시간(초)")]

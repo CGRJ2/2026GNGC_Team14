@@ -33,7 +33,6 @@ namespace MageAcademy.UI
             EnsureDraggablePanel();
 
             Context.CaseStarted += OnCaseStarted;
-            Context.StudentExitRequested += OnStudentExitRequested;
 
             gameObject.SetActive(false);
             SetOpenButtonVisible(false);
@@ -58,11 +57,6 @@ namespace MageAcademy.UI
         private void OnQuestionClicked()
         {
             Context.RequestCrystalQuestion();
-        }
-
-        private void OnStudentExitRequested()
-        {
-            gameObject.SetActive(false);
         }
 
         private void SetOpenButtonVisible(bool visible)
@@ -140,10 +134,7 @@ namespace MageAcademy.UI
         private void OnDestroy()
         {
             if (Context != null)
-            {
                 Context.CaseStarted -= OnCaseStarted;
-                Context.StudentExitRequested -= OnStudentExitRequested;
-            }
 
             if (_questionButton != null)
                 _questionButton.onClick.RemoveListener(OnQuestionClicked);
