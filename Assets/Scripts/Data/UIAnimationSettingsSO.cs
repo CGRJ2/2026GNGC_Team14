@@ -75,6 +75,23 @@ namespace MageAcademy.Data
         [Min(0f)]
         public float dayFadeInDuration = 0.8f;
 
+        [Header("Judge Action")]
+        public FadeSlideSettings judgeActionEnter = new()
+        {
+            duration = 0.35f,
+            startOffset = new Vector2(0f, -80f),
+            ease = Ease.OutBack,
+        };
+
+        [Min(0f)]
+        public float judgeActionStampHoldDuration = 1f;
+
+        public FadeSlideSettings judgeActionExit = new()
+        {
+            duration = 0.4f,
+            startOffset = new Vector2(0f, 80f),
+        };
+
         [Header("학생 일러스트 퇴장 (위로 이동 + 페이드 아웃)")]
         public FadeSlideSettings studentExit = new()
         {

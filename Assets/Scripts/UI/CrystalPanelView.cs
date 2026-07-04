@@ -14,6 +14,9 @@ namespace MageAcademy.UI
     {
         [Tooltip("어제 장면 일러스트")]
         [SerializeField] private Image _sceneImage;
+        [SerializeField] private Animator _sceneAnimator;
+        [SerializeField] private string _sceneAnimatorObjectName = "AnimatedSprite";
+        [SerializeField] private string _fallbackAnimationKey = "Study";
 
         [Tooltip("질문하기 버튼(학생 진술 유도)")]
         [SerializeField] private Button _questionButton;
@@ -49,11 +52,7 @@ namespace MageAcademy.UI
 
             SetOpenButtonVisible(true);
 
-            if (_sceneImage != null)
-            {
-                _sceneImage.sprite = crystal.Scene;
-                _sceneImage.enabled = crystal.Scene != null;
-            }
+            PlaySceneAnimation(crystal);
         }
 
         private void OnQuestionClicked()
@@ -70,6 +69,62 @@ namespace MageAcademy.UI
         {
             if (_openButton != null)
                 _openButton.gameObject.SetActive(visible);
+        }
+
+        private void PlaySceneAnimation(CrystalData crystal)
+        {
+            if (TryPlayAnimatorState(crystal != null ? crystal.AnimationKey : string.Empty))
+            {
+                if (_sceneImage != null)
+                    _sceneImage.enabled = false;
+                return;
+            }
+
+            if (_sceneImage != null && crystal != null)
+            {
+                _sceneImage.sprite = crystal.Scene;
+                _sceneImage.enabled = crystal.Scene != null;
+            }
+        }
+
+        private bool TryPlayAnimatorState(string animationKey)
+        {
+            Animator animator = SceneAnimator;
+            if (animator == null || animator.runtimeAnimatorController == null)
+                return false;
+
+            string stateName = string.IsNullOrWhiteSpace(animationKey) ? _fallbackAnimationKey : animationKey;
+            if (string.IsNullOrWhiteSpace(stateName))
+                return false;
+
+            int stateHash = Animator.StringToHash(stateName);
+            if (!animator.HasState(0, stateHash))
+            {
+                Debug.LogWarning($"Crystal scene animation state not found: {stateName}", this);
+                return false;
+            }
+
+            animator.Play(stateHash, 0, 0f);
+            animator.Update(0f);
+            return true;
+        }
+
+        private Animator SceneAnimator
+        {
+            get
+            {
+                if (_sceneAnimator != null)
+                    return _sceneAnimator;
+
+                if (string.IsNullOrWhiteSpace(_sceneAnimatorObjectName))
+                    return null;
+
+                GameObject animatorObject = GameObject.Find(_sceneAnimatorObjectName);
+                if (animatorObject != null)
+                    _sceneAnimator = animatorObject.GetComponent<Animator>();
+
+                return _sceneAnimator;
+            }
         }
 
         private void EnsureDraggablePanel()

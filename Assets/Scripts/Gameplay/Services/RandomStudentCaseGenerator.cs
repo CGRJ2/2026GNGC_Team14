@@ -165,14 +165,14 @@ namespace MageAcademy.Gameplay.Services
 
         private CrystalData BuildHonestCrystal(CrystalSO.CrystalCase c)
         {
-            return new CrystalData(c.questionKey, c.honestTestimonyKey, c.honestScene, isLie: false);
+            return new CrystalData(c.questionKey, c.honestTestimonyKey, c.honestScene, isLie: false, c.honestAnimationKey);
         }
 
         private CrystalData ForgeCrystalLie(CrystalSO.CrystalCase c)
         {
             if (c == null)
                 return null;
-            return new CrystalData(c.questionKey, c.lyingTestimonyKey, c.lyingScene, isLie: true);
+            return new CrystalData(c.questionKey, c.lyingTestimonyKey, c.lyingScene, isLie: true, c.lyingAnimationKey);
         }
 
         private ReportData BuildHonestReport(ReportSO.ReportGroup group)

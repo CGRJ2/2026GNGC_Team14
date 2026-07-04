@@ -1,4 +1,5 @@
 using MageAcademy.Data;
+using MageAcademy.Gameplay.Models;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ namespace MageAcademy.UI
         [SerializeField] private Button _failButton;
         [SerializeField] private TMP_Text _completeLabel;
         [SerializeField] private TMP_Text _failLabel;
+        [SerializeField] private JudgeActionView _judgeAction;
 
         protected override void OnBind()
         {
@@ -26,16 +28,36 @@ namespace MageAcademy.UI
                 _completeButton.onClick.AddListener(OnCompleteClicked);
             if (_failButton != null)
                 _failButton.onClick.AddListener(OnFailClicked);
+
+            Context.CaseStarted += OnCaseStarted;
+        }
+
+        private void OnCaseStarted(StudentCase studentCase)
+        {
+            SetButtonsInteractable(studentCase != null, studentCase != null);
         }
 
         private void OnCompleteClicked()
         {
-            Context.RequestVerdict(PlayerVerdict.ApproveComplete);
+            PlayJudgeAction(PlayerVerdict.ApproveComplete);
         }
 
         private void OnFailClicked()
         {
-            Context.RequestVerdict(PlayerVerdict.RejectFail);
+            PlayJudgeAction(PlayerVerdict.RejectFail);
+        }
+
+        private void PlayJudgeAction(PlayerVerdict verdict)
+        {
+            SetButtonsInteractable(false, false);
+
+            if (_judgeAction == null)
+            {
+                Context.RequestVerdict(verdict);
+                return;
+            }
+
+            _judgeAction.Play(verdict, Context.UIAnimationSettings, () => Context.RequestVerdict(verdict));
         }
 
         public Button FailButton => _failButton;
@@ -51,6 +73,8 @@ namespace MageAcademy.UI
 
         private void OnDestroy()
         {
+            if (Context != null)
+                Context.CaseStarted -= OnCaseStarted;
             if (_completeButton != null)
                 _completeButton.onClick.RemoveListener(OnCompleteClicked);
             if (_failButton != null)

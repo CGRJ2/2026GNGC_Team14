@@ -17,9 +17,13 @@ MonoBehaviour:
     honestTestimonyKey: crystal_homework_honest
     lyingTestimonyKey: crystal_homework_lie
     honestScene: {fileID: 21300000, guid: 3212bc1c77b2713428b891c8fa2b028c, type: 3}
+    honestAnimationKey: Study
     lyingScene: {fileID: 21300000, guid: 8c8733a958fe6374c8322d054c857a41, type: 3}
+    lyingAnimationKey: Play
   - questionKey: crystal_q_library
     honestTestimonyKey: crystal_library_honest
     lyingTestimonyKey: crystal_library_lie
     honestScene: {fileID: 21300000, guid: 3212bc1c77b2713428b891c8fa2b028c, type: 3}
+    honestAnimationKey: Study
     lyingScene: {fileID: 21300000, guid: 8c8733a958fe6374c8322d054c857a41, type: 3}
+    lyingAnimationKey: Sleep

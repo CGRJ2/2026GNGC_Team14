@@ -26,9 +26,11 @@ namespace MageAcademy.Data
 
             [Tooltip("정직 장면: 실제로 하는 모습(작업중/도서관)")]
             public Sprite honestScene;
+            public string honestAnimationKey = "Study";
 
             [Tooltip("거짓 장면: 안 하는 모습(놀기/딴 곳)")]
             public Sprite lyingScene;
+            public string lyingAnimationKey = "Play";
         }
 
         [Tooltip("수정구슬 알리바이 케이스 풀")]

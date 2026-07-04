@@ -2,6 +2,8 @@ using MageAcademy.Data;
 using MageAcademy.Gameplay.Models;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace MageAcademy.UI
 {
@@ -9,18 +11,29 @@ namespace MageAcademy.UI
     /// Displays the player's current student ID question in the player speech bubble.
     /// StudentIdPanelView owns the question trigger buttons.
     /// </summary>
-    public class PlayerDialogue : UIViewBase
+    public class PlayerDialogue : UIViewBase, IPointerClickHandler
     {
         [SerializeField] private GameObject _panelRoot;
         [SerializeField] private TMP_Text _speechLabel;
+        [SerializeField] private bool _hideOnClick = true;
 
         protected override void OnBind()
         {
+            EnableClickRaycast();
+
             Context.CaseStarted += OnCaseStarted;
             Context.QuestionAsked += OnQuestionAsked;
             Context.CutsceneDialogueRequested += OnCutsceneDialogueRequested;
             Context.CutsceneEnded += OnCutsceneEnded;
             Context.StudentExitRequested += OnStudentExitRequested;
+
+            Hide();
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (!_hideOnClick || !PanelRoot.activeSelf)
+                return;
 
             Hide();
         }
@@ -78,6 +91,12 @@ namespace MageAcademy.UI
         }
 
         private GameObject PanelRoot => _panelRoot != null ? _panelRoot : gameObject;
+
+        private void EnableClickRaycast()
+        {
+            if (PanelRoot.TryGetComponent(out Graphic graphic))
+                graphic.raycastTarget = true;
+        }
 
         private void OnDestroy()
         {

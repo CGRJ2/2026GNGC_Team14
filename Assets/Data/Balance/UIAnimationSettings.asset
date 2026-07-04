@@ -30,6 +30,17 @@ MonoBehaviour:
   dayFadeOutDuration: 0.8
   dayLabelHoldDuration: 1.2
   dayFadeInDuration: 0.8
+  judgeActionEnter:
+    delay: 0
+    duration: 0.35
+    startOffset: {x: 0, y: -120}
+    ease: 27
+  judgeActionStampHoldDuration: 1
+  judgeActionExit:
+    delay: 0
+    duration: 0.4
+    startOffset: {x: 0, y: 120}
+    ease: 6
   studentExit:
     delay: 0.5
     duration: 0.25

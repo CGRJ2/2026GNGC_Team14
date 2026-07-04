@@ -17,15 +17,18 @@ namespace MageAcademy.Gameplay.Models
         /// <summary>수정구슬에 비친 어제 장면.</summary>
         public Sprite Scene { get; }
 
+        public string AnimationKey { get; }
+
         /// <summary>진술이 장면과 모순되면(거짓말) true.</summary>
         public bool IsLie { get; }
 
-        public CrystalData(string questionKey, string testimonyKey, Sprite scene, bool isLie)
+        public CrystalData(string questionKey, string testimonyKey, Sprite scene, bool isLie, string animationKey = "")
         {
             QuestionKey = questionKey;
             TestimonyKey = testimonyKey;
             Scene = scene;
             IsLie = isLie;
+            AnimationKey = animationKey;
         }
 
         public bool IsHonest => !IsLie;
