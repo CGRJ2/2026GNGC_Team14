@@ -4,6 +4,7 @@ using MageAcademy.Gameplay.Models;
 using MageAcademy.Gameplay.Services;
 using MageAcademy.Localization;
 using MageAcademy.SaveSystem;
+using UnityEngine;
 
 namespace MageAcademy.Gameplay.Flow
 {
@@ -84,6 +85,8 @@ namespace MageAcademy.Gameplay.Flow
         public event Action<int> DayStarted;
         public event Action<int> DayEnded;
         public event Action<CutsceneSO> CutscenePlayRequested;
+        public event Action<Sprite> DayEndIllustrationShown;
+        public event Action DayEndIllustrationHidden;
 
         public void RaiseCaseStarted(StudentCase c) => CaseStarted?.Invoke(c);
         public void RaiseQuestion(string question) => QuestionAsked?.Invoke(question);
@@ -97,6 +100,8 @@ namespace MageAcademy.Gameplay.Flow
         public void RaiseDayStarted(int day) => DayStarted?.Invoke(day);
         public void RaiseDayEnded(int day) => DayEnded?.Invoke(day);
         public void RequestCutscene(CutsceneSO cutscene) => CutscenePlayRequested?.Invoke(cutscene);
+        public void RaiseDayEndIllustrationShown(Sprite illustration) => DayEndIllustrationShown?.Invoke(illustration);
+        public void RaiseDayEndIllustrationHidden() => DayEndIllustrationHidden?.Invoke();
 
         // ---- 입력 이벤트 (뷰가 요청, 상태가 구독) ----
         public event Action<StudentIdFieldType> QuestionRequested;

@@ -15,3 +15,5 @@ MonoBehaviour:
   day: 1
   studentLimit: 3
   dayStartCutscene: {fileID: 0}
+  endDayIllustration: {fileID: 21300000, guid: a696269b9e1c5a7429bd8a683acaeade, type: 3}
+  endDayIllustrationDuration: 3

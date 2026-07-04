@@ -2,11 +2,13 @@ using DG.Tweening;
 using MageAcademy.Data;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace MageAcademy.UI
 {
     /// <summary>
     /// 하루 전환 오버레이. DayEnded에 페이드아웃, DayStarted에 날짜 표시 후 페이드인한다.
+    /// 하루 종료 일러스트는 검은 화면 위에 표시/숨김한다.
     /// 전환 중에는 입력을 차단한다. 뷰는 이벤트 구독만 하고 모델을 변경하지 않는다.
     /// </summary>
     public class DayTransitionView : UIViewBase
@@ -14,15 +16,41 @@ namespace MageAcademy.UI
         [SerializeField] private CanvasGroup _overlay;
         [SerializeField] private TMP_Text _dayLabel;
 
+        [Tooltip("검은 화면 위에 띄우는 하루 종료 일러스트(풀스크린). 기본 비활성")]
+        [SerializeField] private Image _endDayIllustration;
+
         private Tween _tween;
 
         protected override void OnBind()
         {
             Context.DayEnded += OnDayEnded;
             Context.DayStarted += OnDayStarted;
+            Context.DayEndIllustrationShown += OnDayEndIllustrationShown;
+            Context.DayEndIllustrationHidden += OnDayEndIllustrationHidden;
 
             SetOverlay(0f, false);
             SetLabelVisible(false);
+            SetIllustration(null, false);
+        }
+
+        private void OnDayEndIllustrationShown(Sprite illustration)
+        {
+            SetIllustration(illustration, illustration != null);
+        }
+
+        private void OnDayEndIllustrationHidden()
+        {
+            SetIllustration(null, false);
+        }
+
+        private void SetIllustration(Sprite illustration, bool visible)
+        {
+            if (_endDayIllustration == null)
+                return;
+
+            if (illustration != null)
+                _endDayIllustration.sprite = illustration;
+            _endDayIllustration.gameObject.SetActive(visible);
         }
 
         private void OnDayEnded(int day)
@@ -95,6 +123,8 @@ namespace MageAcademy.UI
             {
                 Context.DayEnded -= OnDayEnded;
                 Context.DayStarted -= OnDayStarted;
+                Context.DayEndIllustrationShown -= OnDayEndIllustrationShown;
+                Context.DayEndIllustrationHidden -= OnDayEndIllustrationHidden;
             }
         }
     }
