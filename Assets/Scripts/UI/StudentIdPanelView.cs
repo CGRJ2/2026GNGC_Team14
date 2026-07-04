@@ -81,7 +81,8 @@ namespace MageAcademy.UI
         private void SetField(TMP_Text label, string labelKey, string value)
         {
             if (label != null)
-                label.text = $"{Context.Localization.Get(labelKey)}: {value}";
+                //label.text = $"{Context.Localization.Get(labelKey)}: {value}";
+                label.text = $"{value}";
         }
 
         private void BindQuestionClickTargets()

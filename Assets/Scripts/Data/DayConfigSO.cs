@@ -19,6 +19,12 @@ namespace MageAcademy.Data
         [Tooltip("이 날 학생이 레포트를 제출하는지(레포트 검증면 활성화). Day2~ = true")]
         public bool requiresReport;
 
+        [Tooltip("이 날 수정구슬(알리바이) 검증을 사용하는지. Day3~ = true")]
+        public bool requiresCrystal;
+
+        [Tooltip("이 날 UV 지팡이(골렘 흔적) 검증을 사용하는지. Day4~ = true")]
+        public bool requiresUV;
+
         [Header("하루 시작 이벤트")]
         [Tooltip("하루 시작 연출이 끝난 뒤 재생할 컷씬. 없으면 바로 학생 입장")]
         public CutsceneSO dayStartCutscene;

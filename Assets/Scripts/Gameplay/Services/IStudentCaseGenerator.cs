@@ -6,6 +6,8 @@ namespace MageAcademy.Gameplay.Services
     public interface IStudentCaseGenerator
     {
         /// <param name="includeReport">이 날 레포트를 요구하면 레포트 검증면을 함께 생성한다.</param>
-        StudentCase Generate(bool includeReport);
+        /// <param name="includeCrystal">이 날 수정구슬을 요구하면 알리바이 검증면을 함께 생성한다.</param>
+        /// <param name="includeUV">이 날 UV 지팡이를 요구하면 골렘 흔적 검증면을 함께 생성한다.</param>
+        StudentCase Generate(bool includeReport, bool includeCrystal, bool includeUV);
     }
 }

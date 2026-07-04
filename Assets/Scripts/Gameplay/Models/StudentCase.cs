@@ -22,21 +22,31 @@ namespace MageAcademy.Gameplay.Models
         /// <summary>레포트를 요구하는 날의 제출 레포트. 없으면 null.</summary>
         public ReportData Report { get; }
 
+        /// <summary>수정구슬을 요구하는 날의 알리바이 데이터. 없으면 null.</summary>
+        public CrystalData Crystal { get; }
+
+        /// <summary>UV 지팡이를 요구하는 날의 골렘 흔적 데이터. 없으면 null.</summary>
+        public UVData UV { get; }
+
         public StudentCase(
             StudentSO student,
             Dictionary<StudentIdFieldType, bool> forged,
             Dictionary<StudentIdFieldType, string> cardText,
             Sprite cardPhoto,
-            ReportData report = null)
+            ReportData report = null,
+            CrystalData crystal = null,
+            UVData uv = null)
         {
             Student = student;
             _forged = forged ?? new Dictionary<StudentIdFieldType, bool>();
             _cardText = cardText ?? new Dictionary<StudentIdFieldType, string>();
             CardPhoto = cardPhoto;
             Report = report;
+            Crystal = crystal;
+            UV = uv;
         }
 
-        /// <summary>학생증·레포트 어떤 항목도 위조되지 않았으면 진짜(=정직).</summary>
+        /// <summary>학생증·레포트·수정구슬·UV 어떤 항목도 위조/거짓이 아니면 진짜(=정직).</summary>
         public bool IsHonest
         {
             get
@@ -46,7 +56,11 @@ namespace MageAcademy.Gameplay.Models
                     if (forged)
                         return false;
                 }
-                return Report == null || Report.IsHonest;
+                if (Report != null && !Report.IsHonest)
+                    return false;
+                if (Crystal != null && !Crystal.IsHonest)
+                    return false;
+                return UV == null || UV.IsHonest;
             }
         }
 

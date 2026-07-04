@@ -15,6 +15,10 @@ MonoBehaviour:
   startingReputation: 10
   lieChance: 0.5
   inspectionTimeLimit: 30
+  forgeWeightId: 1
+  forgeWeightReport: 1
+  forgeWeightCrystal: 1
+  forgeWeightUV: 3
   truthSuccess:
     reputationDelta: 1
     eventKey: outcome_truth_success

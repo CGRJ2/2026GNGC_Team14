@@ -25,6 +25,8 @@ namespace MageAcademy.Gameplay.Flow
         [SerializeField] private UIAnimationSettingsSO _uiAnimationSettings;
         [SerializeField] private DayScheduleSO _daySchedule;
         [SerializeField] private ReportSO _report;
+        [SerializeField] private CrystalSO _crystal;
+        [SerializeField] private UVSO _uv;
 
         [Header("Tutorial")]
         [SerializeField] private bool _runTutorialOnStart;
@@ -121,7 +123,7 @@ namespace MageAcademy.Gameplay.Flow
         private IStudentCaseGenerator CreateCaseGenerator()
         {
             if (!_runTutorialOnStart)
-                return new RandomStudentCaseGenerator(_studentDatabase, _balance.lieChance, _report);
+                return new RandomStudentCaseGenerator(_studentDatabase, _balance, _report, _crystal, _uv);
 
             StudentSO tutorialStudent = _tutorialStudent != null
                 ? _tutorialStudent
@@ -253,9 +255,9 @@ namespace MageAcademy.Gameplay.Flow
                 _cardPhoto = cardPhoto;
             }
 
-            public StudentCase Generate(bool includeReport)
+            public StudentCase Generate(bool includeReport, bool includeCrystal, bool includeUV)
             {
-                // 튜토리얼은 레포트를 사용하지 않으므로 includeReport를 무시한다.
+                // 튜토리얼은 레포트·수정구슬·UV를 사용하지 않으므로 플래그를 무시한다.
                 if (_student == null)
                     return null;
 

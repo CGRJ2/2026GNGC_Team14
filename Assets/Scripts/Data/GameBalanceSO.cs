@@ -32,6 +32,12 @@ namespace MageAcademy.Data
         [Tooltip("학생 1명당 검사 제한시간(초)")]
         public float inspectionTimeLimit = 30f;
 
+        [Header("위조 축 가중치 (위조 시 그날 활성 축 중 어디를 tell로 삼을지 비중)")]
+        [Min(0f)] public float forgeWeightId = 1f;
+        [Min(0f)] public float forgeWeightReport = 1f;
+        [Min(0f)] public float forgeWeightCrystal = 1f;
+        [Min(0f)] public float forgeWeightUV = 1f;
+
         [Header("결과별 평판/이벤트")]
         public OutcomeInfo truthSuccess = new() { reputationDelta = 1, eventKey = "outcome_truth_success" };
         public OutcomeInfo falseCaught = new() { reputationDelta = 1, eventKey = "outcome_false_caught" };

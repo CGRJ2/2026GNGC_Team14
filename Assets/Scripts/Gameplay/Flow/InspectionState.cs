@@ -29,6 +29,8 @@ namespace MageAcademy.Gameplay.Flow
             Context.QuestionRequested += OnQuestionRequested;
             Context.VerdictRequested += OnVerdictRequested;
             Context.ReportInterrogationRequested += OnReportInterrogationRequested;
+            Context.CrystalQuestionRequested += OnCrystalQuestionRequested;
+            Context.UVInterrogationRequested += OnUVInterrogationRequested;
 
             // 타이머 초기화(튜토리얼은 시간 제한 없음).
             Context.PendingTimeout = false;
@@ -65,6 +67,8 @@ namespace MageAcademy.Gameplay.Flow
             Context.QuestionRequested -= OnQuestionRequested;
             Context.VerdictRequested -= OnVerdictRequested;
             Context.ReportInterrogationRequested -= OnReportInterrogationRequested;
+            Context.CrystalQuestionRequested -= OnCrystalQuestionRequested;
+            Context.UVInterrogationRequested -= OnUVInterrogationRequested;
             _answerDelayTween?.Kill();
             _answerDelayTween = null;
 
@@ -103,6 +107,54 @@ namespace MageAcademy.Gameplay.Flow
 
             Context.RaiseStudentEmotion(suspicious ? StudentEmotion.Flustered : StudentEmotion.Normal);
             Context.RaiseStudentReaction(line);
+        }
+
+        private void OnCrystalQuestionRequested()
+        {
+            CrystalData crystal = Context.CurrentCase != null ? Context.CurrentCase.Crystal : null;
+            if (crystal == null)
+                return;
+
+            // 1) 플레이어가 먼저 질문한다.
+            string question = Context.Localization.Get(crystal.QuestionKey);
+            Context.RaiseQuestion(question);
+
+            // 2) 잠시 뒤 학생이 주장 진술로 답한다. 진실/거짓은 플레이어가 구슬 장면과 대조해 판단한다.
+            string testimony = Context.Localization.Get(crystal.TestimonyKey);
+            _answerDelayTween?.Kill();
+            float delay = Context.UIAnimationSettings != null
+                ? Context.UIAnimationSettings.dialogueAnswerDelay
+                : 0.6f;
+
+            _answerDelayTween = DOVirtual.DelayedCall(delay, () =>
+            {
+                Context.RaiseStudentReaction(testimony);
+                _answerDelayTween = null;
+            });
+        }
+
+        private void OnUVInterrogationRequested()
+        {
+            UVData uv = Context.CurrentCase != null ? Context.CurrentCase.UV : null;
+            if (uv == null || !uv.IsGolemWork)
+                return;
+
+            // 1) 플레이어가 흔적을 들이대며 추궁한다.
+            Context.RaiseQuestion(Context.Localization.Get(uv.QuestionKey));
+
+            // 2) 잠시 뒤 들킨 학생이 당황하며 반응한다.
+            string reaction = Context.Localization.GetRandom(uv.ReactionKey);
+            _answerDelayTween?.Kill();
+            float delay = Context.UIAnimationSettings != null
+                ? Context.UIAnimationSettings.dialogueAnswerDelay
+                : 0.6f;
+
+            _answerDelayTween = DOVirtual.DelayedCall(delay, () =>
+            {
+                Context.RaiseStudentEmotion(StudentEmotion.Flustered);
+                Context.RaiseStudentReaction(reaction);
+                _answerDelayTween = null;
+            });
         }
 
         private void OnQuestionRequested(StudentIdFieldType field)

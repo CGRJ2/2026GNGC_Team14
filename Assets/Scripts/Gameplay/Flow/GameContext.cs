@@ -118,9 +118,13 @@ namespace MageAcademy.Gameplay.Flow
         public event Action<StudentIdFieldType> QuestionRequested;
         public event Action<PlayerVerdict> VerdictRequested;
         public event Action<int> ReportInterrogationRequested; // 레포트 문단 클릭(추궁)
+        public event Action CrystalQuestionRequested;          // 수정구슬 질문하기
+        public event Action UVInterrogationRequested;          // UV 흔적 클릭(추궁)
 
         public void RequestQuestion(StudentIdFieldType field) => QuestionRequested?.Invoke(field);
         public void RequestVerdict(PlayerVerdict verdict) => VerdictRequested?.Invoke(verdict);
         public void RequestReportInterrogation(int paragraphIndex) => ReportInterrogationRequested?.Invoke(paragraphIndex);
+        public void RequestCrystalQuestion() => CrystalQuestionRequested?.Invoke();
+        public void RequestUVInterrogation() => UVInterrogationRequested?.Invoke();
     }
 }

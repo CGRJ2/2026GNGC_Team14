@@ -1,4 +1,5 @@
 using MageAcademy.Core;
+using MageAcademy.Data;
 using MageAcademy.Gameplay.Models;
 using UnityEngine;
 
@@ -11,8 +12,11 @@ namespace MageAcademy.Gameplay.Flow
 
         public override void Enter()
         {
-            bool includeReport = Context.Day.TodayConfig != null && Context.Day.TodayConfig.requiresReport;
-            StudentCase newCase = Context.Generator.Generate(includeReport);
+            DayConfigSO today = Context.Day.TodayConfig;
+            bool includeReport = today != null && today.requiresReport;
+            bool includeCrystal = today != null && today.requiresCrystal;
+            bool includeUV = today != null && today.requiresUV;
+            StudentCase newCase = Context.Generator.Generate(includeReport, includeCrystal, includeUV);
             if (newCase == null)
             {
                 Debug.LogError("[Flow] 학생 데이터가 없어 사이클을 진행할 수 없음.");

@@ -14,16 +14,19 @@ public class PanelTableController : MonoBehaviour
     [SerializeField] private Button btnQuestPosting;
     [SerializeField] private Button btnShowSituation;
     [SerializeField] private Button btnShowReport;
+    [SerializeField] private Button btnShowUVPics;
 
     [Header("Panels")]
     [SerializeField] private GameObject panelQuestPosting;
     [SerializeField] private GameObject panelSituation;
     [SerializeField] private GameObject panelReport;
+    [SerializeField] private GameObject panelUVPics;
 
     [Header("Close (X) Buttons")]
     [SerializeField] private Button closeQuestPosting;
     [SerializeField] private Button closeSituation;
     [SerializeField] private Button closeReport;
+    [SerializeField] private Button closeUVPics;
 
     public event Action StudentIdPanelOpened;
 
@@ -35,9 +38,11 @@ public class PanelTableController : MonoBehaviour
         if (btnQuestPosting != null) btnQuestPosting.onClick.AddListener(OpenQuestPosting);
         if (btnShowSituation != null) btnShowSituation.onClick.AddListener(OpenSituation);
         if (btnShowReport != null) btnShowReport.onClick.AddListener(OpenReport);
+        if (btnShowUVPics != null) btnShowUVPics.onClick.AddListener(OpenUVPics);
         if (closeQuestPosting != null) closeQuestPosting.onClick.AddListener(CloseQuestPosting);
         if (closeSituation != null) closeSituation.onClick.AddListener(CloseSituation);
         if (closeReport != null) closeReport.onClick.AddListener(CloseReport);
+        if (closeUVPics != null) closeUVPics.onClick.AddListener(CloseUVPics);
     }
 
     private void OnDestroy()
@@ -45,9 +50,11 @@ public class PanelTableController : MonoBehaviour
         if (btnQuestPosting != null) btnQuestPosting.onClick.RemoveListener(OpenQuestPosting);
         if (btnShowSituation != null) btnShowSituation.onClick.RemoveListener(OpenSituation);
         if (btnShowReport != null) btnShowReport.onClick.RemoveListener(OpenReport);
+        if (btnShowUVPics != null) btnShowUVPics.onClick.RemoveListener(OpenUVPics);
         if (closeQuestPosting != null) closeQuestPosting.onClick.RemoveListener(CloseQuestPosting);
         if (closeSituation != null) closeSituation.onClick.RemoveListener(CloseSituation);
         if (closeReport != null) closeReport.onClick.RemoveListener(CloseReport);
+        if (closeUVPics != null) closeUVPics.onClick.RemoveListener(CloseUVPics);
     }
 
     private void OpenQuestPosting()
@@ -63,9 +70,11 @@ public class PanelTableController : MonoBehaviour
     }
     private void OpenSituation() => SetActive(panelSituation, true);
     private void OpenReport() => SetActive(panelReport, true);
+    private void OpenUVPics() => SetActive(panelUVPics, true);
     private void CloseQuestPosting() => SetActive(panelQuestPosting, false);
     private void CloseSituation() => SetActive(panelSituation, false);
     private void CloseReport() => SetActive(panelReport, false);
+    private void CloseUVPics() => SetActive(panelUVPics, false);
 
     private static void SetActive(GameObject go, bool active)
     {

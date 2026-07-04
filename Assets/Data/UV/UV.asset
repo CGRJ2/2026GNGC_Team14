@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11fd07e22d1885b47a6af74f5c593ecc, type: 3}
+  m_Name: UV
+  m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.UVSO
+  signatureSprites:
+  - {fileID: 6758970711597127838, guid: 13da8c898ad69f241b3e9f8457e75543, type: 3}
+  - {fileID: -3549493382825583616, guid: 8d5c746ca8c51d94a9ac0256ff09c4cf, type: 3}
+  - {fileID: -4459925911979955267, guid: f60048b035338f64ba310db4d878d7f3, type: 3}
+  questionKey: uv_question
+  reactionKeys:
+  - uv_reaction
