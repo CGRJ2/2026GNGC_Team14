@@ -1,8 +1,8 @@
 using DG.Tweening;
-using GuildGame.Core;
-using GuildGame.Data;
+using MageAcademy.Core;
+using MageAcademy.Data;
 
-namespace GuildGame.Gameplay.Flow
+namespace MageAcademy.Gameplay.Flow
 {
     /// <summary>
     /// 하루 시작 상태. 날짜 표시/페이드인 이벤트를 발행하고, 연출이 끝나면

@@ -1,9 +1,9 @@
 using DG.Tweening;
-using GuildGame.Data;
+using MageAcademy.Data;
 using TMPro;
 using UnityEngine;
 
-namespace GuildGame.UI
+namespace MageAcademy.UI
 {
     /// <summary>
     /// 하루 전환 오버레이. DayEnded에 페이드아웃, DayStarted에 날짜 표시 후 페이드인한다.

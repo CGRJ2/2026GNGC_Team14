@@ -1,16 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-using GuildGame.Core;
-using GuildGame.Data;
-using GuildGame.Gameplay.Models;
-using GuildGame.Gameplay.Services;
-using GuildGame.Localization;
-using GuildGame.UI;
+using MageAcademy.Core;
+using MageAcademy.Data;
+using MageAcademy.Gameplay.Models;
+using MageAcademy.Gameplay.Services;
+using MageAcademy.Localization;
+using MageAcademy.SaveSystem;
+using MageAcademy.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace GuildGame.Gameplay.Flow
+namespace MageAcademy.Gameplay.Flow
 {
     /// <summary>
     /// 학생증 검증 루프의 composition root.
@@ -30,15 +32,26 @@ namespace GuildGame.Gameplay.Flow
         [SerializeField] private float _tutorialAfterAnswerDelay = 0.8f;
         [SerializeField] private float _tutorialPhotoReactionDelay = 0.8f;
 
+        [Tooltip("튜토리얼 종료 후 진입할 인게임 씬 이름")]
+        [SerializeField] private string _inGameSceneName = "InGameScene";
+
         private StateMachine _machine;
         private GameContext _context;
         private TutorialHighlight _tutorialHighlight;
 
         private void Start()
         {
-            if (_balance == null || _studentDatabase == null || _daySchedule == null)
+            if (_balance == null || _studentDatabase == null)
             {
-                Debug.LogError("[GuildDesk] GameBalanceSO, StudentDatabaseSO or DayScheduleSO is missing.");
+                Debug.LogError("[Desk] GameBalanceSO or StudentDatabaseSO is missing.");
+                enabled = false;
+                return;
+            }
+
+            // 튜토리얼은 DaySchedule을 사용하지 않고 정해진 시퀀스로만 진행한다.
+            if (!_runTutorialOnStart && _daySchedule == null)
+            {
+                Debug.LogError("[Desk] DayScheduleSO is missing.");
                 enabled = false;
                 return;
             }
@@ -46,8 +59,13 @@ namespace GuildGame.Gameplay.Flow
             ILocalizationProvider localization = LocalizationManager.Instance;
             IStudentCaseGenerator generator = CreateCaseGenerator();
             IJudgementService judgement = new JudgementService();
-            var reputation = new ReputationModel(_balance.startingReputation);
-            var day = new DayModel(_daySchedule);
+            // 세이브가 있으면 저장된 날짜/평판부터 재개한다(튜토리얼 모드 제외).
+            SaveData save = _runTutorialOnStart ? null : SaveSystem.SaveSystem.Load();
+            int startDay = save != null ? Mathf.Max(1, save.currentDay) : 1;
+            int startReputation = save != null ? save.reputation : _balance.startingReputation;
+
+            var reputation = new ReputationModel(startReputation);
+            var day = new DayModel(_daySchedule, startDay);
 
             _context = new GameContext(
                 localization,
@@ -154,6 +172,25 @@ namespace GuildGame.Gameplay.Flow
             yield return RunFieldStep(idPanel, StudentIdFieldType.Grade);
             yield return RunFieldStep(idPanel, StudentIdFieldType.Major);
             yield return RunPhotoStep(idPanel, verdict);
+
+            yield return FinishTutorial();
+        }
+
+        /// <summary>튜토리얼 완료 처리: 1일차 세이브를 생성하고 인게임 씬으로 전환한다.</summary>
+        private IEnumerator FinishTutorial()
+        {
+            SaveSystem.SaveSystem.Save(new SaveData
+            {
+                currentDay = 1,
+                reputation = _balance.startingReputation,
+            });
+
+            yield return new WaitForSeconds(_tutorialAfterAnswerDelay);
+
+            if (!string.IsNullOrEmpty(_inGameSceneName))
+                SceneManager.LoadScene(_inGameSceneName);
+            else
+                Debug.LogWarning("[Tutorial] 인게임 씬 이름이 비어 있어 전환하지 못했습니다.");
         }
 
         private IEnumerator RunFieldStep(StudentIdPanelView idPanel, StudentIdFieldType field)

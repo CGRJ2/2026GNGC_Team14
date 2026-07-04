@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a77de5392f314634a8030fcd00dfc8f0, type: 3}
   m_Name: Cutscene_Day01
-  m_EditorClassIdentifier: Assembly-CSharp::GuildGame.Data.CutsceneSO
+  m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.CutsceneSO
   _id: example_cutscene
   _lines:
   - stepType: 0

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GuildGame.Core
+namespace MageAcademy.Core
 {
     /// <summary>
     /// MonoBehaviour 싱글턴 베이스. 씬에 배치된 인스턴스를 <see cref="Instance"/>로 노출한다.

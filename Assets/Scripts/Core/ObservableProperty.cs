@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GuildGame.Core
+namespace MageAcademy.Core
 {
     /// <summary>
     /// UI 연동 스탯을 위한 반응형 프로퍼티. View는 <see cref="OnChanged"/>를 구독만 하고,

@@ -1,9 +1,9 @@
-using GuildGame.Core;
+using MageAcademy.Core;
 
-namespace GuildGame.Gameplay.Models
+namespace MageAcademy.Gameplay.Models
 {
     /// <summary>
-    /// 길드 평판 스탯. 반응형 값을 노출해 View가 구독하고, 변경은 <see cref="Apply"/>로만 한다.
+    /// 마법 학교 평판 스탯. 반응형 값을 노출해 View가 구독하고, 변경은 <see cref="Apply"/>로만 한다.
     /// </summary>
     public class ReputationModel
     {

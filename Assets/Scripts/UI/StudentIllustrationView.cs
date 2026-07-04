@@ -1,9 +1,9 @@
-using GuildGame.Data;
-using GuildGame.Gameplay.Models;
+using MageAcademy.Data;
+using MageAcademy.Gameplay.Models;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GuildGame.UI
+namespace MageAcademy.UI
 {
     /// <summary>
     /// 테이블/HUD에 현재 학생의 단일 일러스트를 표시한다(입장 시 갱신).

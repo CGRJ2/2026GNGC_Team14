@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace GuildGame.UI
+namespace MageAcademy.UI
 {
     [RequireComponent(typeof(RectTransform))]
     public class UIDraggablePanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler

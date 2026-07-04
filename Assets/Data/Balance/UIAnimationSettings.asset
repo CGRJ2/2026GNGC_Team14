@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da4b6b8c7d9c9204c8e779fe7bd691d4, type: 3}
   m_Name: UIAnimationSettings
-  m_EditorClassIdentifier: Assembly-CSharp::GuildGame.Data.UIAnimationSettingsSO
+  m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.UIAnimationSettingsSO
   studentEnter:
     delay: 0
     duration: 0.4

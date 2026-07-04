@@ -1,10 +1,10 @@
 using System.Text;
-using GuildGame.Data;
-using GuildGame.Gameplay.Models;
+using MageAcademy.Data;
+using MageAcademy.Gameplay.Models;
 using TMPro;
 using UnityEngine;
 
-namespace GuildGame.UI
+namespace MageAcademy.UI
 {
     /// <summary>
     /// 디버그용. 현재 학생증 사건의 "정답표"를 표시한다:

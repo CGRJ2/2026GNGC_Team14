@@ -1,7 +1,7 @@
-using GuildGame.Data;
-using GuildGame.Gameplay.Models;
+using MageAcademy.Data;
+using MageAcademy.Gameplay.Models;
 
-namespace GuildGame.Gameplay.Services
+namespace MageAcademy.Gameplay.Services
 {
     /// <summary>
     /// 판정 매트릭스. 순수하게 (진짜/위조) × (승인/거부) → 결과 enum만 계산한다(SRP).

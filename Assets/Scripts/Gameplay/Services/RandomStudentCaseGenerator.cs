@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using GuildGame.Data;
-using GuildGame.Gameplay.Models;
+using MageAcademy.Data;
+using MageAcademy.Gameplay.Models;
 using UnityEngine;
 
-namespace GuildGame.Gameplay.Services
+namespace MageAcademy.Gameplay.Services
 {
     /// <summary>
     /// 랜덤 학생 선택 후 확률적으로 1~2개 필드를 위조한다. 위조값은 DB의 다른 학생 값을 섞어 만든다.

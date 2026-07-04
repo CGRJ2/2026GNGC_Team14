@@ -2,13 +2,13 @@ using System;
 using DG.Tweening;
 using UnityEngine;
 
-namespace GuildGame.Data
+namespace MageAcademy.Data
 {
     /// <summary>
     /// UI 등장 연출(페이드+슬라이드)의 시간·거리·이징을 모은 설정.
     /// 코드에서 연출 수치를 하드코딩하지 않기 위한 단일 출처.
     /// </summary>
-    [CreateAssetMenu(fileName = "UIAnimationSettings", menuName = "GuildGame/UI Animation Settings", order = 21)]
+    [CreateAssetMenu(fileName = "UIAnimationSettings", menuName = "MageAcademy/UI Animation Settings", order = 21)]
     public class UIAnimationSettingsSO : ScriptableObject
     {
         [Serializable]

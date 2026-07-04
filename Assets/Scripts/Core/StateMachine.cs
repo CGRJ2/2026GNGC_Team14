@@ -1,4 +1,4 @@
-namespace GuildGame.Core
+namespace MageAcademy.Core
 {
     /// <summary>
     /// 단순 유한 상태 머신. 이전 상태 Exit → 참조 교체 → 새 상태 Enter 순으로 전이한다.

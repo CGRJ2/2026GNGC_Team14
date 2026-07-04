@@ -1,13 +1,13 @@
 using System;
 using UnityEngine;
 
-namespace GuildGame.Data
+namespace MageAcademy.Data
 {
     /// <summary>
     /// 판정 결과별 평판 증감과 이벤트 대사 키, 그리고 사이클 파라미터를 모은 밸런스 설정.
     /// 수치는 placeholder이며 game_designer가 튜닝한다. 매직 넘버를 코드에서 제거하는 단일 출처.
     /// </summary>
-    [CreateAssetMenu(fileName = "GameBalance", menuName = "GuildGame/Game Balance", order = 20)]
+    [CreateAssetMenu(fileName = "GameBalance", menuName = "MageAcademy/Game Balance", order = 20)]
     public class GameBalanceSO : ScriptableObject
     {
         [Serializable]

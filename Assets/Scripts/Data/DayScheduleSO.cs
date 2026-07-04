@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GuildGame.Data
+namespace MageAcademy.Data
 {
     /// <summary>
     /// 전체 날짜 데이터를 묶고, day 값을 key로 DayConfigSO를 조회한다.
     /// </summary>
-    [CreateAssetMenu(fileName = "DaySchedule", menuName = "GuildGame/Day Schedule", order = 41)]
+    [CreateAssetMenu(fileName = "DaySchedule", menuName = "MageAcademy/Day Schedule", order = 41)]
     public class DayScheduleSO : ScriptableObject
     {
         [Tooltip("날짜별 데이터. day 중복 시 먼저 등록된 항목이 우선")]

@@ -1,7 +1,7 @@
-using GuildGame.Gameplay.Flow;
+using MageAcademy.Gameplay.Flow;
 using UnityEngine;
 
-namespace GuildGame.UI
+namespace MageAcademy.UI
 {
     /// <summary>
     /// 모든 UI 뷰의 베이스. 컨트롤러가 <see cref="Bind"/>로 컨텍스트를 주입한다.

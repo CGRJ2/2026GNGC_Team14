@@ -1,12 +1,12 @@
 using UnityEngine;
 
-namespace GuildGame.Data
+namespace MageAcademy.Data
 {
     /// <summary>
     /// 학생 1명 = 단일 일러스트 + 진짜 신원 데이터. 값은 SO에 직접 문자열로 저장한다.
     /// 위조는 런타임에 다른 학생의 값을 섞어 만든다(여기엔 진짜값만 존재).
     /// </summary>
-    [CreateAssetMenu(fileName = "Student", menuName = "GuildGame/Student", order = 0)]
+    [CreateAssetMenu(fileName = "Student", menuName = "MageAcademy/Student", order = 0)]
     public class StudentSO : ScriptableObject
     {
         [Header("Identity (진짜값)")]

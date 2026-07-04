@@ -1,9 +1,9 @@
-using GuildGame.Data;
-using GuildGame.Gameplay.Models;
+using MageAcademy.Data;
+using MageAcademy.Gameplay.Models;
 using TMPro;
 using UnityEngine;
 
-namespace GuildGame.UI
+namespace MageAcademy.UI
 {
     /// <summary>
     /// Displays the player's current student ID question in the player speech bubble.

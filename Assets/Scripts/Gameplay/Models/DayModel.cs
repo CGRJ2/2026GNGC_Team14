@@ -1,7 +1,7 @@
-using GuildGame.Core;
-using GuildGame.Data;
+using MageAcademy.Core;
+using MageAcademy.Data;
 
-namespace GuildGame.Gameplay.Models
+namespace MageAcademy.Gameplay.Models
 {
     /// <summary>
     /// 날짜 진행 스탯. 현재 일차와 오늘 처리한 학생 수를 반응형으로 노출하고,
@@ -14,14 +14,14 @@ namespace GuildGame.Gameplay.Models
         public ObservableProperty<int> CurrentDay { get; }
         public ObservableProperty<int> ProcessedToday { get; }
 
-        /// <summary>오늘의 검사 인원 제한.</summary>
-        public int TodayLimit => _schedule.GetStudentLimit(CurrentDay.Value);
+        /// <summary>오늘의 검사 인원 제한. 스케줄이 없으면(튜토리얼) 제한 없음.</summary>
+        public int TodayLimit => _schedule != null ? _schedule.GetStudentLimit(CurrentDay.Value) : int.MaxValue;
 
         /// <summary>오늘 제한 인원을 모두 처리했는지.</summary>
         public bool IsQuotaReached => ProcessedToday.Value >= TodayLimit;
 
-        /// <summary>오늘의 일자별 데이터. 등록되지 않은 날짜면 null.</summary>
-        public DayConfigSO TodayConfig => _schedule.GetConfig(CurrentDay.Value);
+        /// <summary>오늘의 일자별 데이터. 등록되지 않은 날짜거나 스케줄이 없으면 null.</summary>
+        public DayConfigSO TodayConfig => _schedule != null ? _schedule.GetConfig(CurrentDay.Value) : null;
 
         public DayModel(DayScheduleSO schedule, int startDay = 1)
         {

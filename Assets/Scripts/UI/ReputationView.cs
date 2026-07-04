@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace GuildGame.UI
+namespace MageAcademy.UI
 {
     /// <summary>평판 스탯을 구독해 표시한다. 값 변경 시 자동 갱신.</summary>
     public class ReputationView : UIViewBase

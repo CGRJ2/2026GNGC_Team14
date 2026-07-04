@@ -1,4 +1,4 @@
-namespace GuildGame.Core
+namespace MageAcademy.Core
 {
     /// <summary>
     /// 상태 머신의 단일 상태. 각 상태는 하나의 책임만 가진다(SRP).

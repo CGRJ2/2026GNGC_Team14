@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using GuildGame.Data;
+using MageAcademy.Data;
 using UnityEngine;
 
-namespace GuildGame.UI
+namespace MageAcademy.UI
 {
     public class CutsceneDialogueRunner : UIViewBase
     {

@@ -1,8 +1,8 @@
-using GuildGame.Core;
-using GuildGame.Gameplay.Models;
+using MageAcademy.Core;
+using MageAcademy.Gameplay.Models;
 using UnityEngine;
 
-namespace GuildGame.Gameplay.Flow
+namespace MageAcademy.Gameplay.Flow
 {
     /// <summary>학생 입장 상태. 랜덤 학생+위조를 생성해 사건을 시작하고 검증 상태로 넘어간다.</summary>
     public class StudentEnterState : GameStateBase

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GuildGame.Data
+namespace MageAcademy.Data
 {
     /// <summary>학생 풀. 입장 학생 랜덤 선택 + 위조값(다른 학생의 값) 추출에 사용한다.</summary>
-    [CreateAssetMenu(fileName = "StudentDatabase", menuName = "GuildGame/Student Database", order = 1)]
+    [CreateAssetMenu(fileName = "StudentDatabase", menuName = "MageAcademy/Student Database", order = 1)]
     public class StudentDatabaseSO : ScriptableObject
     {
         public List<StudentSO> students = new();

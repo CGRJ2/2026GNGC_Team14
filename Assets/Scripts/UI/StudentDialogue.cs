@@ -1,10 +1,10 @@
 using DG.Tweening;
-using GuildGame.Data;
-using GuildGame.Gameplay.Models;
+using MageAcademy.Data;
+using MageAcademy.Gameplay.Models;
 using TMPro;
 using UnityEngine;
 
-namespace GuildGame.UI
+namespace MageAcademy.UI
 {
     /// <summary>
     /// Displays the current student's greeting, answers, and outcome lines.

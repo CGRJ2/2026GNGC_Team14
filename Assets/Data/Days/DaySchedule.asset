@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e7533097366c76468aa389a45c3670e, type: 3}
   m_Name: DaySchedule
-  m_EditorClassIdentifier: Assembly-CSharp::GuildGame.Data.DayScheduleSO
+  m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.DayScheduleSO
   _days:
   - {fileID: 11400000, guid: c1bc8da5b3940f1429dc517756371ca3, type: 2}
   - {fileID: 11400000, guid: 6884bc522f2617c4b9ad305762012c61, type: 2}

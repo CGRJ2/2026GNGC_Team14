@@ -1,4 +1,4 @@
-namespace GuildGame.Data
+namespace MageAcademy.Data
 {
     /// <summary>
     /// 플레이어 판정 × 실제 진위의 4분면 결과.

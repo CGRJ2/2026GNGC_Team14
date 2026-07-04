@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0baf1b6ea2f48f343987fb58d48fecfd, type: 3}
   m_Name: StudentDatabase
-  m_EditorClassIdentifier: Assembly-CSharp::GuildGame.Data.StudentDatabaseSO
+  m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.StudentDatabaseSO
   students:
   - {fileID: 11400000, guid: 4228d0ee9f284964c8ca379ac3531f18, type: 2}
   - {fileID: 11400000, guid: 8a5f9f688fcba574eb4a96b9adb5e43b, type: 2}

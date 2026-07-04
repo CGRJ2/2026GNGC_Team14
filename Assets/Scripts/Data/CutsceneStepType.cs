@@ -1,4 +1,4 @@
-namespace GuildGame.Data
+namespace MageAcademy.Data
 {
     public enum CutsceneStepType
     {

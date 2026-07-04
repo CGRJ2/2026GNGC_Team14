@@ -1,4 +1,4 @@
-namespace GuildGame.Gameplay.Models
+namespace MageAcademy.Gameplay.Models
 {
     /// <summary>
     /// 판정 서비스가 다루는 사건의 최소 계약. 정직(=진짜) 여부만 노출한다.

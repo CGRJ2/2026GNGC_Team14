@@ -1,8 +1,8 @@
-using GuildGame.Core;
-using GuildGame.Data;
+using MageAcademy.Core;
+using MageAcademy.Data;
 using DG.Tweening;
 
-namespace GuildGame.Gameplay.Flow
+namespace MageAcademy.Gameplay.Flow
 {
     /// <summary>
     /// 검증 상태. 필드 질문에 학생이 '진짜값'을 증언하도록 답변을 발행하고, 판정 요청 시 결과로 넘어간다.

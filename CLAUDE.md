@@ -76,8 +76,8 @@ Use Claude Code's built-in task tools for multi-step work: `TaskCreate` (registe
 
 ---
 
-## Implemented Systems (Guild Verification MVP)
-Papers-Please-style guild reception loop. Namespaces under `GuildGame.*`. Plan: `~/.claude/plans/state-sequential-umbrella.md`.
+## Implemented Systems (Magic School Reception MVP)
+Papers-Please-style magic school reception loop. Namespaces under `MageAcademy.*`. Plan: `~/.claude/plans/state-sequential-umbrella.md`.
 - **Core** (`Assets/Scripts/Core`): `ObservableProperty<T>`, `IState`/`StateMachine`, `Singleton<T>`.
 - **Localization** (`Assets/Scripts/Localization`): custom CSV loader. `LocalizationManager.Get(key)` reads `Assets/Resources/Localization.csv` (columns `key,ko,en`). All display text is a loc key.
 - **Data (SO)** (`Assets/Scripts/Data`): `StudentSO`/`StudentDatabaseSO` for student identity data, `GameBalanceSO` for reputation deltas and outcome event keys, `UIAnimationSettingsSO` for interrogation UI timing, and modular character appearance SOs. Enums include `StudentIdFieldType`, `PlayerVerdict`, and `CaseOutcome`.

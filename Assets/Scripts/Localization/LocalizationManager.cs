@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using GuildGame.Core;
+using MageAcademy.Core;
 using UnityEngine;
 
-namespace GuildGame.Localization
+namespace MageAcademy.Localization
 {
     public class LocalizationManager : Singleton<LocalizationManager>, ILocalizationProvider
     {

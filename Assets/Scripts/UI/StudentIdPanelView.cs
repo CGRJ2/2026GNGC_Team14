@@ -1,11 +1,11 @@
 using DG.Tweening;
-using GuildGame.Data;
-using GuildGame.Gameplay.Models;
+using MageAcademy.Data;
+using MageAcademy.Gameplay.Models;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GuildGame.UI
+namespace MageAcademy.UI
 {
     /// <summary>
     /// 학생증 패널. 학생증에 '표기된' 값(위조 반영)과 얼굴 사진을 보여준다.
@@ -13,9 +13,7 @@ namespace GuildGame.UI
     /// </summary>
     public class StudentIdPanelView : UIViewBase
     {
-        [SerializeField] private TMP_Text _headerLabel;
         [SerializeField] private TMP_Text _nameLabel;
-        [SerializeField] private TMP_Text _enrollmentLabel;
         [SerializeField] private TMP_Text _gradeLabel;
         [SerializeField] private TMP_Text _majorLabel;
         [SerializeField] private Image _photoImage;
@@ -31,9 +29,6 @@ namespace GuildGame.UI
 
         protected override void OnBind()
         {
-            if (_headerLabel != null)
-                _headerLabel.text = Context.Localization.Get("ui_student_card_title");
-
             BindQuestionClickTargets();
             EnsureDraggablePanel();
             Context.CaseStarted += OnCaseStarted;
@@ -49,7 +44,6 @@ namespace GuildGame.UI
                 return;
 
             SetField(_nameLabel, "field_label_name", studentCase.GetCardText(StudentIdFieldType.Name));
-            SetField(_enrollmentLabel, "field_label_enrollment", studentCase.GetCardText(StudentIdFieldType.EnrollmentDate));
             SetField(_gradeLabel, "field_label_grade", studentCase.GetCardText(StudentIdFieldType.Grade));
             SetField(_majorLabel, "field_label_major", studentCase.GetCardText(StudentIdFieldType.Major));
 
@@ -94,7 +88,6 @@ namespace GuildGame.UI
         private void BindQuestionClickTargets()
         {
             _nameButton = BindTextQuestion(_nameLabel, StudentIdFieldType.Name);
-            _enrollmentButton = BindTextQuestion(_enrollmentLabel, StudentIdFieldType.EnrollmentDate);
             _gradeButton = BindTextQuestion(_gradeLabel, StudentIdFieldType.Grade);
             _majorButton = BindTextQuestion(_majorLabel, StudentIdFieldType.Major);
             _photoButton = BindImageQuestion(_photoImage, StudentIdFieldType.FacePhoto);

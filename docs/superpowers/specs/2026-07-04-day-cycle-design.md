@@ -15,7 +15,7 @@ Papers-Please식 검사 루프에 "하루" 개념을 추가한다. 하루에 검
 ### DayConfigSO — 하루치 기획 데이터
 
 ```csharp
-[CreateAssetMenu(fileName = "DayConfig", menuName = "GuildGame/Day Config")]
+[CreateAssetMenu(fileName = "DayConfig", menuName = "MageAcademy/Day Config")]
 public class DayConfigSO : ScriptableObject
 {
     public int day;                       // 1일차 = 1
@@ -35,7 +35,7 @@ public class DayConfigSO : ScriptableObject
 ### DayScheduleSO — 전체 일정 묶음
 
 ```csharp
-[CreateAssetMenu(fileName = "DaySchedule", menuName = "GuildGame/Day Schedule")]
+[CreateAssetMenu(fileName = "DaySchedule", menuName = "MageAcademy/Day Schedule")]
 public class DayScheduleSO : ScriptableObject
 {
     public int defaultStudentLimit = 8;   // 모든 날짜 공통 제한

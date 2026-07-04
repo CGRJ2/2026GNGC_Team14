@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GuildGame.Localization
+namespace MageAcademy.Localization
 {
     public interface ILocalizationProvider
     {

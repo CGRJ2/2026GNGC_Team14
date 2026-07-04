@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using GuildGame.Data;
+using MageAcademy.Data;
 using UnityEngine;
 
-namespace GuildGame.Gameplay.Models
+namespace MageAcademy.Gameplay.Models
 {
     /// <summary>
     /// 현재 학생 1명의 사건(런타임). 진짜 학생(Student)과 학생증에 "표기된" 값(위조 반영)을 보유한다.

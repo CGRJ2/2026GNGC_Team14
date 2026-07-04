@@ -1,7 +1,7 @@
-using GuildGame.Gameplay.Models;
+using MageAcademy.Gameplay.Models;
 using UnityEngine;
 
-namespace GuildGame.UI
+namespace MageAcademy.UI
 {
     /// <summary>
     /// 판정 결과 이벤트 팝업 루트를 학생 플로우 시작 시 숨김 상태로 정리한다.

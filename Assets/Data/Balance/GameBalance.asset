@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39f1a9e3796661142affaf1708477406, type: 3}
   m_Name: GameBalance
-  m_EditorClassIdentifier: Assembly-CSharp::GuildGame.Data.GameBalanceSO
+  m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.GameBalanceSO
   startingReputation: 10
   lieChance: 0.5
   truthSuccess:

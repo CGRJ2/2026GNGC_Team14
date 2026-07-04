@@ -1,4 +1,4 @@
-namespace GuildGame.Data
+namespace MageAcademy.Data
 {
     /// <summary>
     /// 학생증에서 검증하는 항목. 앞의 4개는 텍스트(질문/증언으로 대조),

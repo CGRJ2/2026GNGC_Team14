@@ -1,10 +1,11 @@
 using System;
-using GuildGame.Data;
-using GuildGame.Gameplay.Models;
-using GuildGame.Gameplay.Services;
-using GuildGame.Localization;
+using MageAcademy.Data;
+using MageAcademy.Gameplay.Models;
+using MageAcademy.Gameplay.Services;
+using MageAcademy.Localization;
+using MageAcademy.SaveSystem;
 
-namespace GuildGame.Gameplay.Flow
+namespace MageAcademy.Gameplay.Flow
 {
     /// <summary>
     /// 상태 · 뷰 · 서비스가 공유하는 블랙보드 겸 이벤트 허브(학생증 검증용).
@@ -28,6 +29,22 @@ namespace GuildGame.Gameplay.Flow
         // ---- 사이클 상태 ----
         public StudentCase CurrentCase { get; set; }
         public PlayerVerdict PendingVerdict { get; set; }
+
+        /// <summary>
+        /// 현재 진행 상황(날짜·평판)을 세이브로 기록한다. 저장 항목이 늘어나면 여기서 조립한다.
+        /// 튜토리얼 모드에서는 저장하지 않는다.
+        /// </summary>
+        public void SaveProgress()
+        {
+            if (IsTutorial)
+                return;
+
+            SaveSystem.SaveSystem.Save(new SaveData
+            {
+                currentDay = Day.CurrentDay.Value,
+                reputation = Reputation.Value.Value,
+            });
+        }
 
         public GameContext(
             ILocalizationProvider localization,

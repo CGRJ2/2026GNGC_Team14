@@ -1,11 +1,11 @@
 using UnityEngine;
 
-namespace GuildGame.Data
+namespace MageAcademy.Data
 {
     /// <summary>
     /// 하루치 기획 데이터. 날짜별 검사 인원 제한과 하루 시작 컷씬을 정의한다.
     /// </summary>
-    [CreateAssetMenu(fileName = "DayConfig", menuName = "GuildGame/Day Config", order = 40)]
+    [CreateAssetMenu(fileName = "DayConfig", menuName = "MageAcademy/Day Config", order = 40)]
     public class DayConfigSO : ScriptableObject
     {
         [Min(1)]

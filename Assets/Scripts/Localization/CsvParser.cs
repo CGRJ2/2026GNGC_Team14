@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GuildGame.Localization
+namespace MageAcademy.Localization
 {
     /// <summary>
     /// RFC-4180 스타일의 최소 CSV 파서. 따옴표로 감싼 필드 내부의 콤마/개행/이스케이프된

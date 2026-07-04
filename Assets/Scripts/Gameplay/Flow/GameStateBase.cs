@@ -1,6 +1,6 @@
-using GuildGame.Core;
+using MageAcademy.Core;
 
-namespace GuildGame.Gameplay.Flow
+namespace MageAcademy.Gameplay.Flow
 {
     /// <summary>
     /// 게임 사이클 상태의 공통 베이스. 컨텍스트와 상태 머신 참조를 갖고,

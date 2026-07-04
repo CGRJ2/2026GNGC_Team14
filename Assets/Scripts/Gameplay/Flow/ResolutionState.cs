@@ -1,8 +1,8 @@
-using GuildGame.Core;
-using GuildGame.Data;
+using MageAcademy.Core;
+using MageAcademy.Data;
 using DG.Tweening;
 
-namespace GuildGame.Gameplay.Flow
+namespace MageAcademy.Gameplay.Flow
 {
     /// <summary>
     /// 결과 상태. 판정 매트릭스로 결과를 도출해 평판을 적용하고 결과 이벤트를 발행한다.

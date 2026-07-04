@@ -1,8 +1,8 @@
 using DG.Tweening;
-using GuildGame.Data;
+using MageAcademy.Data;
 using UnityEngine;
 
-namespace GuildGame.UI
+namespace MageAcademy.UI
 {
     /// <summary>
     /// CanvasGroup 알파 + RectTransform anchoredPosition을 DOTween으로 트위닝하는 등장 연출 컴포넌트.

@@ -1,8 +1,8 @@
 using DG.Tweening;
-using GuildGame.Core;
-using GuildGame.Data;
+using MageAcademy.Core;
+using MageAcademy.Data;
 
-namespace GuildGame.Gameplay.Flow
+namespace MageAcademy.Gameplay.Flow
 {
     /// <summary>
     /// 하루 종료 상태. 페이드아웃 이벤트를 발행하고, 페이드가 끝나면 날짜를 넘긴 뒤
@@ -27,6 +27,7 @@ namespace GuildGame.Gameplay.Flow
                 .AppendCallback(() =>
                 {
                     Context.Day.AdvanceDay();
+                    Context.SaveProgress();
                     GoNext();
                 });
         }

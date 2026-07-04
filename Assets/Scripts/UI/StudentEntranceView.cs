@@ -1,9 +1,9 @@
 using DG.Tweening;
-using GuildGame.Data;
-using GuildGame.Gameplay.Models;
+using MageAcademy.Data;
+using MageAcademy.Gameplay.Models;
 using UnityEngine;
 
-namespace GuildGame.UI
+namespace MageAcademy.UI
 {
     /// <summary>
     /// 학생 입장 연출 디렉터. 학생 입장 시 일러스트 등장(아래→위)이 끝난 뒤

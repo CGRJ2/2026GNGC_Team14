@@ -1,9 +1,9 @@
-using GuildGame.Data;
+using MageAcademy.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GuildGame.UI
+namespace MageAcademy.UI
 {
     /// <summary>
     /// 상시 노출되는 [의뢰 완료]/[의뢰 실패] 판정 버튼. 클릭 시 판정을 요청한다.

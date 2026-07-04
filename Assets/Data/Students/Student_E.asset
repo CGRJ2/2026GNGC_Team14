@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09a6ac4e894c1534ea83b6698303edad, type: 3}
   m_Name: Student_E
-  m_EditorClassIdentifier: Assembly-CSharp::GuildGame.Data.StudentSO
+  m_EditorClassIdentifier: Assembly-CSharp::MageAcademy.Data.StudentSO
   studentId: std_d
   studentName: "\uAE40\uC18C\uC740"
   enrollmentDate: 2024-03-02

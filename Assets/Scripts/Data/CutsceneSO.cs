@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GuildGame.Data
+namespace MageAcademy.Data
 {
-    [CreateAssetMenu(fileName = "Cutscene", menuName = "GuildGame/Cutscene", order = 30)]
+    [CreateAssetMenu(fileName = "Cutscene", menuName = "MageAcademy/Cutscene", order = 30)]
     public class CutsceneSO : ScriptableObject
     {
         [SerializeField] private string _id;
