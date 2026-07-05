@@ -86,6 +86,7 @@ namespace MageAcademy.Gameplay.Flow
         public event Action CutsceneEnded;
 
         public event Action StudentExitRequested;
+        public event Action<DayConfigSO> DayRequirementsPrepared;
         public event Action<int> DayStarted;
         public event Action<int> DayEnded;
         public event Action<CutsceneSO> CutscenePlayRequested;
@@ -107,6 +108,7 @@ namespace MageAcademy.Gameplay.Flow
         public void RaiseCutsceneStarted() => CutsceneStarted?.Invoke();
         public void RaiseCutsceneEnded() => CutsceneEnded?.Invoke();
         public void RequestStudentExit() => StudentExitRequested?.Invoke();
+        public void RaiseDayRequirementsPrepared(DayConfigSO config) => DayRequirementsPrepared?.Invoke(config);
         public void RaiseDayStarted(int day) => DayStarted?.Invoke(day);
         public void RaiseDayEnded(int day) => DayEnded?.Invoke(day);
         public void RequestCutscene(CutsceneSO cutscene) => CutscenePlayRequested?.Invoke(cutscene);

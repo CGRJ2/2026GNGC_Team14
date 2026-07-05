@@ -21,6 +21,7 @@ namespace MageAcademy.Gameplay.Flow
             if (Context.Generator is IStudentCaseGeneratorLifecycle lifecycle)
                 lifecycle.BeginDay(Context.Day.CurrentDay.Value);
 
+            Context.RaiseDayRequirementsPrepared(Context.Day.TodayConfig);
             Context.RaiseDayStarted(Context.Day.CurrentDay.Value);
 
             UIAnimationSettingsSO settings = Context.UIAnimationSettings;

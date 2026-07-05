@@ -33,6 +33,7 @@ namespace MageAcademy.UI
             EnsureDraggablePanel();
             _openButtonAnimator = EnsureOpenButtonAnimator();
 
+            Context.DayRequirementsPrepared += OnDayRequirementsPrepared;
             Context.CaseStarted += OnCaseStarted;
             Context.StudentExitRequested += OnStudentExitRequested;
 
@@ -51,7 +52,8 @@ namespace MageAcademy.UI
                 return;
             }
 
-            ShowOpenButtonAnimated();
+            if (_openButton != null && !_openButton.gameObject.activeSelf)
+                ShowOpenButtonAnimated();
 
             if (_topicLabel != null)
                 _topicLabel.text = Context.Localization.Get(report.TopicKey);
@@ -79,10 +81,38 @@ namespace MageAcademy.UI
             HideOpenButtonAnimated();
         }
 
+        private void OnDayRequirementsPrepared(DayConfigSO config)
+        {
+            gameObject.SetActive(false);
+
+            if (config != null && config.requiresReport)
+                ShowOpenButtonImmediate();
+            else
+                SetOpenButtonVisible(false);
+        }
+
         private void SetOpenButtonVisible(bool visible)
         {
             if (_openButton != null)
                 _openButton.gameObject.SetActive(visible);
+        }
+
+        private void ShowOpenButtonImmediate()
+        {
+            if (_openButton == null)
+                return;
+
+            _openButtonTween?.Kill();
+            _openButton.gameObject.SetActive(true);
+
+            if (_openButtonAnimator != null)
+                _openButtonAnimator.SnapToRest();
+            else
+            {
+                CanvasGroup canvasGroup = _openButton.GetComponent<CanvasGroup>();
+                if (canvasGroup != null)
+                    canvasGroup.alpha = 1f;
+            }
         }
 
         private UIFadeSlideAnimator EnsureOpenButtonAnimator()
@@ -137,7 +167,11 @@ namespace MageAcademy.UI
             _openButtonTween?.Kill();
             _openButtonTween = DOTween.Sequence()
                 .Append(_openButtonAnimator.CreateDisappearTween(s.reportButtonExit))
-                .AppendCallback(() => _openButton.gameObject.SetActive(false))
+                .AppendCallback(() =>
+                {
+                    _openButtonAnimator.SnapToRest();
+                    _openButton.gameObject.SetActive(false);
+                })
                 .SetLink(_openButton.gameObject);
         }
 
@@ -179,6 +213,7 @@ namespace MageAcademy.UI
 
             if (Context != null)
             {
+                Context.DayRequirementsPrepared -= OnDayRequirementsPrepared;
                 Context.CaseStarted -= OnCaseStarted;
                 Context.StudentExitRequested -= OnStudentExitRequested;
             }

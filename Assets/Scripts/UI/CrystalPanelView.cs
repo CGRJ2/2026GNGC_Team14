@@ -1,4 +1,5 @@
 using MageAcademy.Gameplay.Models;
+using MageAcademy.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,6 +33,7 @@ namespace MageAcademy.UI
                 _questionButton.onClick.AddListener(OnQuestionClicked);
             EnsureDraggablePanel();
 
+            Context.DayRequirementsPrepared += OnDayRequirementsPrepared;
             Context.CaseStarted += OnCaseStarted;
 
             gameObject.SetActive(false);
@@ -52,6 +54,12 @@ namespace MageAcademy.UI
             SetOpenButtonVisible(true);
 
             PlaySceneAnimation(crystal);
+        }
+
+        private void OnDayRequirementsPrepared(DayConfigSO config)
+        {
+            gameObject.SetActive(false);
+            SetOpenButtonVisible(config != null && config.requiresCrystal);
         }
 
         private void OnQuestionClicked()
@@ -134,7 +142,10 @@ namespace MageAcademy.UI
         private void OnDestroy()
         {
             if (Context != null)
+            {
+                Context.DayRequirementsPrepared -= OnDayRequirementsPrepared;
                 Context.CaseStarted -= OnCaseStarted;
+            }
 
             if (_questionButton != null)
                 _questionButton.onClick.RemoveListener(OnQuestionClicked);

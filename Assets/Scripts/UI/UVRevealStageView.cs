@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using MageAcademy.Data;
 using MageAcademy.Gameplay.Models;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,6 +29,7 @@ namespace MageAcademy.UI
         protected override void OnBind()
         {
             CacheSceneReferences();
+            Context.DayRequirementsPrepared += OnDayRequirementsPrepared;
             Context.CaseStarted += OnCaseStarted;
             SubscribeClickables();
 
@@ -86,6 +88,15 @@ namespace MageAcademy.UI
                 AssignRandomSprite();
 
             ConfigureGolem(studentCase != null ? studentCase.UV : null);
+        }
+
+        private void OnDayRequirementsPrepared(DayConfigSO config)
+        {
+            if (_openButton != null)
+                _openButton.gameObject.SetActive(config != null && config.requiresUV);
+
+            if (_hiddenClickAreaRoot != null)
+                _hiddenClickAreaRoot.gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -182,7 +193,10 @@ namespace MageAcademy.UI
         private void OnDestroy()
         {
             if (Context != null)
+            {
+                Context.DayRequirementsPrepared -= OnDayRequirementsPrepared;
                 Context.CaseStarted -= OnCaseStarted;
+            }
 
             foreach (UVRevealClickable clickable in _subscribedClickables)
                 if (clickable != null)
