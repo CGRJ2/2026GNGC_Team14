@@ -16,6 +16,7 @@ MonoBehaviour:
   normalMaxReputation: 15
   titleSceneName: TitleScene
   badEnding:
+    eventPrefab: {fileID: 5696011783003137454, guid: 5091a0ee52af9034f9e8d7a67a21d362, type: 3}
     illustration: {fileID: 0}
     text: "\uB354 \uC774\uC0C1 \uD559\uC0DD\uB4E4\uC740 \uC2A4\uC2A4\uB85C \uC0DD\uAC01\uD558\uC9C0
       \uC54A\uB294 \uACBD\uC9C0\uC5D0 \uC774\uB974\uB800\uACE0, \uD559\uAD50\uC758
@@ -23,14 +24,16 @@ MonoBehaviour:
       \uBC30\uB4DC \uC5D4\uB529 ]"
     duration: 3
   normalEnding:
-    illustration: {fileID: 0}
+    eventPrefab: {fileID: 5696011783003137454, guid: 5c6972966d621ec49bc42e6a3add0e29, type: 3}
+    illustration: {fileID: 21300000, guid: 1d150288315658345b3aa02c31ce4a90, type: 3}
     text: "\uD559\uAD50\uB294 \uAC00\uAE4C\uC2A4\uB85C \uC9C8\uC11C\uB97C \uB418\uCC3E\uC558\uB2E4.
       \uC644\uBCBD\uD558\uC9C4 \uC54A\uC558\uC9C0\uB9CC, \uD559\uC0DD\uB4E4\uC740
       \uB2E4\uC2DC \uC2A4\uC2A4\uB85C\uC758 \uACFC\uC81C\uB97C \uB9C8\uC8FC\uD558\uAE30
       \uC2DC\uC791\uD588\uB2E4.\n\n[ \uB178\uB9D0 \uC5D4\uB529 ]"
     duration: 3
   goodEnding:
-    illustration: {fileID: 0}
+    eventPrefab: {fileID: 2556153697779388758, guid: 19dc167982d374c46826416cb11f4caa, type: 3}
+    illustration: {fileID: 21300000, guid: 31dc0d3cc8963214a95eaa8c678543e4, type: 3}
     text: "\uD559\uAD50\uC758 \uD3C9\uD310\uC740 \uBE5B\uC744 \uB418\uCC3E\uC558\uB2E4.
       \uACE8\uB818 \uBD80\uC815 \uC0AC\uC6A9\uC740 \uD06C\uAC8C \uC904\uC5C8\uACE0,
       \uB2F9\uC2E0\uC758 \uD310\uC815\uC740 \uC0C8\uB85C\uC6B4 \uAE30\uC900\uC774

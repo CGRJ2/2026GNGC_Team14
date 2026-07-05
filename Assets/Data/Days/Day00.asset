@@ -18,6 +18,7 @@ MonoBehaviour:
   requiresCrystal: 0
   requiresUV: 0
   dayStartCutscene: {fileID: 0}
+  endDayEventPrefab: {fileID: 7998580825663271676, guid: 1271d46e88c5ccf4d9e760d699235880, type: 3}
   endDayIllustration: {fileID: 21300000, guid: 8f499f7d05f59c34d92c0203f5622d61, type: 3}
   endDayIllustrationText: "\uC624\uB298\uBD80\uD130 \uACE8\uB818\uC0AC\uC6A9 \uAE08\uC9C0\uC57C!!!"
   endDayIllustrationDuration: 3

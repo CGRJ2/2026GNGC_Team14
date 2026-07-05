@@ -17,5 +17,8 @@ namespace MageAcademy.Localization
         Language CurrentLanguage { get; }
 
         void SetLanguage(Language language);
+
+        /// <summary>언어가 바뀌면 발행된다. View가 구독해 표시 텍스트를 갱신한다.</summary>
+        event System.Action<Language> OnLanguageChanged;
     }
 }

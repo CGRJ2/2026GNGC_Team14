@@ -1000,6 +1000,8 @@ MonoBehaviour:
   _tutorialAfterAnswerDelay: 0.8
   _tutorialPhotoReactionDelay: 0.8
   _inGameSceneName: InGameScene
+  _enableDebugSkipDay: 1
+  _debugSkipDayKey: 101
 --- !u!114 &836134657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1632,15 +1634,19 @@ PrefabInstance:
       propertyPath: _hiddenSignatureRenderer
       value: 
       objectReference: {fileID: 1266823237}
-    - target: {fileID: 1776644411264523986, guid: 6591233f2031ab74c924b173130cc276, type: 3}
-      propertyPath: m_IsActive
+    - target: {fileID: 3913732065428463944, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: aaaa9026811286946aa57b6793aef79d, type: 2}
+    - target: {fileID: 3913732065428463944, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 908411177318094818, guid: aaaa9026811286946aa57b6793aef79d, type: 2}
+    - target: {fileID: 3913732065428463944, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3010905987084755240, guid: 6591233f2031ab74c924b173130cc276, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3470778030450211744, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+    - target: {fileID: 5289811895552419412, guid: 6591233f2031ab74c924b173130cc276, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -1684,13 +1690,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6173276689752923869, guid: 6591233f2031ab74c924b173130cc276, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6551561672161542554, guid: 6591233f2031ab74c924b173130cc276, type: 3}
       propertyPath: m_Name
       value: InGameUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6727287520265574050, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 8883638712521509872, guid: 6591233f2031ab74c924b173130cc276, type: 3}
       propertyPath: _revealMask
@@ -1700,10 +1706,6 @@ PrefabInstance:
       propertyPath: _stageCamera
       value: 
       objectReference: {fileID: 2037871867}
-    - target: {fileID: 8996134483009406538, guid: 6591233f2031ab74c924b173130cc276, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

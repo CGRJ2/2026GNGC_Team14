@@ -75,7 +75,11 @@ namespace MageAcademy.Data
         [Min(0f)]
         public float dayLabelHoldDuration = 1.5f;
 
-        [Tooltip("DayTransitionOverlay DayLabel TMP font size")]
+        [Tooltip("하루 종료/엔딩 이벤트 패널이 페이드 인/아웃되는 시간(초)")]
+        [Min(0f)]
+        public float dayEventPanelFadeDuration = 0.35f;
+
+        [Tooltip("사용 안 함(대체됨): DayTransitionView의 Text Style(폰트/크기/색)에서 설정")]
         [Min(1f)]
         public float dayLabelFontSize = 60f;
 

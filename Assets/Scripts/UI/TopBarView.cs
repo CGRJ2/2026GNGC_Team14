@@ -1,3 +1,4 @@
+using MageAcademy.Localization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -37,11 +38,17 @@ namespace MageAcademy.UI
         protected override void OnBind()
         {
             Context.DayStarted += OnDayStarted;
+            Context.Localization.OnLanguageChanged += OnLanguageChanged;
             if (Context.Day != null)
                 UpdateDay(Context.Day.CurrentDay.Value);
         }
 
         private void OnDayStarted(int day) => UpdateDay(day);
+
+        private void OnLanguageChanged(Language language)
+        {
+            UpdateDay(Context.Day != null ? Context.Day.CurrentDay.Value : 1);
+        }
 
         private void UpdateDay(int day)
         {
@@ -125,7 +132,10 @@ namespace MageAcademy.UI
         private void OnDestroy()
         {
             if (Context != null)
+            {
                 Context.DayStarted -= OnDayStarted;
+                Context.Localization.OnLanguageChanged -= OnLanguageChanged;
+            }
 
             if (_settingsButton != null)
                 _settingsButton.onClick.RemoveListener(OpenOptionsPanel);

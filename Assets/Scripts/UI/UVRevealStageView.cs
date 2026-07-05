@@ -30,6 +30,10 @@ namespace MageAcademy.UI
             CacheSceneReferences();
             Context.CaseStarted += OnCaseStarted;
             SubscribeClickables();
+
+            // 레포트/수정구슬 버튼과 동일하게, 케이스가 UV를 활성화하기 전엔 열기 버튼을 숨긴다.
+            if (_openButton != null)
+                _openButton.gameObject.SetActive(false);
         }
 
         private void SubscribeClickables()

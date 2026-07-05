@@ -26,22 +26,23 @@ namespace MageAcademy.Gameplay.Flow
 
             UIAnimationSettingsSO settings = Context.UIAnimationSettings;
             float fadeOutDuration = settings != null ? settings.dayFadeOutDuration : 0.8f;
+            float eventPanelFadeDuration = settings != null ? settings.dayEventPanelFadeDuration : 0.35f;
 
             // 끝나는 날(AdvanceDay 이전)의 종료 일러스트.
             DayConfigSO endingConfig = Context.Day.TodayConfig;
-            Sprite illustration = endingConfig != null ? endingConfig.endDayIllustration : null;
-            string illustrationText = endingConfig != null ? endingConfig.endDayIllustrationText : string.Empty;
+            GameObject eventPrefab = endingConfig != null ? endingConfig.endDayEventPrefab : null;
             float illustrationDuration = endingConfig != null ? endingConfig.endDayIllustrationDuration : 0f;
 
             _flowTween?.Kill();
             Sequence sequence = DOTween.Sequence()
                 .AppendInterval(fadeOutDuration); // 화면이 검게 페이드아웃
 
-            if (illustration != null && illustrationDuration > 0f)
+            if (eventPrefab != null && illustrationDuration > 0f)
             {
-                sequence.AppendCallback(() => Context.RaiseDayEndIllustrationShown(illustration, illustrationText));
-                sequence.AppendInterval(illustrationDuration);
+                sequence.AppendCallback(() => Context.RaiseEventPanelShown(eventPrefab));
+                sequence.AppendInterval(eventPanelFadeDuration + illustrationDuration);
                 sequence.AppendCallback(Context.RaiseDayEndIllustrationHidden);
+                sequence.AppendInterval(eventPanelFadeDuration);
             }
 
             if (ShouldShowEnding())
@@ -70,13 +71,20 @@ namespace MageAcademy.Gameplay.Flow
         private void AppendEndingSequence(Sequence sequence)
         {
             EndingSettingsSO.EndingPresentation presentation = _endingSettings.GetPresentation(Context.Reputation.Value.Value);
-            Sprite illustration = presentation != null ? presentation.illustration : null;
-            string text = presentation != null ? presentation.text : string.Empty;
+            GameObject eventPrefab = presentation != null ? presentation.eventPrefab : null;
             float duration = presentation != null ? Mathf.Max(0f, presentation.duration) : 0f;
 
-            sequence.AppendCallback(() => Context.RaiseDayEndIllustrationShown(illustration, text));
-            sequence.AppendInterval(duration);
-            sequence.AppendCallback(Context.RaiseDayEndIllustrationHidden);
+            if (eventPrefab != null && duration > 0f)
+            {
+                UIAnimationSettingsSO settings = Context.UIAnimationSettings;
+                float eventPanelFadeDuration = settings != null ? settings.dayEventPanelFadeDuration : 0.35f;
+
+                sequence.AppendCallback(() => Context.RaiseEventPanelShown(eventPrefab));
+                sequence.AppendInterval(eventPanelFadeDuration + duration);
+                sequence.AppendCallback(Context.RaiseDayEndIllustrationHidden);
+                sequence.AppendInterval(eventPanelFadeDuration);
+            }
+
             sequence.AppendCallback(LoadTitleScene);
         }
 

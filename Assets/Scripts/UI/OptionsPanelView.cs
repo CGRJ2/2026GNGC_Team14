@@ -10,7 +10,7 @@ namespace MageAcademy.UI
 {
     public class OptionsPanelView : MonoBehaviour
     {
-        private const string LanguageKey = "settings.language";
+        private const string LanguageKey = LocalizationManager.LanguagePrefKey;
         private const string ScreenModeKey = "settings.screenMode";
 
         [Tooltip("AudioManager가 없는 테스트 씬에서만 사용하는 fallback mixer")]
@@ -32,6 +32,11 @@ namespace MageAcademy.UI
         private void Awake()
         {
             BindControls();
+
+            LocalizationManager manager = LocalizationManager.Instance;
+            if (manager != null)
+                manager.OnLanguageChanged += OnLocalizationChanged;
+
             LoadSettings();
             Hide();
         }
@@ -58,13 +63,13 @@ namespace MageAcademy.UI
 
             if (_screenModeDropdown != null)
             {
-                _screenModeDropdown.ClearOptions();
-                _screenModeDropdown.AddOptions(new List<string> { "전체화면", "창모드", "테두리없음" });
+                PopulateScreenModeOptions();
                 _screenModeDropdown.onValueChanged.AddListener(OnScreenModeChanged);
             }
 
             if (_languageDropdown != null)
             {
+                // 언어명은 각 언어 그대로 표기(현지어)하므로 로컬라이즈하지 않는다.
                 _languageDropdown.ClearOptions();
                 _languageDropdown.AddOptions(new List<string> { "한국어", "English" });
                 _languageDropdown.onValueChanged.AddListener(OnLanguageChanged);
@@ -108,6 +113,34 @@ namespace MageAcademy.UI
         {
             if (slider != null)
                 slider.SetValueWithoutNotify(value);
+        }
+
+        private void PopulateScreenModeOptions()
+        {
+            if (_screenModeDropdown == null)
+                return;
+
+            int selected = _screenModeDropdown.value;
+            _screenModeDropdown.ClearOptions();
+            _screenModeDropdown.AddOptions(new List<string>
+            {
+                Localize("ui_screenmode_fullscreen"),
+                Localize("ui_screenmode_windowed"),
+                Localize("ui_screenmode_borderless"),
+            });
+            _screenModeDropdown.SetValueWithoutNotify(Mathf.Clamp(selected, 0, _screenModes.Count - 1));
+            _screenModeDropdown.RefreshShownValue();
+        }
+
+        private void OnLocalizationChanged(Language language)
+        {
+            PopulateScreenModeOptions();
+        }
+
+        private static string Localize(string key)
+        {
+            LocalizationManager manager = LocalizationManager.Instance;
+            return manager != null ? manager.Get(key) : key;
         }
 
         private void OnScreenModeChanged(int index)
@@ -210,6 +243,9 @@ namespace MageAcademy.UI
 
         private void OnDestroy()
         {
+            if (LocalizationManager.HasInstance)
+                LocalizationManager.Instance.OnLanguageChanged -= OnLocalizationChanged;
+
             if (_closeButton != null)
                 _closeButton.onClick.RemoveListener(Hide);
             if (_screenModeDropdown != null)

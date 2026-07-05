@@ -1,5 +1,6 @@
 using MageAcademy.Data;
 using MageAcademy.Gameplay.Models;
+using MageAcademy.Localization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,10 +23,8 @@ namespace MageAcademy.UI
 
         protected override void OnBind()
         {
-            if (_completeLabel != null)
-                _completeLabel.text = Context.Localization.Get("ui_verdict_complete");
-            if (_failLabel != null)
-                _failLabel.text = Context.Localization.Get("ui_verdict_fail");
+            ApplyLabels();
+            Context.Localization.OnLanguageChanged += OnLanguageChanged;
 
             if (_completeButton != null)
                 _completeButton.onClick.AddListener(OnCompleteClicked);
@@ -40,6 +39,16 @@ namespace MageAcademy.UI
 
             SetButtonsInteractable(false, false);
         }
+
+        private void ApplyLabels()
+        {
+            if (_completeLabel != null)
+                _completeLabel.text = Context.Localization.Get("ui_verdict_complete");
+            if (_failLabel != null)
+                _failLabel.text = Context.Localization.Get("ui_verdict_fail");
+        }
+
+        private void OnLanguageChanged(Language language) => ApplyLabels();
 
         private void OnCaseStarted(StudentCase studentCase)
         {
@@ -120,6 +129,7 @@ namespace MageAcademy.UI
                 Context.CutsceneEnded -= OnCutsceneEnded;
                 Context.StudentGreetingShown -= OnStudentGreetingShown;
                 Context.StudentExitRequested -= OnStudentExitRequested;
+                Context.Localization.OnLanguageChanged -= OnLanguageChanged;
             }
             if (_completeButton != null)
                 _completeButton.onClick.RemoveListener(OnCompleteClicked);

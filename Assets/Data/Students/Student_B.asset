@@ -23,4 +23,8 @@ MonoBehaviour:
   flusteredIllustration: {fileID: 21300000, guid: 8d1424ba97ff0c24e9f68336930154c8, type: 3}
   angryIllustration: {fileID: 21300000, guid: 61ad23bc66a08314d869e68da17eb87a, type: 3}
   sneerIllustration: {fileID: 21300000, guid: e51a319a43f6f1944b75e97ca153c7d1, type: 3}
-  dialogueVoiceClips: []
+  dialogueVoiceClips:
+  - {fileID: 8300000, guid: b1cf5a5cb4ca7414abd1b70a3b582b49, type: 3}
+  - {fileID: 8300000, guid: 994498151b082794f976c797b4709efe, type: 3}
+  - {fileID: 8300000, guid: 8c8ffbe2ca198f241b076c33549a5e48, type: 3}
+  - {fileID: 8300000, guid: d9c93c94ff3a31b46b9a9ba89335b652, type: 3}

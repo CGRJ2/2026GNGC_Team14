@@ -31,6 +31,8 @@ namespace MageAcademy.Data
 
         [Header("하루 종료 일러스트")]
         [Tooltip("이 날 종료 시 검은 화면 위에 띄울 풀스크린 일러스트. 없으면 생략")]
+        public GameObject endDayEventPrefab;
+
         public Sprite endDayIllustration;
 
         [TextArea]

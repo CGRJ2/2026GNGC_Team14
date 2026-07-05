@@ -30,6 +30,7 @@ MonoBehaviour:
   cutsceneLineDelay: 1
   dayFadeOutDuration: 0.8
   dayLabelHoldDuration: 1.2
+  dayEventPanelFadeDuration: 0.35
   dayLabelFontSize: 52
   dayFadeInDuration: 0.8
   judgeActionEnter:

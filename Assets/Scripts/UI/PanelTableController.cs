@@ -44,6 +44,9 @@ public class PanelTableController : MonoBehaviour
     private readonly List<GameObject> _openStack = new();
     private static readonly List<RaycastResult> _raycastResults = new();
 
+    // 튜토리얼 등에서 학생증 패널이 빈 배경 클릭으로 닫히는 것을 막는 잠금.
+    private bool _studentIdLocked;
+
     private void Awake()
     {
         _panels.Clear();
@@ -99,6 +102,9 @@ public class PanelTableController : MonoBehaviour
         if (btnQuestPosting != null)
             btnQuestPosting.interactable = interactable;
     }
+
+    /// <summary>학생증 패널을 빈 배경 클릭으로 닫지 못하도록 잠근다(튜토리얼 보호용).</summary>
+    public void SetStudentIdPanelLocked(bool locked) => _studentIdLocked = locked;
 
     /// <summary>현재 열린 패널들을 스택 위(최근)부터 순서대로 반환한다(파도타기 퇴장용).</summary>
     public List<GameObject> GetOpenPanelsTopFirst(bool includeStudentId)
@@ -158,14 +164,21 @@ public class PanelTableController : MonoBehaviour
         for (int i = _openStack.Count - 1; i >= 0; i--)
         {
             GameObject p = _openStack[i];
-            _openStack.RemoveAt(i);
-            if (p != null && p.activeInHierarchy)
+            if (p == null || !p.activeInHierarchy)
             {
-                p.SetActive(false);
-                if (p == panelSituation)
-                    PlaySfx(crystalPanelToggleClip);
-                return;
+                _openStack.RemoveAt(i);
+                continue;
             }
+
+            // 잠금 중엔 학생증 패널을 닫지 않고 그 아래 패널을 탐색한다.
+            if (_studentIdLocked && p == panelQuestPosting)
+                continue;
+
+            _openStack.RemoveAt(i);
+            p.SetActive(false);
+            if (p == panelSituation)
+                PlaySfx(crystalPanelToggleClip);
+            return;
         }
     }
 

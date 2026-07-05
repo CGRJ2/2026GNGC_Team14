@@ -11,6 +11,9 @@ namespace MageAcademy.Localization
 
         [SerializeField] private Language _currentLanguage = Language.Korean;
 
+        /// <summary>저장된 언어 설정 PlayerPrefs 키. OptionsPanelView와 공유한다.</summary>
+        public const string LanguagePrefKey = "settings.language";
+
         private readonly Dictionary<string, Dictionary<Language, List<string>>> _table = new();
         private readonly Dictionary<int, Language> _columnToLanguage = new();
 
@@ -23,6 +26,8 @@ namespace MageAcademy.Localization
         protected override void OnAwake()
         {
             EnsureLoaded();
+            // 저장된 언어를 적용한다(구독자가 아직 없으므로 필드만 설정). 모든 씬에서 일관되게 반영된다.
+            _currentLanguage = (Language)PlayerPrefs.GetInt(LanguagePrefKey, (int)_currentLanguage);
         }
 
         private void EnsureLoaded()

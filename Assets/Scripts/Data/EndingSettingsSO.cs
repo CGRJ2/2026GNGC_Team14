@@ -9,6 +9,8 @@ namespace MageAcademy.Data
         [Serializable]
         public class EndingPresentation
         {
+            public GameObject eventPrefab;
+
             public Sprite illustration;
 
             [TextArea]

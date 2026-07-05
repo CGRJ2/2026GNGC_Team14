@@ -614,6 +614,8 @@ MonoBehaviour:
   _tutorialAfterAnswerDelay: 0.8
   _tutorialPhotoReactionDelay: 0.8
   _inGameSceneName: InGameScene
+  _enableDebugSkipDay: 0
+  _debugSkipDayKey: 101
 --- !u!114 &836134657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,6 +638,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 382657003738905410, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.000015258789
+      objectReference: {fileID: 0}
+    - target: {fileID: 983826440509432513, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1100323055838796423, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1100323055838796423, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3715090957537059419, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3715090957537059419, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584444998860781087, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584444998860781087, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5453110394674133281, guid: 6591233f2031ab74c924b173130cc276, type: 3}
       propertyPath: m_LocalPosition.x
       value: 257.05273
@@ -676,9 +710,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5666023543246206605, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5666023543246206605, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6551561672161542554, guid: 6591233f2031ab74c924b173130cc276, type: 3}
       propertyPath: m_Name
       value: InGameUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6727287520265574050, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8244476917206617681, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8244476917206617681, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9114120121464953365, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9114120121464953365, guid: 6591233f2031ab74c924b173130cc276, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

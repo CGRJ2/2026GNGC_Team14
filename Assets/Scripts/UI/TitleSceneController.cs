@@ -43,7 +43,8 @@ namespace MageAcademy.UI
         {
             _transitioning = true;
 
-            bool hasSave = SaveSystem.SaveSystem.HasSave();
+            SaveData save = SaveSystem.SaveSystem.Load();
+            bool hasSave = save != null && save.currentDay > 0;
             string target = hasSave ? _inGameSceneName : _tutorialSceneName;
 
             if (string.IsNullOrEmpty(target))

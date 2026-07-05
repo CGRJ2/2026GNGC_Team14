@@ -106,3 +106,20 @@ uv_question,"이 흔적에 대해...","This mark... its a golems signature! You 
 uv_reaction,"그, 그건... 아니 그게...","T-thats... no, I mean..."
 ,"헉! 어떻게 그걸 찾은 거죠...","Ugh! How did you find that..."
 ,"제, 제가 안 그랬어요! (식은땀)","I-I didnt do it! (cold sweat)"
+
+# UI - title / buttons
+title_press_any_key,아무 키나 누르세요...,PRESS ANY KEY...
+ui_ask_question,질문하기,Ask
+ui_next_customer,다음 손님,Next Customer
+
+# UI - options panel
+ui_options_title,옵션,Options
+ui_options_language,언어,Language
+ui_options_screenmode,화면 모드,Screen Mode
+ui_options_volume,볼륨,Volume
+ui_options_master,전체,Master
+ui_options_bgm,배경음,BGM
+ui_options_sfx,효과음,SFX
+ui_screenmode_fullscreen,전체화면,Fullscreen
+ui_screenmode_windowed,창모드,Windowed
+ui_screenmode_borderless,테두리없음,Borderless

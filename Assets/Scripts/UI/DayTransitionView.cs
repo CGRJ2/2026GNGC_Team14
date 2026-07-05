@@ -2,72 +2,107 @@ using DG.Tweening;
 using MageAcademy.Data;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace MageAcademy.UI
 {
-    /// <summary>
-    /// 하루 전환 오버레이. DayEnded에 페이드아웃, DayStarted에 날짜 표시 후 페이드인한다.
-    /// 하루 종료 일러스트는 검은 화면 위에 표시/숨김한다.
-    /// 전환 중에는 입력을 차단한다. 뷰는 이벤트 구독만 하고 모델을 변경하지 않는다.
-    /// </summary>
     public class DayTransitionView : UIViewBase
     {
         [SerializeField] private CanvasGroup _overlay;
         [SerializeField] private TMP_Text _dayLabel;
-
-        [Tooltip("검은 화면 위에 띄우는 하루 종료 일러스트(풀스크린). 기본 비활성")]
-        [SerializeField] private Image _endDayIllustration;
+        [SerializeField] private RectTransform _dayLabelBackground;
+        [SerializeField] private Vector2 _dayLabelBackgroundPadding = new(28f, 14f);
 
         private Tween _tween;
+        private Tween _eventPanelTween;
+        private GameObject _activeEventPanel;
+        private CanvasGroup _activeEventPanelGroup;
 
         protected override void OnBind()
         {
             Context.DayEnded += OnDayEnded;
             Context.DayStarted += OnDayStarted;
-            Context.DayEndIllustrationShown += OnDayEndIllustrationShown;
+            Context.EventPanelShown += OnEventPanelShown;
             Context.DayEndIllustrationHidden += OnDayEndIllustrationHidden;
 
             SetOverlay(0f, false);
             SetLabelVisible(false);
-            SetIllustration(null, false);
+            HideEventPanel();
         }
 
-        private void OnDayEndIllustrationShown(Sprite illustration, string text)
+        private void OnEventPanelShown(GameObject eventPanelPrefab)
         {
-            SetIllustration(illustration, illustration != null);
-            SetIllustrationText(text);
+            HideEventPanel();
+
+            if (eventPanelPrefab == null || _overlay == null)
+                return;
+
+            _activeEventPanel = Instantiate(eventPanelPrefab, _overlay.transform);
+            RectTransform rect = _activeEventPanel.transform as RectTransform;
+            if (rect != null)
+            {
+                rect.anchorMin = Vector2.zero;
+                rect.anchorMax = Vector2.one;
+                rect.offsetMin = Vector2.zero;
+                rect.offsetMax = Vector2.zero;
+                rect.localScale = Vector3.one;
+            }
+
+            _activeEventPanelGroup = _activeEventPanel.GetComponent<CanvasGroup>();
+            if (_activeEventPanelGroup == null)
+                _activeEventPanelGroup = _activeEventPanel.AddComponent<CanvasGroup>();
+
+            _activeEventPanelGroup.alpha = 0f;
+            _activeEventPanelGroup.interactable = false;
+            _activeEventPanelGroup.blocksRaycasts = false;
+            _activeEventPanel.SetActive(true);
+            _eventPanelTween?.Kill();
+            _eventPanelTween = _activeEventPanelGroup
+                .DOFade(1f, GetEventPanelFadeDuration())
+                .OnComplete(() =>
+                {
+                    if (_activeEventPanelGroup == null)
+                        return;
+
+                    _activeEventPanelGroup.interactable = true;
+                    _activeEventPanelGroup.blocksRaycasts = true;
+                });
         }
 
         private void OnDayEndIllustrationHidden()
         {
-            SetIllustration(null, false);
+            FadeOutEventPanel();
             SetLabelVisible(false);
         }
 
-        private void SetIllustration(Sprite illustration, bool visible)
+        private void HideEventPanel()
         {
-            if (_endDayIllustration == null)
+            _eventPanelTween?.Kill();
+            _eventPanelTween = null;
+
+            if (_activeEventPanel == null)
                 return;
 
-            if (illustration != null)
-                _endDayIllustration.sprite = illustration;
-            _endDayIllustration.gameObject.SetActive(visible);
+            _activeEventPanel.SetActive(false);
+            Destroy(_activeEventPanel);
+            _activeEventPanel = null;
+            _activeEventPanelGroup = null;
         }
 
-        private void SetIllustrationText(string text)
+        private void FadeOutEventPanel()
         {
-            if (_dayLabel == null)
-                return;
+            _eventPanelTween?.Kill();
 
-            bool visible = !string.IsNullOrWhiteSpace(text);
-            if (visible)
+            if (_activeEventPanel == null || _activeEventPanelGroup == null)
             {
-                ApplyDayLabelFontSize();
-                _dayLabel.text = text;
-                _dayLabel.transform.SetAsLastSibling();
+                HideEventPanel();
+                return;
             }
-            SetLabelVisible(visible);
+
+            _activeEventPanelGroup.interactable = false;
+            _activeEventPanelGroup.blocksRaycasts = false;
+            _eventPanelTween = _activeEventPanelGroup
+                .DOFade(0f, GetEventPanelFadeDuration())
+                .OnComplete(HideEventPanel);
         }
 
         private void OnDayEnded(int day)
@@ -89,12 +124,12 @@ namespace MageAcademy.UI
             _tween?.Kill();
             SetOverlay(1f, true);
 
+            SetLabelVisible(true);
             if (_dayLabel != null)
             {
-                ApplyDayLabelFontSize();
                 _dayLabel.text = Context.Localization.GetFormatted("day_label", day);
+                LayoutLabelBackground();
             }
-            SetLabelVisible(true);
 
             _tween = DOTween.Sequence()
                 .AppendInterval(GetHoldDuration())
@@ -116,6 +151,27 @@ namespace MageAcademy.UI
         {
             if (_dayLabel != null)
                 _dayLabel.gameObject.SetActive(visible);
+            if (_dayLabelBackground != null)
+                _dayLabelBackground.gameObject.SetActive(visible);
+        }
+
+        private void LayoutLabelBackground()
+        {
+            if (_dayLabelBackground == null || _dayLabel == null)
+                return;
+
+            _dayLabel.ForceMeshUpdate();
+            Vector2 rendered = _dayLabel.GetRenderedValues(false);
+            if (rendered.x <= 0f || float.IsNaN(rendered.x) || float.IsNaN(rendered.y))
+                rendered = _dayLabel.GetPreferredValues();
+
+            _dayLabelBackground.sizeDelta = new Vector2(
+                rendered.x + _dayLabelBackgroundPadding.x * 2f,
+                rendered.y + _dayLabelBackgroundPadding.y * 2f);
+            _dayLabelBackground.anchoredPosition = Vector2.zero;
+
+            _dayLabelBackground.SetAsLastSibling();
+            _dayLabel.transform.SetAsLastSibling();
         }
 
         private float GetFadeOutDuration()
@@ -130,14 +186,10 @@ namespace MageAcademy.UI
             return settings != null ? settings.dayLabelHoldDuration : 1.5f;
         }
 
-        private void ApplyDayLabelFontSize()
+        private float GetEventPanelFadeDuration()
         {
-            if (_dayLabel == null)
-                return;
-
             UIAnimationSettingsSO settings = Context.UIAnimationSettings;
-            if (settings != null)
-                _dayLabel.fontSize = settings.dayLabelFontSize;
+            return settings != null ? settings.dayEventPanelFadeDuration : 0.35f;
         }
 
         private float GetFadeInDuration()
@@ -149,13 +201,16 @@ namespace MageAcademy.UI
         private void OnDestroy()
         {
             _tween?.Kill();
+            _eventPanelTween?.Kill();
             if (Context != null)
             {
                 Context.DayEnded -= OnDayEnded;
                 Context.DayStarted -= OnDayStarted;
-                Context.DayEndIllustrationShown -= OnDayEndIllustrationShown;
+                Context.EventPanelShown -= OnEventPanelShown;
                 Context.DayEndIllustrationHidden -= OnDayEndIllustrationHidden;
             }
+
+            HideEventPanel();
         }
     }
 }

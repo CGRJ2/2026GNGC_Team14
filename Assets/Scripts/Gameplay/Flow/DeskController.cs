@@ -9,6 +9,7 @@ using MageAcademy.Localization;
 using MageAcademy.SaveSystem;
 using MageAcademy.UI;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -39,9 +40,15 @@ namespace MageAcademy.Gameplay.Flow
         [Tooltip("튜토리얼 종료 후 진입할 인게임 씬 이름")]
         [SerializeField] private string _inGameSceneName = "InGameScene";
 
+        [Header("Debug")]
+        [SerializeField] private bool _enableDebugSkipDay = true;
+        [SerializeField] private Key _debugSkipDayKey = Key.F8;
+
         private StateMachine _machine;
         private GameContext _context;
         private TutorialHighlight _tutorialHighlight;
+        private DayEndState _dayEndState;
+        private static bool s_playTutorialEndEventOnNextInGame;
 
         private void Start()
         {
@@ -64,8 +71,12 @@ namespace MageAcademy.Gameplay.Flow
             IStudentCaseGenerator generator = CreateCaseGenerator();
             IJudgementService judgement = new JudgementService();
             // 세이브가 있으면 저장된 날짜/평판부터 재개한다(튜토리얼 모드 제외).
-            SaveData save = _runTutorialOnStart ? null : SaveSystem.SaveSystem.Load();
-            int startDay = save != null ? Mathf.Max(0, save.currentDay) : 1;
+            bool playTutorialEndEvent = !_runTutorialOnStart && s_playTutorialEndEventOnNextInGame;
+            if (playTutorialEndEvent)
+                s_playTutorialEndEventOnNextInGame = false;
+
+            SaveData save = _runTutorialOnStart || playTutorialEndEvent ? null : SaveSystem.SaveSystem.Load();
+            int startDay = playTutorialEndEvent ? 0 : save != null ? Mathf.Max(1, save.currentDay) : 1;
             int startReputation = save != null ? save.reputation : _balance.startingReputation;
 
             var reputation = new ReputationModel(startReputation);
@@ -88,17 +99,17 @@ namespace MageAcademy.Gameplay.Flow
             var enter = new StudentEnterState(_context, _machine);
             var inspection = new InspectionState(_context, _machine);
             var resolution = new ResolutionState(_context, _machine);
-            var dayEnd = new DayEndState(_context, _machine, _endingSettings);
+            _dayEndState = new DayEndState(_context, _machine, _endingSettings);
 
             dayStart.Next = enter;
             enter.Next = inspection;
             inspection.Next = resolution;
             resolution.Next = enter;
-            resolution.DayEnd = dayEnd;
-            dayEnd.Next = dayStart;
+            resolution.DayEnd = _dayEndState;
+            _dayEndState.Next = dayStart;
 
             BindViews();
-            IState initialState = _runTutorialOnStart ? enter : startDay == 0 ? dayEnd : dayStart;
+            IState initialState = _runTutorialOnStart ? enter : playTutorialEndEvent ? _dayEndState : dayStart;
             _machine.ChangeState(initialState);
 
             if (_runTutorialOnStart)
@@ -107,7 +118,21 @@ namespace MageAcademy.Gameplay.Flow
 
         private void Update()
         {
+            HandleDebugSkipDay();
             _machine?.Tick();
+        }
+
+        private void HandleDebugSkipDay()
+        {
+            if (!_enableDebugSkipDay || _runTutorialOnStart || _machine == null || _context == null || _dayEndState == null)
+                return;
+
+            Keyboard keyboard = Keyboard.current;
+            if (keyboard == null || !keyboard[_debugSkipDayKey].wasPressedThisFrame)
+                return;
+
+            Debug.Log($"[Debug] '{_debugSkipDayKey}' 입력 → day {_context.Day.CurrentDay.Value} 종료로 스킵");
+            _machine.ChangeState(_dayEndState);
         }
 
         private void OnDestroy()
@@ -172,10 +197,15 @@ namespace MageAcademy.Gameplay.Flow
             _tutorialHighlight.Stop();
             table.SetStudentIdButtonInteractable(false);
 
+            // 튜토리얼 사진 추궁까지 끝날 때까지 학생증 패널이 실수로 닫혀 재오픈 불가해지는 것을 막는다.
+            table.SetStudentIdPanelLocked(true);
+
             yield return RunFieldStep(idPanel, StudentIdFieldType.Name);
             yield return RunFieldStep(idPanel, StudentIdFieldType.Grade);
             yield return RunFieldStep(idPanel, StudentIdFieldType.Major);
             yield return RunPhotoStep(idPanel, verdict);
+
+            table.SetStudentIdPanelLocked(false);
 
             yield return FinishTutorial();
         }
@@ -183,11 +213,7 @@ namespace MageAcademy.Gameplay.Flow
         /// <summary>튜토리얼 완료 처리: 1일차 세이브를 생성하고 인게임 씬으로 전환한다.</summary>
         private IEnumerator FinishTutorial()
         {
-            SaveSystem.SaveSystem.Save(new SaveData
-            {
-                currentDay = 0,
-                reputation = _balance.startingReputation,
-            });
+            s_playTutorialEndEventOnNextInGame = true;
 
             yield return new WaitForSeconds(_tutorialAfterAnswerDelay);
 
