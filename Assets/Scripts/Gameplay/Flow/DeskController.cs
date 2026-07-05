@@ -48,6 +48,7 @@ namespace MageAcademy.Gameplay.Flow
         private GameContext _context;
         private TutorialHighlight _tutorialHighlight;
         private DayEndState _dayEndState;
+        private Coroutine _debugSkipCoroutine;
         private static bool s_playTutorialEndEventOnNextInGame;
 
         private void Start()
@@ -132,11 +133,38 @@ namespace MageAcademy.Gameplay.Flow
                 return;
 
             Debug.Log($"[Debug] '{_debugSkipDayKey}' 입력 → day {_context.Day.CurrentDay.Value} 종료로 스킵");
+            if (_debugSkipCoroutine != null)
+                return;
+
+            _debugSkipCoroutine = StartCoroutine(SkipDayAfterStudentExit());
+        }
+
+        private IEnumerator SkipDayAfterStudentExit()
+        {
+            if (_context.CurrentCase != null)
+            {
+                _context.RequestStudentExit();
+                yield return new WaitForSeconds(GetStudentExitDuration());
+            }
+
             _machine.ChangeState(_dayEndState);
+            _debugSkipCoroutine = null;
+        }
+
+        private float GetStudentExitDuration()
+        {
+            UIAnimationSettingsSO settings = _context.UIAnimationSettings;
+            return settings != null
+                ? Mathf.Max(
+                    settings.studentExit.delay + settings.studentExit.duration,
+                    settings.studentIdButtonExit.delay + settings.studentIdButtonExit.duration)
+                : 0.4f;
         }
 
         private void OnDestroy()
         {
+            if (_debugSkipCoroutine != null)
+                StopCoroutine(_debugSkipCoroutine);
             _tutorialHighlight?.Stop();
         }
 
